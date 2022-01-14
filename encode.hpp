@@ -59,6 +59,18 @@ static flatbuffers::uoffset_t encode_vector(
 
 // *** specializations below ***
 
+// std_msgs/Header
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Header& msg, const MetadataOffset& metadata) {
+    auto header_stamp = fb::RosTime(msg.stamp._sec, msg.stamp._nsec);
+
+    return fb::std_msgs::CreateHeaderDirect(
+        fbb, 0, msg.seq, &header_stamp, msg.frame_id.c_str())
+        .o;
+}
+
+
 // amrl_msgs/RobofleetSubscription
 template <>
 flatbuffers::uoffset_t encode(
@@ -68,3 +80,32 @@ flatbuffers::uoffset_t encode(
       .o;
 }
 
+// amrl_msgs/RobofleetStatus
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const RobotStatus& msg,
+    const MetadataOffset& metadata) {
+    return fb::amrl_msgs::CreateRobofleetStatusDirect(
+        fbb,
+        metadata,
+        msg.status.c_str(),
+        msg.is_ok,
+        msg.battery_level,
+        msg.location.c_str())
+        .o;
+}
+
+// amrl_msgs/Localization2DMsg
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const RobotLocationStamped& msg,
+    const MetadataOffset& metadata) {
+    auto header = encode(fbb, msg.header, 0);
+
+    auto pose = fb::amrl_msgs::CreatePose2Df(
+        fbb, 0, msg.x, msg.y, msg.theta);
+
+    return fb::amrl_msgs::CreateLocalization2DMsgDirect(
+        fbb, metadata, header, pose, msg.header.frame_id.c_str())
+        .o;
+}
