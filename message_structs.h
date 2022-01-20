@@ -2,6 +2,7 @@
 #include<cstdint>
 #include<string>
 #include<vector>
+#include<array>
 
 /*
  * ROS message clones
@@ -102,6 +103,39 @@ struct TwistWithCovarianceStamped {
 	Header header;
 	TwistWithCovariance twist;
 };
+
+struct GeoPoint {
+	double latitude;
+	double longitude;
+	double altitude;
+};
+
+struct GeoPose {
+	GeoPoint position;
+	Quaternion orientation;
+};
+
+struct GeoPoseStamped {
+	Header header;
+	GeoPose pose;
+};
+
+struct NavSatStatus {
+	int8 status;
+	uint16 service;
+};
+
+struct NavSatFix {
+	Header header;
+	NavSatStatus status;
+	double latitude;
+	double longitude;
+	double altitude;
+	//std::vector<double> position_covariance;
+	std::array<double,9> position_covariance;
+	uint8 position_covariance_type;
+};
+
 
 // nav_msgs
 struct Odometry {
