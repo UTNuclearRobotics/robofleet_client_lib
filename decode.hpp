@@ -98,13 +98,13 @@ template <>
 PoseStamped decode(
     const fb::geometry_msgs::PoseStamped* const src) {
     PoseStamped dst;
-    dst.pose.point.x = src->pose()->position()->x();
-    dst.pose.point.y = src->pose()->position()->y();
-    dst.pose.point.z = src->pose()->position()->z();
-    dst.pose.quaternion.x = src->pose()->orientation()->x();
-    dst.pose.quaternion.y = src->pose()->orientation()->y();
-    dst.pose.quaternion.z = src->pose()->orientation()->z();
-    dst.pose.quaternion.w = src->pose()->orientation()->z();
+    dst.pose.position.x = src->pose()->position()->x();
+    dst.pose.position.y = src->pose()->position()->y();
+    dst.pose.position.z = src->pose()->position()->z();
+	dst.pose.orientation.x = src->pose()->orientation()->x();
+	dst.pose.orientation.y = src->pose()->orientation()->y();
+	dst.pose.orientation.z = src->pose()->orientation()->z();
+	dst.pose.orientation.w = src->pose()->orientation()->z();
     dst.header.frame_id = src->header()->frame_id()->str();
     return dst;
 }

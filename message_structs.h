@@ -70,8 +70,8 @@ struct Vector3 {
 };
 
 struct Pose {
-	Point point;
-	Quaternion quaternion;
+	Point position;
+	Quaternion orientation;
 };
 
 struct PoseStamped {
