@@ -127,10 +127,10 @@ CompressedImage decode(
 // detection_msgs/DetectedItem 
 template <>
 struct flatbuffers_type_for<DetectedItem> {
-    typedef fb::detection_msgs::DetectedItem type;
+    typedef fb::amrl_msgs::DetectedItem type;
 };
 template <>
-DetectedItem decode(const fb::detection_msgs::DetectedItem* const src) {
+DetectedItem decode(const fb::amrl_msgs::DetectedItem* const src) {
     DetectedItem dst;
     dst.name = src->name()->str();
     dst.repID = src->repID()->str();
