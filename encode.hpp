@@ -109,3 +109,47 @@ flatbuffers::uoffset_t encode(
         fbb, metadata, header, pose, msg.header.frame_id.c_str())
         .o;
 }
+
+
+// geometry_msgs/Point
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const Point& msg, const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreatePoint(fbb, metadata, msg.x, msg.y, msg.z).o;
+}
+
+// geometry_msgs/Quaternion
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const Quaternion& msg,
+	const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreateQuaternion(
+		fbb, metadata, msg.x, msg.y, msg.z, msg.w)
+		.o;
+}
+
+// geometry_msgs/Pose
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const Pose& msg, const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreatePose(
+		fbb,
+		metadata,
+		encode(fbb, msg.position, 0),
+		encode(fbb, msg.orientation, 0))
+		.o;
+}
+
+
+// geometry_msgs/PoseStamped
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const PoseStamped& msg,
+	const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreatePoseStamped(
+		fbb,
+		metadata,
+		encode(fbb, msg.header, 0),
+		encode(fbb, msg.pose, 0))
+		.o;
+}

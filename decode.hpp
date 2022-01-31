@@ -98,16 +98,56 @@ template <>
 PoseStamped decode(
     const fb::geometry_msgs::PoseStamped* const src) {
     PoseStamped dst;
-    dst.pose.point.x = src->pose()->position()->x();
-    dst.pose.point.y = src->pose()->position()->y();
-    dst.pose.point.z = src->pose()->position()->z();
-    dst.pose.quaternion.x = src->pose()->orientation()->x();
-    dst.pose.quaternion.y = src->pose()->orientation()->y();
-    dst.pose.quaternion.z = src->pose()->orientation()->z();
-    dst.pose.quaternion.w = src->pose()->orientation()->z();
+    dst.pose.position.x = src->pose()->position()->x();
+    dst.pose.position.y = src->pose()->position()->y();
+    dst.pose.position.z = src->pose()->position()->z();
+	dst.pose.orientation.x = src->pose()->orientation()->x();
+	dst.pose.orientation.y = src->pose()->orientation()->y();
+	dst.pose.orientation.z = src->pose()->orientation()->z();
+	dst.pose.orientation.w = src->pose()->orientation()->z();
     dst.header.frame_id = src->header()->frame_id()->str();
     return dst;
 }
+/*
+template <>
+struct flatbuffers_type_for<GeoPoseStamped> {
+    typedef fb::geometry_msgs::GeoPoseStamped type;
+};
+template <>
+GeoPoseStamped decode(
+    const fb::geometry_msgs::GeoPoseStamped* const src) {
+    GeoPoseStamped dst;
+    dst.pose.position.latitude = src->pose()->position()->latitude();
+    dst.pose.position.longitude = src->pose()->position()->longitude();
+    dst.pose.position.altitude = src->pose()->position()->altitude();
+    dst.pose.orientation.x = src->pose()->orientation()->x();
+    dst.pose.orientation.y = src->pose()->orientation()->y();
+    dst.pose.orientation.z = src->pose()->orientation()->z();
+    dst.pose.orientation.w = src->pose()->orientation()->z();
+    dst.header.frame_id = src->header()->frame_id()->str();
+    return dst;
+}
+*/
+template <>
+struct flatbuffers_type_for<NavSatFix> {
+    typedef fb::sensor_msgs::NavSatFix type;
+};
+template <>
+NavSatFix decode(
+    const fb::sensor_msgs::NavSatFix* const src) {
+    NavSatFix dst;
+    dst.latitude = src->latitude();
+    dst.longitude = src->longitude();
+    dst.altitude = src->altitude();
+    //dst.position_covariance.resize(src->position_covariance()->size());
+    std::copy(src->position_covariance()->begin(), src->position_covariance()->end(), dst.position_covariance.begin());
+    dst.position_covariance_type = src->position_covariance_type();
+    dst.header.frame_id = src->header()->frame_id()->str();
+    dst.status.status = src->status()->status();
+    dst.status.service = src->status()->service();
+    return dst;
+}
+
 
 template <>
 struct flatbuffers_type_for<CompressedImage> {
