@@ -1,17 +1,35 @@
 cmake_minimum_required(VERSION 3.1.0)
+project(robofleet_base)
 
-PROJECT(robofleet_base_lib)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+add_library(${PROJECT_NAME} SHARED
+    src/decode.hpp
+    src/encode.hpp
+    include/message_structs.h
+    include/MessageSchedulerLib.hpp
+)
 
-SET(LIBS glog pthread)
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+  $<INSTALL_INTERFACE:include>    
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 
-SET(ROBOFLEET_LIBRARY_NAME "robofleet_base_lib"
-    CACHE STRING "Name of compiled library")
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11")
+install(TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}-export
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
 
-include_directories(include)
-
-ADD_LIBRARY(${ROBOFLEET_LIBRARY_NAME} decode.hpp encode.hpp message_structs.h MessageSchedulerLib.hpp)
-TARGET_LINK_LIBRARIES(${ROBOFLEET_LIBRARY_NAME} ${LIBS}})
+install(EXPORT ${PROJECT_NAME}-export
+  FILE
+    RobofleetBaseTargets.cmake
+  NAMESPACE
+  RobofleetBase::
+  DESTINATION
+    lib/cmake/RobofleetBase
+)
