@@ -33,6 +33,8 @@ static flatbuffers::Offset<fb::MsgMetadata> encode_metadata(
   return fb::CreateMsgMetadataDirect(fbb, msg_type.c_str(), topic.c_str());
 }
 
+
+
 /**
  * @brief Create a flatbuffer vector from a vector of items by calling
  * encode<T>() on each item.
@@ -55,9 +57,70 @@ static flatbuffers::uoffset_t encode_vector(
       });
   return fbb.CreateVector(dst).o;
 }
-
 // *** specializations below ***
 
+<<<<<<< Updated upstream
+=======
+/**
+ * @brief Create a vector of flatbuffer Offsets of Strings from a vector of strings by calling
+ * CreateString() on each item.
+ *
+ * @tparam TEncoded the target flatbuffers type to encode to
+ * @tparam T the source message type to encode from
+ * @param fbb the flatbuffer builder in which to create the vector
+ * @param metadata an optional metadata item to pass to encode() (pass 0 for
+ * null)
+ * @param src the vector of messages to encode
+ * @return vector of strings vos std::vector<flatbuffers::offset<flatbuffers::string>>
+ */
+template <typename TEncoded, typename T>
+static std::vector<flatbuffers::Offset<TEncoded>> encode_vector_str(
+    FBB& fbb, const MetadataOffset& metadata, std::vector<T> src) {
+    std::vector<flatbuffers::Offset<TEncoded>> vos;
+    for (size_t i = 0; i < src.size(); i++) vos[i] = encode(fbb, src[i], 0);
+    return vos;
+}
+
+/**
+ * @brief Create a vector of flatbuffer Offsets of UMRF diff from a vector of UMRF by calling
+ * encode() on each item.
+ *
+ * @tparam TEncoded the target flatbuffers type to encode to
+ * @tparam T the source message type to encode from
+ * @param fbb the flatbuffer builder in which to create the vector
+ * @param metadata an optional metadata item to pass to encode() (pass 0 for
+ * null)
+ * @param src the vector of messages to encode
+ * @return vector of umrfDiff vos std::vector<Flatbuffers::offset<fb::temoto_action_engine::UMRF>>
+ */
+template <typename TEncoded, typename T>
+static std::vector<flatbuffers::Offset<TEncoded>> encode_vector_umrf(
+    FBB& fbb, const MetadataOffset& metadata, std::vector<T> src) {
+    std::vector<flatbuffers::Offset<TEncoded>> vo_umrf;
+    for (size_t i = 0; i < src.size(); i++) vo_umrf[i] = encode(fbb, src[i], metadata);
+    return vo_umrf;
+}
+
+// std_msgs/Header
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Header& msg, const MetadataOffset& metadata) {
+    auto header_stamp = fb::RosTime(msg.stamp._sec, msg.stamp._nsec);
+
+    return fb::std_msgs::CreateHeaderDirect(
+        fbb, 0, msg.seq, &header_stamp, msg.frame_id.c_str())
+        .o;
+}
+
+// std_msgs/String
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const std::string& msg, const MetadataOffset& metadata) {
+    return fbb.CreateString(msg)
+    .o;
+}
+
+>>>>>>> Stashed changes
 // amrl_msgs/RobofleetSubscription
 template <>
 flatbuffers::uoffset_t encode(
@@ -65,4 +128,130 @@ flatbuffers::uoffset_t encode(
   return fb::amrl_msgs::CreateRobofleetSubscriptionDirect(
              fbb, metadata, msg.topic_regex.c_str(), msg.action)
       .o;
+<<<<<<< Updated upstream
+=======
+}
+
+// amrl_msgs/RobofleetStatus
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const RobotStatus& msg,
+    const MetadataOffset& metadata) {
+    return fb::amrl_msgs::CreateRobofleetStatusDirect(
+        fbb,
+        metadata,
+        msg.status.c_str(),
+        msg.is_ok,
+        msg.battery_level,
+        msg.location.c_str())
+        .o;
+}
+
+// amrl_msgs/Localization2DMsg
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const RobotLocationStamped& msg,
+    const MetadataOffset& metadata) {
+    auto header = encode(fbb, msg.header, 0);
+
+    auto pose = fb::amrl_msgs::CreatePose2Df(
+        fbb, 0, msg.x, msg.y, msg.theta);
+
+    return fb::amrl_msgs::CreateLocalization2DMsgDirect(
+        fbb, metadata, header, pose, msg.header.frame_id.c_str())
+        .o;
+}
+
+// geometry_msgs/Point
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const Point& msg, const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreatePoint(fbb, metadata, msg.x, msg.y, msg.z).o;
+}
+
+// geometry_msgs/Quaternion
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const Quaternion& msg,
+	const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreateQuaternion(
+		fbb, metadata, msg.x, msg.y, msg.z, msg.w)
+		.o;
+}
+
+// geometry_msgs/Pose
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const Pose& msg, const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreatePose(
+		fbb,
+		metadata,
+		encode(fbb, msg.position, 0),
+		encode(fbb, msg.orientation, 0))
+		.o;
+}
+
+// geometry_msgs/PoseStamped
+template <>
+flatbuffers::uoffset_t encode(
+	FBB& fbb, const PoseStamped& msg,
+	const MetadataOffset& metadata) {
+	return fb::geometry_msgs::CreatePoseStamped(
+		fbb,
+		metadata,
+		encode(fbb, msg.header, 0),
+		encode(fbb, msg.pose, 0))
+		.o;
+}
+
+// temoto_action_engine/UmrfGraphDiff
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const UMRFgraphDiff& msg,
+    const MetadataOffset& metadata) {
+    return fb::temoto_action_engine::CreateUmrfGraphDiffDirect(
+        fbb,
+        metadata,
+        msg.ADD.c_str(),
+        msg.SUBTRACT.c_str(),
+        msg.operation.c_str(),
+        msg.umrf_json.c_str())
+        .o;
+}
+ 
+// temoto_action_engine/StartUMRF
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const StartUMRF& msg,
+    const MetadataOffset& metadata) {
+    auto umrf_graph_name = fbb.CreateString(msg.umrf_graph_name);
+    auto targets = encode_vector<std::string>(fbb, 0, msg.targets);
+    auto umrf_graph_json = fbb.CreateString(msg.umrf_graph_json);
+    auto umrf_diff = encode_vector<fb::temoto_action_engine::UmrfGraphDiff>(fbb, 0, msg.umrf_graph_diffs);
+    return fb::temoto_action_engine::CreateBroadcastStartUmrfGraph(
+        fbb,
+        metadata,
+        umrf_graph_name,
+        msg.name_match_required,
+        targets,
+        umrf_graph_json,
+        umrf_diff)
+        .o;
+}
+ 
+
+// temoto_action_engine/StopUMRF
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const StopUMRF& msg,
+    const MetadataOffset& metadata) {
+    auto umrf_graph_name = fbb.CreateString(msg.umrf_graph_name);
+    auto targets = encode_vector<std::string>(fbb, 0, msg.targets);
+    return fb::temoto_action_engine::CreateBroadcastStopUmrfGraph(
+        fbb,
+        metadata,
+        umrf_graph_name,
+        targets)
+        .o;
+>>>>>>> Stashed changes
 }

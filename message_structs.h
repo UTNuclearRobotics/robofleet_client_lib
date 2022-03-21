@@ -3,6 +3,10 @@
 #include<string>
 #include<vector>
 
+struct String {
+	std::string data;
+};
+
 struct RobofleetSubscription {
 	std::string topic_regex;
 	uint8_t action;
@@ -107,3 +111,44 @@ struct CompressedImage {
 	std::string format;
 	std::vector<uint8_t> data;
 };
+<<<<<<< Updated upstream
+=======
+
+// modified atak dectection_msgs 
+struct DetectedItem {
+	std::string name;
+	std::string repID;
+	std::string anchorID;
+	float x;
+	float y;
+	float z;
+	float lat;
+	float lon;
+	float elv;
+	CompressedImage cmpr_image;
+};
+
+
+// TeMoto
+// UMRFgraphs
+
+struct UMRFgraphDiff {
+	std::string ADD;
+	std::string SUBTRACT = "subtract";
+	std::string operation;
+	std::string umrf_json;
+};
+
+struct StartUMRF {
+	std::string umrf_graph_name;
+	bool name_match_required;
+	std::vector<std::string> targets;
+	std::string umrf_graph_json;
+	std::vector<UMRFgraphDiff> umrf_graph_diffs;
+};
+
+struct StopUMRF {
+	std::string umrf_graph_name;
+	std::vector<std::string> targets;
+};
+>>>>>>> Stashed changes
