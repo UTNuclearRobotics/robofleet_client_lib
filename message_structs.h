@@ -2,6 +2,22 @@
 #include<cstdint>
 #include<string>
 #include<vector>
+#include<array>
+
+/*
+ * ROS message clones
+ */
+ // std_msgs
+struct Time {
+	uint32_t _sec;
+	uint32_t _nsec;
+};
+
+struct Header {
+	uint32_t seq;
+	Time stamp;
+	std::string frame_id;
+};
 
 struct String {
 	std::string data;
@@ -20,6 +36,14 @@ struct RobotLocation {
 	float theta;
 };
 
+struct RobotLocationStamped {
+	Header header;
+	float x;
+	float y;
+	float z;
+	float theta;
+};
+
 struct RobotStatus {
 	std::string status;
 	bool is_ok;
@@ -27,20 +51,7 @@ struct RobotStatus {
 	std::string location;
 };
 
-/*
- * ROS message clones
- */
-// std_msgs
-struct Time {
-	uint32_t _sec;
-	uint32_t _nsec;
-};
 
-struct Header {
-	uint32_t seq;
-	Time stamp;
-	std::string frame_id;
-};
 
 // geometry_msgs
 struct Point {
@@ -63,8 +74,14 @@ struct Vector3 {
 };
 
 struct Pose {
-	Point point;
-	Quaternion quaternion;
+	Point position;
+	Quaternion orientation;
+};
+
+struct Pose2D {
+	float x;
+	float y;
+	float yaw;
 };
 
 struct PoseStamped {
@@ -97,6 +114,39 @@ struct TwistWithCovarianceStamped {
 	TwistWithCovariance twist;
 };
 
+struct GeoPoint {
+	double latitude;
+	double longitude;
+	double altitude;
+};
+
+struct GeoPose {
+	GeoPoint position;
+	Quaternion orientation;
+};
+
+struct GeoPoseStamped {
+	Header header;
+	GeoPose pose;
+};
+
+struct NavSatStatus {
+	int8 status;
+	uint16 service;
+};
+
+struct NavSatFix {
+	Header header;
+	NavSatStatus status;
+	double latitude;
+	double longitude;
+	double altitude;
+	//std::vector<double> position_covariance;
+	std::array<double,9> position_covariance;
+	uint8 position_covariance_type;
+};
+
+
 // nav_msgs
 struct Odometry {
 	Header header;
@@ -105,14 +155,17 @@ struct Odometry {
 	TwistWithCovariance twist;
 };
 
+struct Path {
+	Header header;
+	std::vector<PoseStamped> poses;
+};
+
 // sensor_msgs
 struct CompressedImage {
 	Header header;
 	std::string format;
 	std::vector<uint8_t> data;
 };
-<<<<<<< Updated upstream
-=======
 
 // modified atak dectection_msgs 
 struct DetectedItem {
@@ -151,4 +204,3 @@ struct StopUMRF {
 	std::string umrf_graph_name;
 	std::vector<std::string> targets;
 };
->>>>>>> Stashed changes
