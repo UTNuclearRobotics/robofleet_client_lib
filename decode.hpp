@@ -184,3 +184,99 @@ DetectedItem decode(const fb::amrl_msgs::DetectedItem* const src) {
     dst.cmpr_image = decode<CompressedImage>(src->cmpr_image());
     return dst;
 }
+
+
+// TeMoto
+
+template <>
+struct flatbuffers_type_for<UMRFgraphDiff> {
+    typedef fb::temoto_action_engine::UmrfGraphDiff type;
+};
+template <>
+UMRFgraphDiff decode(
+    const fb::temoto_action_engine::UmrfGraphDiff* const src) {
+    UMRFgraphDiff dst;
+    dst.ADD = src->ADD()->str();
+    dst.SUBTRACT = src->SUBTRACT()->str();
+    dst.operation = src->operation()->str();
+    dst.umrf_json = src->umrf_json()->str();
+    return dst;
+}
+
+template <>
+struct flatbuffers_type_for<StopUMRF> {
+    typedef fb::temoto_action_engine::BroadcastStopUmrfGraph type;
+};
+template <>
+StopUMRF decode(
+    const fb::temoto_action_engine::BroadcastStopUmrfGraph* const src) {
+    StopUMRF dst;
+    dst.umrf_graph_name = src->umrf_graph_name()->str();
+
+    dst.targets.resize(src->targets()->size());
+    auto src2 = src->targets()->begin();
+    auto dst2 = dst.targets.begin();
+
+    while (src2 != src->targets()->end()) {
+        //*dst2 = decode<std::string>(*src2);
+        ++src2;
+        ++dst2;
+    }
+
+    return dst;
+}
+
+template <>
+struct flatbuffers_type_for<StartUMRF> {
+    typedef fb::temoto_action_engine::BroadcastStartUmrfGraph type;
+};
+template <>
+StartUMRF decode(
+    const fb::temoto_action_engine::BroadcastStartUmrfGraph* const src) {
+    StartUMRF dst;
+    dst.umrf_graph_name = src->umrf_graph_name()->str();
+    dst.name_match_required = src->name_match_required();
+
+    dst.targets.resize(src->targets()->size());
+    auto src2 = src->targets()->begin();
+    auto dst2 = dst.targets.begin();
+
+    while (src2 != src->targets()->end()) {
+        //*dst2 = decode<std::string>(*src2);
+        ++src2;
+        ++dst2;
+    }
+
+    dst.umrf_graph_json = src->umrf_graph_json()->str();
+
+    dst.umrf_graph_diffs.resize(src->umrf_graph_diffs()->size());
+    auto src3 = src->umrf_graph_diffs()->begin();
+    auto dst3 = dst.umrf_graph_diffs.begin();
+    while (src3 != src->umrf_graph_diffs()->end()) {
+        *dst3 = decode<UMRFgraphDiff>(*src3);
+        ++src3;
+        ++dst3;
+    }
+
+    return dst;
+}
+
+// nav_msgs/Path
+template <>
+struct flatbuffers_type_for<Path> {
+    typedef fb::nav_msgs::Path type;
+};
+template <>
+Path decode(const fb::nav_msgs::Path* const src) {
+    Path dst;
+    dst.header = decode<Header>(src->header());
+    dst.poses.resize(src->poses()->size());
+    auto src3 = src->poses()->begin();
+    auto dst3 = dst.poses.begin();
+    while (src3 != src->poses()->end()) {
+        *dst3 = decode<PoseStamped>(*src3);
+        ++src3;
+        ++dst3;
+    }
+    return dst;
+}

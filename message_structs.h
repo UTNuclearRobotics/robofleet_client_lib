@@ -19,6 +19,10 @@ struct Header {
 	std::string frame_id;
 };
 
+struct String {
+	std::string data;
+};
+
 struct RobofleetSubscription {
 	std::string topic_regex;
 	uint8_t action;
@@ -47,8 +51,6 @@ struct RobotStatus {
 	std::string location;
 };
 
-
-
 // geometry_msgs
 struct Point {
 	float x;
@@ -72,6 +74,12 @@ struct Vector3 {
 struct Pose {
 	Point position;
 	Quaternion orientation;
+};
+
+struct Pose2D {
+	float x;
+	float y;
+	float yaw;
 };
 
 struct PoseStamped {
@@ -136,13 +144,17 @@ struct NavSatFix {
 	uint8 position_covariance_type;
 };
 
-
 // nav_msgs
 struct Odometry {
 	Header header;
 	std::string child_frame_id;
 	PoseWithCovariance pose;
 	TwistWithCovariance twist;
+};
+
+struct Path {
+	Header header;
+	std::vector<PoseStamped> poses;
 };
 
 // sensor_msgs
@@ -165,3 +177,27 @@ struct DetectedItem {
 	float elv;
 	CompressedImage cmpr_image;
 };
+
+// TeMoto
+// UMRFgraphs
+
+struct UMRFgraphDiff {
+	std::string ADD;
+	std::string SUBTRACT = "subtract";
+	std::string operation;
+	std::string umrf_json;
+};
+
+struct StartUMRF {
+	std::string umrf_graph_name;
+	bool name_match_required;
+	std::vector<std::string> targets;
+	std::string umrf_graph_json;
+	std::vector<UMRFgraphDiff> umrf_graph_diffs;
+};
+
+struct StopUMRF {
+	std::string umrf_graph_name;
+	std::vector<std::string> targets;
+};
+
