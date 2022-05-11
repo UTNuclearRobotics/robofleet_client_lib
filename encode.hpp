@@ -137,6 +137,22 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// augre_msgs/AgentStatus
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AgentStatus& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateAgentStatusDirect(
+        fbb,
+        metadata,
+        msg.name.c_str(),
+        msg.battery,
+        msg.owner.c_str(),
+        msg.anchor_localization,        
+        msg.control_status.c_str())
+        .o;
+}
+
 // geometry_msgs/Point
 template <>
 flatbuffers::uoffset_t encode(

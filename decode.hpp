@@ -108,15 +108,16 @@ PoseStamped decode(
     return dst;
 }
 
-/*
+
 template <>
 struct flatbuffers_type_for<GeoPoseStamped> {
-    typedef fb::geometry_msgs::GeoPoseStamped type;
+    typedef fb::geographic_msgs::GeoPoseStamped type;
 };
 template <>
 GeoPoseStamped decode(
-    const fb::geometry_msgs::GeoPoseStamped* const src) {
+    const fb::geographic_msgs::GeoPoseStamped* const src) {
     GeoPoseStamped dst;
+    dst.header = decode<Header>(src->header());
     dst.pose.position.latitude = src->pose()->position()->latitude();
     dst.pose.position.longitude = src->pose()->position()->longitude();
     dst.pose.position.altitude = src->pose()->position()->altitude();
@@ -124,15 +125,14 @@ GeoPoseStamped decode(
     dst.pose.orientation.y = src->pose()->orientation()->y();
     dst.pose.orientation.z = src->pose()->orientation()->z();
     dst.pose.orientation.w = src->pose()->orientation()->z();
-    dst.header.frame_id = src->header()->frame_id()->str();
     return dst;
 }
-*/
+
 
 
 
 // UNCOMMENT
-/*
+
 template <>
 struct flatbuffers_type_for<Transform> {
     typedef fb::geometry_msgs::Transform type;
@@ -150,9 +150,9 @@ Transform decode(
     dst.rotation.w = src->rotation()->z();
     return dst;
 }    
-*/
 
-/*
+
+
 template <>
 struct flatbuffers_type_for<TransformStamped> {
     typedef fb::geometry_msgs::TransformStamped type;
@@ -166,30 +166,6 @@ TransformStamped decode(
     dst.transform = decode<Transform>(src->transform());
     return dst;
 }
-*/
-
-
-/*
-template <>
-struct flatbuffers_type_for<tf> {
-    typedef fb::tf::tf type;
-};
-template <>
-tf decode(
-    const fb::tf::tf* const src) {
-    tf dst;    
-    dst.tf.resize(src->tf()->size());
-    auto src = src->tf()->begin();
-    auto dst = dst.tf.begin();
-    while (src != src->tf()->end()) {
-        *dst = decode<tf>(*src);
-        ++src;
-        ++dst;
-    }
-    return dst;
-}
-*/
-
 
 
 template <>
@@ -228,7 +204,6 @@ CompressedImage decode(
 }
 
 // TODO -- Replace with new DetectedItem struct
-// detection_msgs/DetectedItem 
 template <>
 struct flatbuffers_type_for<DetectedItem> {
     typedef fb::amrl_msgs::DetectedItem type;
@@ -254,7 +229,6 @@ DetectedItem decode(const fb::amrl_msgs::DetectedItem* const src) {
  * augre_msgs
  */
 
-/*
 template <>
 struct flatbuffers_type_for<AgentStatus> {
     typedef fb::augre_msgs::AgentStatus type;
@@ -271,24 +245,24 @@ AgentStatus decode(
     return dst;
 }
 
-// detection_msgs/DetectedItem 
+
 template <>
-struct flatbuffers_type_for<DetectedItem> {
+struct flatbuffers_type_for<DetectedItem_augre> {
     typedef fb::augre_msgs::DetectedItem type;
 };
 template <>
-DetectedItem decode(const fb::augre_msgs::DetectedItem* const src) {
-    DetectedItem dst;
+DetectedItem_augre decode(const fb::augre_msgs::DetectedItem* const src) {
+    DetectedItem_augre dst;
     dst.name = src->name()->str();
     dst.rep_id = src->rep_id()->str();
     dst.asa_id = src->asa_id()->str();
-    dst.pose = decode<PoseStamped>(*src->pose());
-    dst.geopose = decode<GeoPoseStamped>(*src->geopose());
+    dst.pose = decode<PoseStamped>(src->pose());
+    dst.geopose = decode<GeoPoseStamped>(src->geopose());
     dst.cmpr_image = decode<CompressedImage>(src->cmpr_image());
     return dst;
 }
 
-// detection_msgs/DetectedItem 
+
 template <>
 struct flatbuffers_type_for<TransformWithCovarianceStamped> {
     typedef fb::augre_msgs::TransformWithCovarianceStamped type;
@@ -296,12 +270,10 @@ struct flatbuffers_type_for<TransformWithCovarianceStamped> {
 template <>
 TransformWithCovarianceStamped decode(const fb::augre_msgs::TransformWithCovarianceStamped* const src) {
     TransformWithCovarianceStamped dst;
-    dst.transform = decode<TransformStamped>(*src->transform());
-    dst.covariance = decode<GeoPoseStamped>(*src->covariance());    
+    dst.transform = decode<TransformStamped>(src->transform());
+    std::copy(src->covariance()->begin(), src->covariance()->end(), dst.covariance.begin());
     return dst;
 }
-*/
-
 
 // TeMoto
 

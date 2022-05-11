@@ -201,22 +201,18 @@ struct AgentStatus {
 	std::string control_status;
 };
 
-//struct DetectedItem {
-//	std::string name;
-//	std::string rep_id;
-//	std::string asa_id;
-//	PoseStamped pose;
-//	GeoPoseStamped geopose;
-//	CompressedImage cmpr_image;
-//};
+struct DetectedItem_augre {
+	std::string name;
+	std::string rep_id;
+	std::string asa_id;
+	PoseStamped pose;
+	GeoPoseStamped geopose;
+	CompressedImage cmpr_image;
+};
 
 struct TransformWithCovarianceStamped {
 	TransformStamped transform;
-	std::vector<float> covariance;
-};
-
-struct tf {
-	std::vector<TransformStamped> transforms;
+	std::array<float, 36> covariance;
 };
 
 
