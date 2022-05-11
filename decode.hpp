@@ -55,7 +55,6 @@ Header decode(const fb::std_msgs::Header* const src) {
     return dst;
 }
 
-
 template <>
 struct flatbuffers_type_for<RobotStatus> {
   typedef fb::amrl_msgs::RobofleetStatus type;
@@ -108,6 +107,7 @@ PoseStamped decode(
     dst.header.frame_id = src->header()->frame_id()->str();
     return dst;
 }
+
 /*
 template <>
 struct flatbuffers_type_for<GeoPoseStamped> {
@@ -128,6 +128,70 @@ GeoPoseStamped decode(
     return dst;
 }
 */
+
+
+
+// UNCOMMENT
+/*
+template <>
+struct flatbuffers_type_for<Transform> {
+    typedef fb::geometry_msgs::Transform type;
+};
+template <>
+Transform decode(
+    const fb::geometry_msgs::Transform* const src) {
+    Transform dst;
+    dst.translation.x = src->translation()->x();
+    dst.translation.y = src->translation()->y();
+    dst.translation.z = src->translation()->z();
+    dst.rotation.x = src->rotation()->x();
+    dst.rotation.y = src->rotation()->y();
+    dst.rotation.z = src->rotation()->z();
+    dst.rotation.w = src->rotation()->z();
+    return dst;
+}    
+*/
+
+/*
+template <>
+struct flatbuffers_type_for<TransformStamped> {
+    typedef fb::geometry_msgs::TransformStamped type;
+};
+template <>
+TransformStamped decode(
+    const fb::geometry_msgs::TransformStamped* const src) {
+    TransformStamped dst;
+    dst.header = decode<Header>(src->header());
+    dst.child_frame_id = src->child_frame_id()->str();
+    dst.transform = decode<Transform>(src->transform());
+    return dst;
+}
+*/
+
+
+/*
+template <>
+struct flatbuffers_type_for<tf> {
+    typedef fb::tf::tf type;
+};
+template <>
+tf decode(
+    const fb::tf::tf* const src) {
+    tf dst;    
+    dst.tf.resize(src->tf()->size());
+    auto src = src->tf()->begin();
+    auto dst = dst.tf.begin();
+    while (src != src->tf()->end()) {
+        *dst = decode<tf>(*src);
+        ++src;
+        ++dst;
+    }
+    return dst;
+}
+*/
+
+
+
 template <>
 struct flatbuffers_type_for<NavSatFix> {
     typedef fb::sensor_msgs::NavSatFix type;
@@ -148,7 +212,6 @@ NavSatFix decode(
     return dst;
 }
 
-
 template <>
 struct flatbuffers_type_for<CompressedImage> {
     typedef fb::sensor_msgs::CompressedImage type;
@@ -164,6 +227,7 @@ CompressedImage decode(
     return dst;
 }
 
+// TODO -- Replace with new DetectedItem struct
 // detection_msgs/DetectedItem 
 template <>
 struct flatbuffers_type_for<DetectedItem> {
@@ -184,6 +248,59 @@ DetectedItem decode(const fb::amrl_msgs::DetectedItem* const src) {
     dst.cmpr_image = decode<CompressedImage>(src->cmpr_image());
     return dst;
 }
+
+
+/*
+ * augre_msgs
+ */
+
+/*
+template <>
+struct flatbuffers_type_for<AgentStatus> {
+    typedef fb::augre_msgs::AgentStatus type;
+};
+template <>
+AgentStatus decode(
+    const fb::augre_msgs::AgentStatus* const src) {
+    AgentStatus dst;
+    dst.name = src->name()->str();
+    dst.battery = src->battery();
+    dst.owner = src->owner()->str();
+    dst.anchor_localization = src->anchor_localization();
+    dst.control_status = src->control_status()->str();
+    return dst;
+}
+
+// detection_msgs/DetectedItem 
+template <>
+struct flatbuffers_type_for<DetectedItem> {
+    typedef fb::augre_msgs::DetectedItem type;
+};
+template <>
+DetectedItem decode(const fb::augre_msgs::DetectedItem* const src) {
+    DetectedItem dst;
+    dst.name = src->name()->str();
+    dst.rep_id = src->rep_id()->str();
+    dst.asa_id = src->asa_id()->str();
+    dst.pose = decode<PoseStamped>(*src->pose());
+    dst.geopose = decode<GeoPoseStamped>(*src->geopose());
+    dst.cmpr_image = decode<CompressedImage>(src->cmpr_image());
+    return dst;
+}
+
+// detection_msgs/DetectedItem 
+template <>
+struct flatbuffers_type_for<TransformWithCovarianceStamped> {
+    typedef fb::augre_msgs::TransformWithCovarianceStamped type;
+};
+template <>
+TransformWithCovarianceStamped decode(const fb::augre_msgs::TransformWithCovarianceStamped* const src) {
+    TransformWithCovarianceStamped dst;
+    dst.transform = decode<TransformStamped>(*src->transform());
+    dst.covariance = decode<GeoPoseStamped>(*src->covariance());    
+    return dst;
+}
+*/
 
 
 // TeMoto
@@ -240,7 +357,6 @@ StartUMRF decode(
     dst.targets.resize(src->targets()->size());
     auto src2 = src->targets()->begin();
     auto dst2 = dst.targets.begin();
-
     while (src2 != src->targets()->end()) {
         //*dst2 = decode<std::string>(*src2);
         ++src2;

@@ -112,6 +112,18 @@ struct TwistWithCovarianceStamped {
 	TwistWithCovariance twist;
 };
 
+struct Transform {
+	Vector3 translation;
+	Quaternion rotation;
+};
+
+struct TransformStamped {
+	Header header;
+	std::string child_frame_id;
+	Transform transform;
+};
+
+//geographic_msgs
 struct GeoPoint {
 	double latitude;
 	double longitude;
@@ -128,6 +140,7 @@ struct GeoPoseStamped {
 	GeoPose pose;
 };
 
+//sensor_msgs
 struct NavSatStatus {
 	int8 status;
 	uint16 service;
@@ -144,6 +157,12 @@ struct NavSatFix {
 	uint8 position_covariance_type;
 };
 
+struct CompressedImage {
+	Header header;
+	std::string format;
+	std::vector<uint8_t> data;
+};
+
 // nav_msgs
 struct Odometry {
 	Header header;
@@ -155,13 +174,6 @@ struct Odometry {
 struct Path {
 	Header header;
 	std::vector<PoseStamped> poses;
-};
-
-// sensor_msgs
-struct CompressedImage {
-	Header header;
-	std::string format;
-	std::vector<uint8_t> data;
 };
 
 // modified atak dectection_msgs 
@@ -178,9 +190,41 @@ struct DetectedItem {
 	CompressedImage cmpr_image;
 };
 
-// TeMoto
-// UMRFgraphs
+/*
+// augre_msgs
+*/
+struct AgentStatus {
+	std::string name;
+	float battery;
+	std::string owner;
+	bool anchor_localization;
+	std::string control_status;
+};
 
+//struct DetectedItem {
+//	std::string name;
+//	std::string rep_id;
+//	std::string asa_id;
+//	PoseStamped pose;
+//	GeoPoseStamped geopose;
+//	CompressedImage cmpr_image;
+//};
+
+struct TransformWithCovarianceStamped {
+	TransformStamped transform;
+	std::vector<float> covariance;
+};
+
+struct tf {
+	std::vector<TransformStamped> transforms;
+};
+
+
+/*
+ *  TeMoto_msgs
+ */
+
+// UMRFgraphs
 struct UMRFgraphDiff {
 	std::string ADD;
 	std::string SUBTRACT = "subtract";
