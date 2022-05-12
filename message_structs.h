@@ -212,7 +212,8 @@ struct DetectedItem_augre {
 
 struct TransformWithCovarianceStamped {
 	TransformStamped transform;
-	std::array<float, 36> covariance;
+	//std::array<float, 36> covariance;
+	std::vector<float> covariance;				//easier to encode
 };
 
 

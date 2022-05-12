@@ -137,22 +137,6 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
-// augre_msgs/AgentStatus
-template <>
-flatbuffers::uoffset_t encode(
-    FBB& fbb, const AgentStatus& msg,
-    const MetadataOffset& metadata) {
-    return fb::augre_msgs::CreateAgentStatusDirect(
-        fbb,
-        metadata,
-        msg.name.c_str(),
-        msg.battery,
-        msg.owner.c_str(),
-        msg.anchor_localization,        
-        msg.control_status.c_str())
-        .o;
-}
-
 // geometry_msgs/Point
 template <>
 flatbuffers::uoffset_t encode(
@@ -195,6 +179,37 @@ flatbuffers::uoffset_t encode(
 		.o;
 }
 
+// geometry_msgs/Transform
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Transform& msg,
+    const MetadataOffset& metadata) {
+
+    auto vector3 = fb::geometry_msgs::CreateVector3(
+        fbb, 0, msg.translation.x, msg.translation.y, msg.translation.z);
+    return fb::geometry_msgs::CreateTransform(
+        fbb,
+        metadata,
+        vector3,
+        encode(fbb, msg.rotation, 0))
+        .o;
+}
+
+// geometry_msgs/TransformStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TransformStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreateTransformStampedDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.child_frame_id.c_str(),
+        encode(fbb, msg.transform, 0))
+        .o;
+}
+
+// nav_msgs/Path
 template <>
 flatbuffers::uoffset_t encode(
     FBB& fbb, const Path& msg,
@@ -208,6 +223,38 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// augre_msgs/AgentStatus
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AgentStatus& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateAgentStatusDirect(
+        fbb,
+        metadata,
+        msg.name.c_str(),
+        msg.battery,
+        msg.owner.c_str(),
+        msg.anchor_localization,
+        msg.control_status.c_str())
+        .o;
+}
+
+// augre_msgs/TransformWithCovarianceStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TransformWithCovarianceStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateTransformWithCovarianceStampedDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.transform, 0),
+        &msg.covariance)
+        .o;
+}
+
+/*
+*  TeMoto
+*/
 // temoto_action_engine/UmrfGraphDiff
 template <>
 flatbuffers::uoffset_t encode(
