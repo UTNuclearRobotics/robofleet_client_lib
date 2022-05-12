@@ -195,6 +195,19 @@ flatbuffers::uoffset_t encode(
 		.o;
 }
 
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Path& msg,
+    const MetadataOffset& metadata) {
+    auto poses = encode_vector<fb::geometry_msgs::PoseStamped>(fbb, 0, msg.poses);
+    return fb::nav_msgs::CreatePath(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        poses)
+        .o;
+}
+
 // temoto_action_engine/UmrfGraphDiff
 template <>
 flatbuffers::uoffset_t encode(
