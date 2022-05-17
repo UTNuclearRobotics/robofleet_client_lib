@@ -28,7 +28,24 @@ static void decode_vector(const Vsrc* const src_vector_ptr, Vdst& dst_vector) {
   }
 }
 
+static void decode_string_vector(
+    const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>* src_vector_ptr, 
+    std::vector<std::string>& dst_vector) {
+    auto src = src_vector_ptr->begin();
+    dst_vector.reserve(src_vector_ptr->size());
+    
+    while (src != src_vector_ptr->end()) {
+        dst_vector.push_back(src->str());
+        ++src;
+    }
+}
+
 // *** specializations below ***
+
+/*
+ * AMRL Messages (DEPRECIATED)
+ * Note: See AugRE Messages below
+ */
 
 template <>
 struct flatbuffers_type_for<Time> {
@@ -89,6 +106,26 @@ RobotLocation decode(
  * geometry_msgs
  */
 
+ // geometry_msgs/Pose
+template <>
+struct flatbuffers_type_for<Pose> {
+    typedef fb::geometry_msgs::Pose type;
+};
+template <>
+Pose decode(
+    const fb::geometry_msgs::Pose* const src) {
+    Pose dst;
+    dst.position.x = src->position()->x();
+    dst.position.y = src->position()->y();
+    dst.position.z = src->position()->z();
+    dst.orientation.x = src->orientation()->x();
+    dst.orientation.y = src->orientation()->y();
+    dst.orientation.z = src->orientation()->z();
+    dst.orientation.w = src->orientation()->z();
+    return dst;
+}
+
+ // geometry_msgs/PoseStamped
 template <>
 struct flatbuffers_type_for<PoseStamped> {
     typedef fb::geometry_msgs::PoseStamped type;
@@ -97,42 +134,45 @@ template <>
 PoseStamped decode(
     const fb::geometry_msgs::PoseStamped* const src) {
     PoseStamped dst;
-    dst.pose.position.x = src->pose()->position()->x();
-    dst.pose.position.y = src->pose()->position()->y();
-    dst.pose.position.z = src->pose()->position()->z();
-	dst.pose.orientation.x = src->pose()->orientation()->x();
-	dst.pose.orientation.y = src->pose()->orientation()->y();
-	dst.pose.orientation.z = src->pose()->orientation()->z();
-	dst.pose.orientation.w = src->pose()->orientation()->z();
-    dst.header.frame_id = src->header()->frame_id()->str();
+    dst.header = decode<Header>(src->header());
+    dst.pose = decode<Pose>(src->pose());
     return dst;
 }
 
 
+// geometry_msgs/PoseWithCovariance
 template <>
-struct flatbuffers_type_for<GeoPoseStamped> {
-    typedef fb::geographic_msgs::GeoPoseStamped type;
+struct flatbuffers_type_for<PoseWithCovariance> {
+    typedef fb::geometry_msgs::PoseWithCovariance type;
 };
 template <>
-GeoPoseStamped decode(
-    const fb::geographic_msgs::GeoPoseStamped* const src) {
-    GeoPoseStamped dst;
-    dst.header = decode<Header>(src->header());
-    dst.pose.position.latitude = src->pose()->position()->latitude();
-    dst.pose.position.longitude = src->pose()->position()->longitude();
-    dst.pose.position.altitude = src->pose()->position()->altitude();
-    dst.pose.orientation.x = src->pose()->orientation()->x();
-    dst.pose.orientation.y = src->pose()->orientation()->y();
-    dst.pose.orientation.z = src->pose()->orientation()->z();
-    dst.pose.orientation.w = src->pose()->orientation()->z();
+PoseWithCovariance decode(
+    const fb::geometry_msgs::PoseWithCovariance* const src) {
+    PoseWithCovariance dst;
+    dst.pose = decode<Pose>(src->pose());
+    //decode_vector<double>(src->covariance(), dst.covariance);
+    std::copy(src->covariance()->begin(), src->covariance()->end(), dst.covariance.begin());
     return dst;
 }
 
 
 
+// geometry_msgs/PoseWithCovarianceStamped
+template <>
+struct flatbuffers_type_for<PoseWithCovarianceStamped> {
+    typedef fb::geometry_msgs::PoseWithCovarianceStamped type;
+};
+template <>
+PoseWithCovarianceStamped decode(
+    const fb::geometry_msgs::PoseWithCovarianceStamped* const src) {
+    PoseWithCovarianceStamped dst;
+    dst.header = decode<Header>(src->header());
+    dst.pose = decode<PoseWithCovariance>(src->pose());
+    return dst;
+}
 
-// UNCOMMENT
 
+// geometry_msgs/Transform
 template <>
 struct flatbuffers_type_for<Transform> {
     typedef fb::geometry_msgs::Transform type;
@@ -152,7 +192,7 @@ Transform decode(
 }    
 
 
-
+// geometry_msgs/TransformStamped
 template <>
 struct flatbuffers_type_for<TransformStamped> {
     typedef fb::geometry_msgs::TransformStamped type;
@@ -167,6 +207,78 @@ TransformStamped decode(
     return dst;
 }
 
+/*
+* Geographic Messages
+*/
+
+// geographic_Msgs/GeoPose
+template <>
+struct flatbuffers_type_for<GeoPose> {
+    typedef fb::geographic_msgs::GeoPose type;
+};
+template <>
+GeoPose decode(
+    const fb::geographic_msgs::GeoPose* const src) {
+    GeoPose dst;
+    dst.position.latitude = src->position()->latitude();
+    dst.position.longitude = src->position()->longitude();
+    dst.position.altitude = src->position()->altitude();
+    dst.orientation.x = src->orientation()->x();
+    dst.orientation.y = src->orientation()->y();
+    dst.orientation.z = src->orientation()->z();
+    dst.orientation.w = src->orientation()->z();
+    return dst;
+}
+
+// geographic_Msgs/GeoPoseStamped
+template <>
+struct flatbuffers_type_for<GeoPoseStamped> {
+    typedef fb::geographic_msgs::GeoPoseStamped type;
+};
+template <>
+GeoPoseStamped decode(
+    const fb::geographic_msgs::GeoPoseStamped* const src) {
+    GeoPoseStamped dst;
+    dst.header = decode<Header>(src->header());
+    dst.pose = decode<GeoPose>(src->pose());
+    return dst;
+}
+
+
+// geographic_Msgs/GeoPoseWithCovariance
+template <>
+struct flatbuffers_type_for<GeoPoseWithCovariance> {
+    typedef fb::geographic_msgs::GeoPoseWithCovariance type;
+};
+template <>
+GeoPoseWithCovariance decode(
+    const fb::geographic_msgs::GeoPoseWithCovariance* const src) {
+    GeoPoseWithCovariance dst;
+    dst.pose = decode<GeoPose>(src->pose());
+    std::copy(src->covariance()->begin(), src->covariance()->end(), dst.covariance.begin());
+    //decode_vector<double>(src->covariance(), dst.covariance);
+    return dst;
+}
+
+
+// geographic_Msgs/GeoPoseWithCovarianceStamped
+template <>
+struct flatbuffers_type_for<GeoPoseWithCovarianceStamped> {
+    typedef fb::geographic_msgs::GeoPoseWithCovarianceStamped type;
+};
+template <>
+GeoPoseWithCovarianceStamped decode(
+    const fb::geographic_msgs::GeoPoseWithCovarianceStamped* const src) {
+    GeoPoseWithCovarianceStamped dst;
+    dst.header = decode<Header>(src->header());
+    dst.pose = decode<GeoPoseWithCovariance>(src->pose());
+    return dst;
+}
+
+
+/*
+* Sensor Messages
+*/
 
 template <>
 struct flatbuffers_type_for<NavSatFix> {
@@ -179,7 +291,6 @@ NavSatFix decode(
     dst.latitude = src->latitude();
     dst.longitude = src->longitude();
     dst.altitude = src->altitude();
-    //dst.position_covariance.resize(src->position_covariance()->size());
     std::copy(src->position_covariance()->begin(), src->position_covariance()->end(), dst.position_covariance.begin());
     dst.position_covariance_type = src->position_covariance_type();
     dst.header.frame_id = src->header()->frame_id()->str();
@@ -274,6 +385,36 @@ TransformWithCovarianceStamped decode(const fb::augre_msgs::TransformWithCovaria
     std::copy(src->covariance()->begin(), src->covariance()->end(), dst.covariance.begin());
     return dst;
 }
+
+/*
+* GTSAM Specific Messages
+*/
+
+// asa_db_portal/AzureSpatialAnchor
+
+// Reference is NRG/Robofleet_client
+    // Line 20 - 22 src/common_conversions.hpp
+    // Line 7 -15 src/common_conversions.cpp
+
+    // Line 19-31 robotfleet_client/blob/master/scripts/generate/templates/template_msg_impl
+
+template <>
+struct flatbuffers_type_for<AzureSpatialAnchor> {
+    typedef fb::asa_db_portal::AzureSpatialAnchor type;
+};
+template <>
+AzureSpatialAnchor decode(const fb::asa_db_portal::AzureSpatialAnchor* const src) {
+    AzureSpatialAnchor dst;
+    dst.asa_id = src->asa_id()->str();
+    dst.rep_id = src->rep_id()->str();
+    dst.ns = src->ns()->str();
+    dst.pose = decode<PoseWithCovarianceStamped>(src->pose());
+    dst.geopose = decode<GeoPoseWithCovarianceStamped>(src->geopose());
+    decode_string_vector(src->neighbors(), dst.neighbors);
+    return dst;
+}
+
+
 
 // TeMoto
 
