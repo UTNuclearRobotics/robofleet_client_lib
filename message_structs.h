@@ -51,7 +51,11 @@ struct RobotStatus {
 	std::string location;
 };
 
-// geometry_msgs
+
+/*
+* geometry_msgs
+*/
+
 struct Point {
 	float x;
 	float y;
@@ -89,7 +93,7 @@ struct PoseStamped {
 
 struct PoseWithCovariance {
 	Pose pose;
-	double covariance[36];
+	std::vector<double> covariance; // TODO: Swap to a std::vector<float> covariance;
 };
 
 struct PoseWithCovarianceStamped {
@@ -104,7 +108,7 @@ struct Twist {
 
 struct TwistWithCovariance {
 	Twist twist;
-	double covariance[36];
+	double covariance[36]; // TODO: Swap to a std::vector<float> covariance;
 };
 
 struct TwistWithCovarianceStamped {
@@ -123,7 +127,10 @@ struct TransformStamped {
 	Transform transform;
 };
 
-//geographic_msgs
+/*
+* geographic_msgs
+*/
+
 struct GeoPoint {
 	double latitude;
 	double longitude;
@@ -140,7 +147,20 @@ struct GeoPoseStamped {
 	GeoPose pose;
 };
 
-//sensor_msgs
+struct GeoPoseWithCovariance {
+	GeoPose pose;
+	std::vector<double> covariance;
+};
+
+struct GeoPoseWithCovarianceStamped {
+	Header header;
+	GeoPoseWithCovariance pose;
+};
+
+/*
+* sensor_msgs
+*/
+
 struct NavSatStatus {
 	int8 status;
 	uint16 service;
@@ -163,7 +183,10 @@ struct CompressedImage {
 	std::vector<uint8_t> data;
 };
 
-// nav_msgs
+/*
+* nav_msgs
+*/
+
 struct Odometry {
 	Header header;
 	std::string child_frame_id;
@@ -201,6 +224,7 @@ struct AgentStatus {
 	std::string control_status;
 };
 
+// TODO: FIX STRUCT NAME
 struct DetectedItem_augre {
 	std::string name;
 	std::string rep_id;
@@ -212,8 +236,21 @@ struct DetectedItem_augre {
 
 struct TransformWithCovarianceStamped {
 	TransformStamped transform;
-	//std::array<float, 36> covariance;
-	std::vector<float> covariance;				//easier to encode
+	std::vector<float> covariance;
+};
+
+/*
+* asa_db_portal msgs
+*/
+
+struct AzureSpatialAnchor {
+	std::string asa_id;
+	std::string rep_id;
+	std::string ns;
+	Time timestamp;
+	PoseWithCovarianceStamped pose;
+	GeoPoseWithCovarianceStamped geopose;
+	std::vector<std::string> neighbors;
 };
 
 
