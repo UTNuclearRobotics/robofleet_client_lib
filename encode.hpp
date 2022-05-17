@@ -141,7 +141,13 @@ flatbuffers::uoffset_t encode(
 template <>
 flatbuffers::uoffset_t encode(
 	FBB& fbb, const Point& msg, const MetadataOffset& metadata) {
-	return fb::geometry_msgs::CreatePoint(fbb, metadata, msg.x, msg.y, msg.z).o;
+	return fb::geometry_msgs::CreatePoint(
+        fbb, 
+        metadata, 
+        msg.x, 
+        msg.y, 
+        msg.z)
+        .o;
 }
 
 // geometry_msgs/Quaternion
@@ -150,7 +156,12 @@ flatbuffers::uoffset_t encode(
 	FBB& fbb, const Quaternion& msg,
 	const MetadataOffset& metadata) {
 	return fb::geometry_msgs::CreateQuaternion(
-		fbb, metadata, msg.x, msg.y, msg.z, msg.w)
+		fbb, 
+        metadata, 
+        msg.x, 
+        msg.y,
+        msg.z, 
+        msg.w)
 		.o;
 }
 
@@ -178,6 +189,34 @@ flatbuffers::uoffset_t encode(
 		encode(fbb, msg.pose, 0))
 		.o;
 }
+
+// geometry_msgs/PoseWithCovariance
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PoseWithCovariance& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreatePoseWithCovarianceDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.pose, 0),
+        &msg.covariance)
+        .o;
+}
+
+
+// geometry_msgs/PoseWithCovarianceStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PoseWithCovarianceStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreatePoseWithCovarianceStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.pose, 0))
+        .o;
+}
+
 
 // geometry_msgs/Transform
 template <>
@@ -209,6 +248,58 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// geographic_msgs/GeoPoint
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPoint& msg, const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPoint(
+        fbb, 
+        metadata, 
+        msg.latitude, 
+        msg.longitude, 
+        msg.altitude)
+        .o;
+}
+
+// geographic_Msgs/GeoPose
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPose& msg,
+    const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPose(
+        fbb,
+        metadata,
+        encode(fbb, msg.position, 0),
+        encode(fbb, msg.orientation, 0))
+        .o;
+}
+
+// geographic_Msgs/GeoPoseWithCovariance
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPoseWithCovariance& msg,
+    const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPoseWithCovarianceDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.pose, 0),
+        &msg.covariance)
+        .o;
+}
+
+// geographic_Msgs/GeoPoseWithCovarianceStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPoseWithCovarianceStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPoseWithCovarianceStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.pose, 0))
+        .o;
+}
+
 // nav_msgs/Path
 template <>
 flatbuffers::uoffset_t encode(
@@ -222,6 +313,10 @@ flatbuffers::uoffset_t encode(
         poses)
         .o;
 }
+
+/*
+* AugRE Specific Messages
+*/
 
 // augre_msgs/AgentStatus
 template <>
@@ -250,6 +345,32 @@ flatbuffers::uoffset_t encode(
         encode(fbb, msg.transform, 0),
         &msg.covariance)
         .o;
+}
+
+/*
+* GTSAM Specific Messages
+*/
+
+// asa_db_portal/AzureSpatialAnchor
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AzureSpatialAnchor& msg,
+    const MetadataOffset& metadata) {
+    auto AsaId = fbb.CreateString(msg.asa_id);
+    auto RepId = fbb.CreateString(msg.rep_id);
+    auto NameSpace = fbb.CreateString(msg.ns);
+    auto time_stamp = fb::RosTime(msg.timestamp._nsec, msg.timestamp._sec);
+    auto neighbors = encode_vector<std::string>(fbb, 0, msg.neighbors);
+    return fb::asa_db_portal::CreateAzureSpatialAnchor(
+        fbb, 
+        metadata, 
+        AsaId, 
+        RepId, 
+        NameSpace, 
+        &time_stamp, 
+        encode(fbb, msg.pose, 0), 
+        encode(fbb, msg.geopose, 0), 
+        neighbors).o;
 }
 
 /*
