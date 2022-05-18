@@ -218,6 +218,8 @@ struct DetectedItem {
 */
 struct AgentStatus {
 	std::string name;
+	std::string display_name;
+	std::string agent_type;
 	float battery;
 	std::string owner;
 	bool anchor_localization;

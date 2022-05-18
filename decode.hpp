@@ -349,6 +349,8 @@ AgentStatus decode(
     const fb::augre_msgs::AgentStatus* const src) {
     AgentStatus dst;
     dst.name = src->name()->str();
+    dst.display_name = src->display_name()->str();
+    dst.agent_type = src->agent_type()->str();
     dst.battery = src->battery();
     dst.owner = src->owner()->str();
     dst.anchor_localization = src->anchor_localization();

@@ -327,6 +327,8 @@ flatbuffers::uoffset_t encode(
         fbb,
         metadata,
         msg.name.c_str(),
+        msg.display_name.c_str(),
+        msg.agent_type.c_str(),
         msg.battery,
         msg.owner.c_str(),
         msg.anchor_localization,

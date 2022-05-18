@@ -5525,6 +5525,8 @@ struct AgentStatusT : public flatbuffers::NativeTable {
   typedef AgentStatus TableType;
   std::unique_ptr<fb::MsgMetadataT> __metadata;
   std::string name;
+  std::string display_name;
+  std::string agent_type;
   float battery;
   std::string owner;
   bool anchor_localization;
@@ -5541,16 +5543,24 @@ struct AgentStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT___METADATA = 4,
     VT_NAME = 6,
-    VT_BATTERY = 8,
-    VT_OWNER = 10,
-    VT_ANCHOR_LOCALIZATION = 12,
-    VT_CONTROL_STATUS = 14
+    VT_DISPLAY_NAME = 8,
+    VT_AGENT_TYPE = 10,
+    VT_BATTERY = 12,
+    VT_OWNER = 14,
+    VT_ANCHOR_LOCALIZATION = 16,
+    VT_CONTROL_STATUS = 18
   };
   const fb::MsgMetadata *__metadata() const {
     return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
   }
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  const flatbuffers::String *display_name() const {
+    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  }
+  const flatbuffers::String *agent_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_AGENT_TYPE);
   }
   float battery() const {
     return GetField<float>(VT_BATTERY, 0.0f);
@@ -5570,6 +5580,10 @@ struct AgentStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(__metadata()) &&
            VerifyOffsetRequired(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
+           VerifyOffsetRequired(verifier, VT_DISPLAY_NAME) &&
+           verifier.VerifyString(display_name()) &&
+           VerifyOffsetRequired(verifier, VT_AGENT_TYPE) &&
+           verifier.VerifyString(agent_type()) &&
            VerifyField<float>(verifier, VT_BATTERY) &&
            VerifyOffsetRequired(verifier, VT_OWNER) &&
            verifier.VerifyString(owner()) &&
@@ -5593,6 +5607,12 @@ struct AgentStatusBuilder {
   void add_name(flatbuffers::Offset<flatbuffers::String> name) {
     fbb_.AddOffset(AgentStatus::VT_NAME, name);
   }
+  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
+    fbb_.AddOffset(AgentStatus::VT_DISPLAY_NAME, display_name);
+  }
+  void add_agent_type(flatbuffers::Offset<flatbuffers::String> agent_type) {
+    fbb_.AddOffset(AgentStatus::VT_AGENT_TYPE, agent_type);
+  }
   void add_battery(float battery) {
     fbb_.AddElement<float>(AgentStatus::VT_BATTERY, battery, 0.0f);
   }
@@ -5613,6 +5633,8 @@ struct AgentStatusBuilder {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<AgentStatus>(end);
     fbb_.Required(o, AgentStatus::VT_NAME);
+    fbb_.Required(o, AgentStatus::VT_DISPLAY_NAME);
+    fbb_.Required(o, AgentStatus::VT_AGENT_TYPE);
     fbb_.Required(o, AgentStatus::VT_OWNER);
     fbb_.Required(o, AgentStatus::VT_CONTROL_STATUS);
     return o;
@@ -5623,6 +5645,8 @@ inline flatbuffers::Offset<AgentStatus> CreateAgentStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
     flatbuffers::Offset<flatbuffers::String> name = 0,
+    flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    flatbuffers::Offset<flatbuffers::String> agent_type = 0,
     float battery = 0.0f,
     flatbuffers::Offset<flatbuffers::String> owner = 0,
     bool anchor_localization = false,
@@ -5631,6 +5655,8 @@ inline flatbuffers::Offset<AgentStatus> CreateAgentStatus(
   builder_.add_control_status(control_status);
   builder_.add_owner(owner);
   builder_.add_battery(battery);
+  builder_.add_agent_type(agent_type);
+  builder_.add_display_name(display_name);
   builder_.add_name(name);
   builder_.add___metadata(__metadata);
   builder_.add_anchor_localization(anchor_localization);
@@ -5641,17 +5667,23 @@ inline flatbuffers::Offset<AgentStatus> CreateAgentStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
     const char *name = nullptr,
+    const char *display_name = nullptr,
+    const char *agent_type = nullptr,
     float battery = 0.0f,
     const char *owner = nullptr,
     bool anchor_localization = false,
     const char *control_status = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  auto agent_type__ = agent_type ? _fbb.CreateString(agent_type) : 0;
   auto owner__ = owner ? _fbb.CreateString(owner) : 0;
   auto control_status__ = control_status ? _fbb.CreateString(control_status) : 0;
   return fb::augre_msgs::CreateAgentStatus(
       _fbb,
       __metadata,
       name__,
+      display_name__,
+      agent_type__,
       battery,
       owner__,
       anchor_localization,
@@ -7864,6 +7896,8 @@ inline void AgentStatus::UnPackTo(AgentStatusT *_o, const flatbuffers::resolver_
   (void)_resolver;
   { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
   { auto _e = name(); if (_e) _o->name = _e->str(); }
+  { auto _e = display_name(); if (_e) _o->display_name = _e->str(); }
+  { auto _e = agent_type(); if (_e) _o->agent_type = _e->str(); }
   { auto _e = battery(); _o->battery = _e; }
   { auto _e = owner(); if (_e) _o->owner = _e->str(); }
   { auto _e = anchor_localization(); _o->anchor_localization = _e; }
@@ -7880,6 +7914,8 @@ inline flatbuffers::Offset<AgentStatus> CreateAgentStatus(flatbuffers::FlatBuffe
   struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const AgentStatusT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
   auto _name = _fbb.CreateString(_o->name);
+  auto _display_name = _fbb.CreateString(_o->display_name);
+  auto _agent_type = _fbb.CreateString(_o->agent_type);
   auto _battery = _o->battery;
   auto _owner = _fbb.CreateString(_o->owner);
   auto _anchor_localization = _o->anchor_localization;
@@ -7888,6 +7924,8 @@ inline flatbuffers::Offset<AgentStatus> CreateAgentStatus(flatbuffers::FlatBuffe
       _fbb,
       ___metadata,
       _name,
+      _display_name,
+      _agent_type,
       _battery,
       _owner,
       _anchor_localization,
