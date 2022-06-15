@@ -410,9 +410,22 @@ AzureSpatialAnchor decode(const fb::asa_db_portal::AzureSpatialAnchor* const src
     dst.asa_id = src->asa_id()->str();
     dst.rep_id = src->rep_id()->str();
     dst.ns = src->ns()->str();
+    dst.timestamp = decode<Time>(src->timestamp());
     dst.pose = decode<PoseWithCovarianceStamped>(src->pose());
     dst.geopose = decode<GeoPoseWithCovarianceStamped>(src->geopose());
-    decode_string_vector(src->neighbors(), dst.neighbors);
+    //decode_string_vector(src->neighbors(), dst.neighbors);
+
+    dst.neighbors.resize(src->neighbors()->size());
+    auto src2 = src->neighbors()->begin();
+    auto dst2 = dst.neighbors.begin();
+
+    while (src2 != src->neighbors()->end()) {
+        //*dst2 = decode<std::string>(*src2);
+        ++src2;
+        ++dst2;
+    }
+
+
     return dst;
 }
 
