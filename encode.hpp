@@ -248,6 +248,23 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// geometry_msgs/Twist
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Twist& msg,
+    const MetadataOffset& metadata) {
+    auto vector3_linear = fb::geometry_msgs::CreateVector3(
+        fbb, 0, msg.linear.x, msg.linear.y, msg.linear.z);
+    auto vector3_angular = fb::geometry_msgs::CreateVector3(
+        fbb, 0, msg.angular.x, msg.angular.y, msg.angular.z);
+    return fb::geometry_msgs::CreateTwist(
+        fbb,
+        metadata,
+        vector3_linear,
+        vector3_angular)
+        .o;
+}
+
 // geographic_msgs/GeoPoint
 template <>
 flatbuffers::uoffset_t encode(
