@@ -128,6 +128,15 @@ struct TransformStamped {
 };
 
 /*
+* tf2_msgs
+*/
+
+struct TFMessage {
+	std::vector<TransformStamped> transforms;
+};
+
+
+/*
 * geographic_msgs
 */
 

@@ -524,3 +524,25 @@ Path decode(const fb::nav_msgs::Path* const src) {
     }
     return dst;
 }
+
+
+// tf2_msgs/TFMessage
+template <>
+struct flatbuffers_type_for<TFMessage> {
+    typedef fb::tf2_msgs::TFMessage type;
+};
+template <>
+TFMessage decode(const fb::tf2_msgs::TFMessage* const src) {
+    TFMessage dst;
+    
+    dst.transforms.resize(src->transforms()->size());
+    auto src2 = src->transforms()->begin();
+    auto dst2 = dst.transforms.begin();
+    while (src2 != src->transforms()->end()) {
+        *dst2 = decode<TransformStamped>(*src2);
+        ++src2;
+        ++dst2;
+    }
+
+    return dst;
+}
