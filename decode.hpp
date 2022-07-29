@@ -367,11 +367,11 @@ template <>
 DetectedItem_augre decode(const fb::augre_msgs::DetectedItem* const src) {
     DetectedItem_augre dst;
     dst.name = src->name()->str();
-    dst.rep_id = src->rep_id()->str();
     dst.asa_id = src->asa_id()->str();
     dst.pose = decode<PoseStamped>(src->pose());
     dst.geopose = decode<GeoPoseStamped>(src->geopose());
     dst.cmpr_image = decode<CompressedImage>(src->cmpr_image());
+    dst.url = src->url()->str();
     return dst;
 }
 

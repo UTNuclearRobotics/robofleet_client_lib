@@ -238,11 +238,11 @@ struct AgentStatus {
 // TODO: FIX STRUCT NAME
 struct DetectedItem_augre {
 	std::string name;
-	std::string rep_id;
 	std::string asa_id;
 	PoseStamped pose;
 	GeoPoseStamped geopose;
 	CompressedImage cmpr_image;
+	std::string url;
 };
 
 struct TransformWithCovarianceStamped {

@@ -4435,11 +4435,11 @@ struct DetectedItemT : public flatbuffers::NativeTable {
   typedef DetectedItem TableType;
   std::unique_ptr<fb::MsgMetadataT> __metadata;
   std::string name;
-  std::string rep_id;
   std::string asa_id;
   std::unique_ptr<fb::geometry_msgs::PoseStampedT> pose;
   std::unique_ptr<fb::geographic_msgs::GeoPoseStampedT> geopose;
   std::unique_ptr<fb::sensor_msgs::CompressedImageT> cmpr_image;
+  std::string url;
   DetectedItemT() {
   }
 };
@@ -4450,20 +4450,17 @@ struct DetectedItem FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT___METADATA = 4,
     VT_NAME = 6,
-    VT_REP_ID = 8,
-    VT_ASA_ID = 10,
-    VT_POSE = 12,
-    VT_GEOPOSE = 14,
-    VT_CMPR_IMAGE = 16
+    VT_ASA_ID = 8,
+    VT_POSE = 10,
+    VT_GEOPOSE = 12,
+    VT_CMPR_IMAGE = 14,
+    VT_URL = 16
   };
   const fb::MsgMetadata *__metadata() const {
     return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
   }
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
-  }
-  const flatbuffers::String *rep_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_REP_ID);
   }
   const flatbuffers::String *asa_id() const {
     return GetPointer<const flatbuffers::String *>(VT_ASA_ID);
@@ -4477,14 +4474,15 @@ struct DetectedItem FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const fb::sensor_msgs::CompressedImage *cmpr_image() const {
     return GetPointer<const fb::sensor_msgs::CompressedImage *>(VT_CMPR_IMAGE);
   }
+  const flatbuffers::String *url() const {
+    return GetPointer<const flatbuffers::String *>(VT_URL);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT___METADATA) &&
            verifier.VerifyTable(__metadata()) &&
            VerifyOffsetRequired(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
-           VerifyOffsetRequired(verifier, VT_REP_ID) &&
-           verifier.VerifyString(rep_id()) &&
            VerifyOffsetRequired(verifier, VT_ASA_ID) &&
            verifier.VerifyString(asa_id()) &&
            VerifyOffsetRequired(verifier, VT_POSE) &&
@@ -4493,6 +4491,8 @@ struct DetectedItem FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyTable(geopose()) &&
            VerifyOffsetRequired(verifier, VT_CMPR_IMAGE) &&
            verifier.VerifyTable(cmpr_image()) &&
+           VerifyOffsetRequired(verifier, VT_URL) &&
+           verifier.VerifyString(url()) &&
            verifier.EndTable();
   }
   DetectedItemT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
@@ -4510,9 +4510,6 @@ struct DetectedItemBuilder {
   void add_name(flatbuffers::Offset<flatbuffers::String> name) {
     fbb_.AddOffset(DetectedItem::VT_NAME, name);
   }
-  void add_rep_id(flatbuffers::Offset<flatbuffers::String> rep_id) {
-    fbb_.AddOffset(DetectedItem::VT_REP_ID, rep_id);
-  }
   void add_asa_id(flatbuffers::Offset<flatbuffers::String> asa_id) {
     fbb_.AddOffset(DetectedItem::VT_ASA_ID, asa_id);
   }
@@ -4525,6 +4522,9 @@ struct DetectedItemBuilder {
   void add_cmpr_image(flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image) {
     fbb_.AddOffset(DetectedItem::VT_CMPR_IMAGE, cmpr_image);
   }
+  void add_url(flatbuffers::Offset<flatbuffers::String> url) {
+    fbb_.AddOffset(DetectedItem::VT_URL, url);
+  }
   explicit DetectedItemBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -4533,11 +4533,11 @@ struct DetectedItemBuilder {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DetectedItem>(end);
     fbb_.Required(o, DetectedItem::VT_NAME);
-    fbb_.Required(o, DetectedItem::VT_REP_ID);
     fbb_.Required(o, DetectedItem::VT_ASA_ID);
     fbb_.Required(o, DetectedItem::VT_POSE);
     fbb_.Required(o, DetectedItem::VT_GEOPOSE);
     fbb_.Required(o, DetectedItem::VT_CMPR_IMAGE);
+    fbb_.Required(o, DetectedItem::VT_URL);
     return o;
   }
 };
@@ -4546,17 +4546,17 @@ inline flatbuffers::Offset<DetectedItem> CreateDetectedItem(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
     flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::String> rep_id = 0,
     flatbuffers::Offset<flatbuffers::String> asa_id = 0,
     flatbuffers::Offset<fb::geometry_msgs::PoseStamped> pose = 0,
     flatbuffers::Offset<fb::geographic_msgs::GeoPoseStamped> geopose = 0,
-    flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image = 0) {
+    flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image = 0,
+    flatbuffers::Offset<flatbuffers::String> url = 0) {
   DetectedItemBuilder builder_(_fbb);
+  builder_.add_url(url);
   builder_.add_cmpr_image(cmpr_image);
   builder_.add_geopose(geopose);
   builder_.add_pose(pose);
   builder_.add_asa_id(asa_id);
-  builder_.add_rep_id(rep_id);
   builder_.add_name(name);
   builder_.add___metadata(__metadata);
   return builder_.Finish();
@@ -4566,23 +4566,23 @@ inline flatbuffers::Offset<DetectedItem> CreateDetectedItemDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
     const char *name = nullptr,
-    const char *rep_id = nullptr,
     const char *asa_id = nullptr,
     flatbuffers::Offset<fb::geometry_msgs::PoseStamped> pose = 0,
     flatbuffers::Offset<fb::geographic_msgs::GeoPoseStamped> geopose = 0,
-    flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image = 0) {
+    flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image = 0,
+    const char *url = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto rep_id__ = rep_id ? _fbb.CreateString(rep_id) : 0;
   auto asa_id__ = asa_id ? _fbb.CreateString(asa_id) : 0;
+  auto url__ = url ? _fbb.CreateString(url) : 0;
   return fb::augre_msgs::CreateDetectedItem(
       _fbb,
       __metadata,
       name__,
-      rep_id__,
       asa_id__,
       pose,
       geopose,
-      cmpr_image);
+      cmpr_image,
+      url__);
 }
 
 flatbuffers::Offset<DetectedItem> CreateDetectedItem(flatbuffers::FlatBufferBuilder &_fbb, const DetectedItemT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
@@ -7552,11 +7552,11 @@ inline void DetectedItem::UnPackTo(DetectedItemT *_o, const flatbuffers::resolve
   (void)_resolver;
   { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
   { auto _e = name(); if (_e) _o->name = _e->str(); }
-  { auto _e = rep_id(); if (_e) _o->rep_id = _e->str(); }
   { auto _e = asa_id(); if (_e) _o->asa_id = _e->str(); }
   { auto _e = pose(); if (_e) _o->pose = std::unique_ptr<fb::geometry_msgs::PoseStampedT>(_e->UnPack(_resolver)); }
   { auto _e = geopose(); if (_e) _o->geopose = std::unique_ptr<fb::geographic_msgs::GeoPoseStampedT>(_e->UnPack(_resolver)); }
   { auto _e = cmpr_image(); if (_e) _o->cmpr_image = std::unique_ptr<fb::sensor_msgs::CompressedImageT>(_e->UnPack(_resolver)); }
+  { auto _e = url(); if (_e) _o->url = _e->str(); }
 }
 
 inline flatbuffers::Offset<DetectedItem> DetectedItem::Pack(flatbuffers::FlatBufferBuilder &_fbb, const DetectedItemT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
@@ -7569,20 +7569,20 @@ inline flatbuffers::Offset<DetectedItem> CreateDetectedItem(flatbuffers::FlatBuf
   struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const DetectedItemT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
   auto _name = _fbb.CreateString(_o->name);
-  auto _rep_id = _fbb.CreateString(_o->rep_id);
   auto _asa_id = _fbb.CreateString(_o->asa_id);
   auto _pose = _o->pose ? CreatePoseStamped(_fbb, _o->pose.get(), _rehasher) : 0;
   auto _geopose = _o->geopose ? CreateGeoPoseStamped(_fbb, _o->geopose.get(), _rehasher) : 0;
   auto _cmpr_image = _o->cmpr_image ? CreateCompressedImage(_fbb, _o->cmpr_image.get(), _rehasher) : 0;
+  auto _url = _fbb.CreateString(_o->url);
   return fb::augre_msgs::CreateDetectedItem(
       _fbb,
       ___metadata,
       _name,
-      _rep_id,
       _asa_id,
       _pose,
       _geopose,
-      _cmpr_image);
+      _cmpr_image,
+      _url);
 }
 
 inline TransformWithCovarianceStampedT *TransformWithCovarianceStamped::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
