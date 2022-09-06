@@ -265,6 +265,19 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// geometry_msgs/TwistStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TwistStamped& msg,
+    const MetadataOffset& metadata) {    
+    return fb::geometry_msgs::CreateTwistStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.twist, 0))
+        .o;
+}
+
 // geographic_msgs/GeoPoint
 template <>
 flatbuffers::uoffset_t encode(

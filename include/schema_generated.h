@@ -102,6 +102,14 @@ struct PoseWithCovarianceStamped;
 struct PoseWithCovarianceStampedBuilder;
 struct PoseWithCovarianceStampedT;
 
+struct Twist;
+struct TwistBuilder;
+struct TwistT;
+
+struct TwistStamped;
+struct TwistStampedBuilder;
+struct TwistStampedT;
+
 }  // namespace geometry_msgs
 
 namespace geographic_msgs {
@@ -129,10 +137,6 @@ struct GeoPoseWithCovarianceStampedT;
 }  // namespace geographic_msgs
 
 namespace geometry_msgs {
-
-struct Twist;
-struct TwistBuilder;
-struct TwistT;
 
 struct TwistWithCovariance;
 struct TwistWithCovarianceBuilder;
@@ -3052,6 +3056,168 @@ inline flatbuffers::Offset<PoseWithCovarianceStamped> CreatePoseWithCovarianceSt
 
 flatbuffers::Offset<PoseWithCovarianceStamped> CreatePoseWithCovarianceStamped(flatbuffers::FlatBufferBuilder &_fbb, const PoseWithCovarianceStampedT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
+struct TwistT : public flatbuffers::NativeTable {
+  typedef Twist TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata;
+  std::unique_ptr<fb::geometry_msgs::Vector3T> linear;
+  std::unique_ptr<fb::geometry_msgs::Vector3T> angular;
+  TwistT() {
+  }
+};
+
+struct Twist FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TwistT NativeTableType;
+  typedef TwistBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4,
+    VT_LINEAR = 6,
+    VT_ANGULAR = 8
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  const fb::geometry_msgs::Vector3 *linear() const {
+    return GetPointer<const fb::geometry_msgs::Vector3 *>(VT_LINEAR);
+  }
+  const fb::geometry_msgs::Vector3 *angular() const {
+    return GetPointer<const fb::geometry_msgs::Vector3 *>(VT_ANGULAR);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           VerifyOffsetRequired(verifier, VT_LINEAR) &&
+           verifier.VerifyTable(linear()) &&
+           VerifyOffsetRequired(verifier, VT_ANGULAR) &&
+           verifier.VerifyTable(angular()) &&
+           verifier.EndTable();
+  }
+  TwistT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(TwistT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static flatbuffers::Offset<Twist> Pack(flatbuffers::FlatBufferBuilder &_fbb, const TwistT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct TwistBuilder {
+  typedef Twist Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add___metadata(flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(Twist::VT___METADATA, __metadata);
+  }
+  void add_linear(flatbuffers::Offset<fb::geometry_msgs::Vector3> linear) {
+    fbb_.AddOffset(Twist::VT_LINEAR, linear);
+  }
+  void add_angular(flatbuffers::Offset<fb::geometry_msgs::Vector3> angular) {
+    fbb_.AddOffset(Twist::VT_ANGULAR, angular);
+  }
+  explicit TwistBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<Twist> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Twist>(end);
+    fbb_.Required(o, Twist::VT_LINEAR);
+    fbb_.Required(o, Twist::VT_ANGULAR);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Twist> CreateTwist(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    flatbuffers::Offset<fb::geometry_msgs::Vector3> linear = 0,
+    flatbuffers::Offset<fb::geometry_msgs::Vector3> angular = 0) {
+  TwistBuilder builder_(_fbb);
+  builder_.add_angular(angular);
+  builder_.add_linear(linear);
+  builder_.add___metadata(__metadata);
+  return builder_.Finish();
+}
+
+flatbuffers::Offset<Twist> CreateTwist(flatbuffers::FlatBufferBuilder &_fbb, const TwistT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+struct TwistStampedT : public flatbuffers::NativeTable {
+  typedef TwistStamped TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata;
+  std::unique_ptr<fb::std_msgs::HeaderT> header;
+  std::unique_ptr<fb::geometry_msgs::TwistT> twist;
+  TwistStampedT() {
+  }
+};
+
+struct TwistStamped FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TwistStampedT NativeTableType;
+  typedef TwistStampedBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4,
+    VT_HEADER = 6,
+    VT_TWIST = 8
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  const fb::std_msgs::Header *header() const {
+    return GetPointer<const fb::std_msgs::Header *>(VT_HEADER);
+  }
+  const fb::geometry_msgs::Twist *twist() const {
+    return GetPointer<const fb::geometry_msgs::Twist *>(VT_TWIST);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           VerifyOffsetRequired(verifier, VT_HEADER) &&
+           verifier.VerifyTable(header()) &&
+           VerifyOffsetRequired(verifier, VT_TWIST) &&
+           verifier.VerifyTable(twist()) &&
+           verifier.EndTable();
+  }
+  TwistStampedT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(TwistStampedT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static flatbuffers::Offset<TwistStamped> Pack(flatbuffers::FlatBufferBuilder &_fbb, const TwistStampedT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct TwistStampedBuilder {
+  typedef TwistStamped Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add___metadata(flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(TwistStamped::VT___METADATA, __metadata);
+  }
+  void add_header(flatbuffers::Offset<fb::std_msgs::Header> header) {
+    fbb_.AddOffset(TwistStamped::VT_HEADER, header);
+  }
+  void add_twist(flatbuffers::Offset<fb::geometry_msgs::Twist> twist) {
+    fbb_.AddOffset(TwistStamped::VT_TWIST, twist);
+  }
+  explicit TwistStampedBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TwistStamped> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TwistStamped>(end);
+    fbb_.Required(o, TwistStamped::VT_HEADER);
+    fbb_.Required(o, TwistStamped::VT_TWIST);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TwistStamped> CreateTwistStamped(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    flatbuffers::Offset<fb::std_msgs::Header> header = 0,
+    flatbuffers::Offset<fb::geometry_msgs::Twist> twist = 0) {
+  TwistStampedBuilder builder_(_fbb);
+  builder_.add_twist(twist);
+  builder_.add_header(header);
+  builder_.add___metadata(__metadata);
+  return builder_.Finish();
+}
+
+flatbuffers::Offset<TwistStamped> CreateTwistStamped(flatbuffers::FlatBufferBuilder &_fbb, const TwistStampedT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
 }  // namespace geometry_msgs
 
 namespace geographic_msgs {
@@ -3487,87 +3653,6 @@ flatbuffers::Offset<GeoPoseWithCovarianceStamped> CreateGeoPoseWithCovarianceSta
 }  // namespace geographic_msgs
 
 namespace geometry_msgs {
-
-struct TwistT : public flatbuffers::NativeTable {
-  typedef Twist TableType;
-  std::unique_ptr<fb::MsgMetadataT> __metadata;
-  std::unique_ptr<fb::geometry_msgs::Vector3T> linear;
-  std::unique_ptr<fb::geometry_msgs::Vector3T> angular;
-  TwistT() {
-  }
-};
-
-struct Twist FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TwistT NativeTableType;
-  typedef TwistBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT___METADATA = 4,
-    VT_LINEAR = 6,
-    VT_ANGULAR = 8
-  };
-  const fb::MsgMetadata *__metadata() const {
-    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
-  }
-  const fb::geometry_msgs::Vector3 *linear() const {
-    return GetPointer<const fb::geometry_msgs::Vector3 *>(VT_LINEAR);
-  }
-  const fb::geometry_msgs::Vector3 *angular() const {
-    return GetPointer<const fb::geometry_msgs::Vector3 *>(VT_ANGULAR);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT___METADATA) &&
-           verifier.VerifyTable(__metadata()) &&
-           VerifyOffsetRequired(verifier, VT_LINEAR) &&
-           verifier.VerifyTable(linear()) &&
-           VerifyOffsetRequired(verifier, VT_ANGULAR) &&
-           verifier.VerifyTable(angular()) &&
-           verifier.EndTable();
-  }
-  TwistT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(TwistT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<Twist> Pack(flatbuffers::FlatBufferBuilder &_fbb, const TwistT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
-};
-
-struct TwistBuilder {
-  typedef Twist Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add___metadata(flatbuffers::Offset<fb::MsgMetadata> __metadata) {
-    fbb_.AddOffset(Twist::VT___METADATA, __metadata);
-  }
-  void add_linear(flatbuffers::Offset<fb::geometry_msgs::Vector3> linear) {
-    fbb_.AddOffset(Twist::VT_LINEAR, linear);
-  }
-  void add_angular(flatbuffers::Offset<fb::geometry_msgs::Vector3> angular) {
-    fbb_.AddOffset(Twist::VT_ANGULAR, angular);
-  }
-  explicit TwistBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<Twist> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Twist>(end);
-    fbb_.Required(o, Twist::VT_LINEAR);
-    fbb_.Required(o, Twist::VT_ANGULAR);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<Twist> CreateTwist(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    flatbuffers::Offset<fb::geometry_msgs::Vector3> linear = 0,
-    flatbuffers::Offset<fb::geometry_msgs::Vector3> angular = 0) {
-  TwistBuilder builder_(_fbb);
-  builder_.add_angular(angular);
-  builder_.add_linear(linear);
-  builder_.add___metadata(__metadata);
-  return builder_.Finish();
-}
-
-flatbuffers::Offset<Twist> CreateTwist(flatbuffers::FlatBufferBuilder &_fbb, const TwistT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
 struct TwistWithCovarianceT : public flatbuffers::NativeTable {
   typedef TwistWithCovariance TableType;
@@ -7066,6 +7151,70 @@ inline flatbuffers::Offset<PoseWithCovarianceStamped> CreatePoseWithCovarianceSt
       _pose);
 }
 
+inline TwistT *Twist::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+  std::unique_ptr<fb::geometry_msgs::TwistT> _o = std::unique_ptr<fb::geometry_msgs::TwistT>(new TwistT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void Twist::UnPackTo(TwistT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
+  { auto _e = linear(); if (_e) _o->linear = std::unique_ptr<fb::geometry_msgs::Vector3T>(_e->UnPack(_resolver)); }
+  { auto _e = angular(); if (_e) _o->angular = std::unique_ptr<fb::geometry_msgs::Vector3T>(_e->UnPack(_resolver)); }
+}
+
+inline flatbuffers::Offset<Twist> Twist::Pack(flatbuffers::FlatBufferBuilder &_fbb, const TwistT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateTwist(_fbb, _o, _rehasher);
+}
+
+inline flatbuffers::Offset<Twist> CreateTwist(flatbuffers::FlatBufferBuilder &_fbb, const TwistT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const TwistT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  auto _linear = _o->linear ? CreateVector3(_fbb, _o->linear.get(), _rehasher) : 0;
+  auto _angular = _o->angular ? CreateVector3(_fbb, _o->angular.get(), _rehasher) : 0;
+  return fb::geometry_msgs::CreateTwist(
+      _fbb,
+      ___metadata,
+      _linear,
+      _angular);
+}
+
+inline TwistStampedT *TwistStamped::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+  std::unique_ptr<fb::geometry_msgs::TwistStampedT> _o = std::unique_ptr<fb::geometry_msgs::TwistStampedT>(new TwistStampedT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void TwistStamped::UnPackTo(TwistStampedT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
+  { auto _e = header(); if (_e) _o->header = std::unique_ptr<fb::std_msgs::HeaderT>(_e->UnPack(_resolver)); }
+  { auto _e = twist(); if (_e) _o->twist = std::unique_ptr<fb::geometry_msgs::TwistT>(_e->UnPack(_resolver)); }
+}
+
+inline flatbuffers::Offset<TwistStamped> TwistStamped::Pack(flatbuffers::FlatBufferBuilder &_fbb, const TwistStampedT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateTwistStamped(_fbb, _o, _rehasher);
+}
+
+inline flatbuffers::Offset<TwistStamped> CreateTwistStamped(flatbuffers::FlatBufferBuilder &_fbb, const TwistStampedT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const TwistStampedT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  auto _header = _o->header ? CreateHeader(_fbb, _o->header.get(), _rehasher) : 0;
+  auto _twist = _o->twist ? CreateTwist(_fbb, _o->twist.get(), _rehasher) : 0;
+  return fb::geometry_msgs::CreateTwistStamped(
+      _fbb,
+      ___metadata,
+      _header,
+      _twist);
+}
+
 }  // namespace geometry_msgs
 
 namespace geographic_msgs {
@@ -7236,38 +7385,6 @@ inline flatbuffers::Offset<GeoPoseWithCovarianceStamped> CreateGeoPoseWithCovari
 }  // namespace geographic_msgs
 
 namespace geometry_msgs {
-
-inline TwistT *Twist::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
-  std::unique_ptr<fb::geometry_msgs::TwistT> _o = std::unique_ptr<fb::geometry_msgs::TwistT>(new TwistT());
-  UnPackTo(_o.get(), _resolver);
-  return _o.release();
-}
-
-inline void Twist::UnPackTo(TwistT *_o, const flatbuffers::resolver_function_t *_resolver) const {
-  (void)_o;
-  (void)_resolver;
-  { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
-  { auto _e = linear(); if (_e) _o->linear = std::unique_ptr<fb::geometry_msgs::Vector3T>(_e->UnPack(_resolver)); }
-  { auto _e = angular(); if (_e) _o->angular = std::unique_ptr<fb::geometry_msgs::Vector3T>(_e->UnPack(_resolver)); }
-}
-
-inline flatbuffers::Offset<Twist> Twist::Pack(flatbuffers::FlatBufferBuilder &_fbb, const TwistT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
-  return CreateTwist(_fbb, _o, _rehasher);
-}
-
-inline flatbuffers::Offset<Twist> CreateTwist(flatbuffers::FlatBufferBuilder &_fbb, const TwistT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
-  (void)_rehasher;
-  (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const TwistT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
-  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _linear = _o->linear ? CreateVector3(_fbb, _o->linear.get(), _rehasher) : 0;
-  auto _angular = _o->angular ? CreateVector3(_fbb, _o->angular.get(), _rehasher) : 0;
-  return fb::geometry_msgs::CreateTwist(
-      _fbb,
-      ___metadata,
-      _linear,
-      _angular);
-}
 
 inline TwistWithCovarianceT *TwistWithCovariance::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
   std::unique_ptr<fb::geometry_msgs::TwistWithCovarianceT> _o = std::unique_ptr<fb::geometry_msgs::TwistWithCovarianceT>(new TwistWithCovarianceT());

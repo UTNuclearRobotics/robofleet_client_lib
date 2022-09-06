@@ -106,6 +106,11 @@ struct Twist {
 	Vector3 angular;
 };
 
+struct TwistStamped {
+	Header header;
+	Twist twist;
+};
+
 struct TwistWithCovariance {
 	Twist twist;
 	double covariance[36]; // TODO: Swap to a std::vector<float> covariance;
@@ -263,7 +268,6 @@ struct AzureSpatialAnchor {
 	GeoPoseWithCovarianceStamped geopose;
 	std::vector<std::string> neighbors;
 };
-
 
 /*
  *  TeMoto_msgs
