@@ -121,7 +121,7 @@ Pose decode(
     dst.orientation.x = src->orientation()->x();
     dst.orientation.y = src->orientation()->y();
     dst.orientation.z = src->orientation()->z();
-    dst.orientation.w = src->orientation()->z();
+    dst.orientation.w = src->orientation()->w();
     return dst;
 }
 
