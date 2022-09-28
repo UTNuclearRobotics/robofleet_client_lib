@@ -294,3 +294,43 @@ struct StopUMRF {
 	std::vector<std::string> targets;
 };
 
+/*
+ *  leg_tracker
+ */
+
+// Detection
+struct Detection {
+	Point position;
+	float confidence;
+	uint32_t label;
+};
+
+// Detection Array
+struct DetectionArray {
+	Header header;
+	std::vector<Detection> detections;
+};
+
+// Leg
+struct Leg {
+	Point position;
+	float confidence;
+};
+
+// Leg Array
+struct LegArray {
+	Header header;
+	std::vector<Leg> legs;
+};
+
+// Person
+struct Person {
+	Pose pose;
+	uint32_t id;
+};
+
+// Leg Array
+struct PersonArray {
+	Header header;
+	std::vector<Person> people;
+};

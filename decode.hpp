@@ -546,3 +546,120 @@ TFMessage decode(const fb::tf2_msgs::TFMessage* const src) {
 
     return dst;
 }
+
+// leg_tracker/Detection
+template <>
+struct flatbuffers_type_for<Detection> {
+    typedef fb::leg_tracker::Detection type;
+};
+template <>
+Detection decode(
+    const fb::leg_tracker::Detection* const src) {
+    Detection dst;
+    dst.position.x = src->position()->x();
+    dst.position.y = src->position()->y();
+    dst.position.z = src->position()->z();
+    dst.confidence = src->confidence();
+    dst.label = src->label();
+    return dst;
+}
+
+// leg_tracker/DetectionArray
+template <>
+struct flatbuffers_type_for<DetectionArray> {
+    typedef fb::leg_tracker::DetectionArray type;
+};
+template <>
+DetectionArray decode(
+    const fb::leg_tracker::DetectionArray* const src) {
+    DetectionArray dst;
+    dst.header = decode<Header>(src->header());
+
+    dst.detections.resize(src->detections()->size());
+    auto src2 = src->detections()->begin();
+    auto dst2 = dst.detections.begin();
+    while (src2 != src->detections()->end()) {
+        *dst2 = decode<Detection>(*src2);
+        ++src2;
+        ++dst2;
+    }
+    return dst;
+}
+
+// leg_tracker/Leg
+template <>
+struct flatbuffers_type_for<Leg> {
+    typedef fb::leg_tracker::Leg type;
+};
+template <>
+Leg decode(
+    const fb::leg_tracker::Leg* const src) {
+    Leg dst;
+    dst.position.x = src->position()->x();
+    dst.position.y = src->position()->y();
+    dst.position.z = src->position()->z();
+    dst.confidence = src->confidence();
+    return dst;
+}
+
+// leg_tracker/LegArray
+template <>
+struct flatbuffers_type_for<LegArray> {
+    typedef fb::leg_tracker::LegArray type;
+};
+template <>
+LegArray decode(
+    const fb::leg_tracker::LegArray* const src) {
+    LegArray dst;
+    dst.header = decode<Header>(src->header());
+
+    dst.legs.resize(src->legs()->size());
+    auto src2 = src->legs()->begin();
+    auto dst2 = dst.legs.begin();
+    while (src2 != src->legs()->end()) {
+        *dst2 = decode<Leg>(*src2);
+        ++src2;
+        ++dst2;
+    }
+    return dst;
+}
+
+// leg_tracker/Person
+template <>
+struct flatbuffers_type_for<Person> {
+    typedef fb::leg_tracker::Person type;
+};
+template <>
+Person decode(
+    const fb::leg_tracker::Person* const src) {
+    Person dst;
+    dst.pose = decode<Pose>(src->pose());
+    dst.id = src->id();
+    return dst;
+}
+
+
+// leg_tracker/PersonArray
+template <>
+struct flatbuffers_type_for<PersonArray> {
+    typedef fb::leg_tracker::PersonArray type;
+};
+template <>
+PersonArray decode(
+    const fb::leg_tracker::PersonArray* const src) {
+    PersonArray dst;
+    dst.header = decode<Header>(src->header());
+
+    dst.people.resize(src->people()->size());
+    auto src2 = src->people()->begin();
+    auto dst2 = dst.people.begin();
+    while (src2 != src->people()->end()) {
+        *dst2 = decode<Person>(*src2);
+        ++src2;
+        ++dst2;
+    }
+    return dst;
+}
+
+
+
