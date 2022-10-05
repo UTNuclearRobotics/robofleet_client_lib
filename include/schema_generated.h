@@ -4376,16 +4376,14 @@ namespace augre_msgs {
 struct AgentStatusT : public flatbuffers::NativeTable {
   typedef AgentStatus TableType;
   std::unique_ptr<fb::MsgMetadataT> __metadata;
-  std::string name;
-  std::string display_name;
+  std::string uid;
+  std::string callsign;
   std::string agent_type;
   float battery;
-  std::string owner;
-  bool anchor_localization;
+  std::string commander;
   std::string control_status;
   AgentStatusT()
-      : battery(0.0f),
-        anchor_localization(false) {
+      : battery(0.0f) {
   }
 };
 
@@ -4394,22 +4392,21 @@ struct AgentStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef AgentStatusBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT___METADATA = 4,
-    VT_NAME = 6,
-    VT_DISPLAY_NAME = 8,
+    VT_UID = 6,
+    VT_CALLSIGN = 8,
     VT_AGENT_TYPE = 10,
     VT_BATTERY = 12,
-    VT_OWNER = 14,
-    VT_ANCHOR_LOCALIZATION = 16,
-    VT_CONTROL_STATUS = 18
+    VT_COMMANDER = 14,
+    VT_CONTROL_STATUS = 16
   };
   const fb::MsgMetadata *__metadata() const {
     return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
   }
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  const flatbuffers::String *uid() const {
+    return GetPointer<const flatbuffers::String *>(VT_UID);
   }
-  const flatbuffers::String *display_name() const {
-    return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
+  const flatbuffers::String *callsign() const {
+    return GetPointer<const flatbuffers::String *>(VT_CALLSIGN);
   }
   const flatbuffers::String *agent_type() const {
     return GetPointer<const flatbuffers::String *>(VT_AGENT_TYPE);
@@ -4417,11 +4414,8 @@ struct AgentStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float battery() const {
     return GetField<float>(VT_BATTERY, 0.0f);
   }
-  const flatbuffers::String *owner() const {
-    return GetPointer<const flatbuffers::String *>(VT_OWNER);
-  }
-  bool anchor_localization() const {
-    return GetField<uint8_t>(VT_ANCHOR_LOCALIZATION, 0) != 0;
+  const flatbuffers::String *commander() const {
+    return GetPointer<const flatbuffers::String *>(VT_COMMANDER);
   }
   const flatbuffers::String *control_status() const {
     return GetPointer<const flatbuffers::String *>(VT_CONTROL_STATUS);
@@ -4430,16 +4424,15 @@ struct AgentStatus FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT___METADATA) &&
            verifier.VerifyTable(__metadata()) &&
-           VerifyOffsetRequired(verifier, VT_NAME) &&
-           verifier.VerifyString(name()) &&
-           VerifyOffsetRequired(verifier, VT_DISPLAY_NAME) &&
-           verifier.VerifyString(display_name()) &&
+           VerifyOffsetRequired(verifier, VT_UID) &&
+           verifier.VerifyString(uid()) &&
+           VerifyOffsetRequired(verifier, VT_CALLSIGN) &&
+           verifier.VerifyString(callsign()) &&
            VerifyOffsetRequired(verifier, VT_AGENT_TYPE) &&
            verifier.VerifyString(agent_type()) &&
            VerifyField<float>(verifier, VT_BATTERY) &&
-           VerifyOffsetRequired(verifier, VT_OWNER) &&
-           verifier.VerifyString(owner()) &&
-           VerifyField<uint8_t>(verifier, VT_ANCHOR_LOCALIZATION) &&
+           VerifyOffsetRequired(verifier, VT_COMMANDER) &&
+           verifier.VerifyString(commander()) &&
            VerifyOffsetRequired(verifier, VT_CONTROL_STATUS) &&
            verifier.VerifyString(control_status()) &&
            verifier.EndTable();
@@ -4456,11 +4449,11 @@ struct AgentStatusBuilder {
   void add___metadata(flatbuffers::Offset<fb::MsgMetadata> __metadata) {
     fbb_.AddOffset(AgentStatus::VT___METADATA, __metadata);
   }
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
-    fbb_.AddOffset(AgentStatus::VT_NAME, name);
+  void add_uid(flatbuffers::Offset<flatbuffers::String> uid) {
+    fbb_.AddOffset(AgentStatus::VT_UID, uid);
   }
-  void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
-    fbb_.AddOffset(AgentStatus::VT_DISPLAY_NAME, display_name);
+  void add_callsign(flatbuffers::Offset<flatbuffers::String> callsign) {
+    fbb_.AddOffset(AgentStatus::VT_CALLSIGN, callsign);
   }
   void add_agent_type(flatbuffers::Offset<flatbuffers::String> agent_type) {
     fbb_.AddOffset(AgentStatus::VT_AGENT_TYPE, agent_type);
@@ -4468,11 +4461,8 @@ struct AgentStatusBuilder {
   void add_battery(float battery) {
     fbb_.AddElement<float>(AgentStatus::VT_BATTERY, battery, 0.0f);
   }
-  void add_owner(flatbuffers::Offset<flatbuffers::String> owner) {
-    fbb_.AddOffset(AgentStatus::VT_OWNER, owner);
-  }
-  void add_anchor_localization(bool anchor_localization) {
-    fbb_.AddElement<uint8_t>(AgentStatus::VT_ANCHOR_LOCALIZATION, static_cast<uint8_t>(anchor_localization), 0);
+  void add_commander(flatbuffers::Offset<flatbuffers::String> commander) {
+    fbb_.AddOffset(AgentStatus::VT_COMMANDER, commander);
   }
   void add_control_status(flatbuffers::Offset<flatbuffers::String> control_status) {
     fbb_.AddOffset(AgentStatus::VT_CONTROL_STATUS, control_status);
@@ -4484,10 +4474,10 @@ struct AgentStatusBuilder {
   flatbuffers::Offset<AgentStatus> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<AgentStatus>(end);
-    fbb_.Required(o, AgentStatus::VT_NAME);
-    fbb_.Required(o, AgentStatus::VT_DISPLAY_NAME);
+    fbb_.Required(o, AgentStatus::VT_UID);
+    fbb_.Required(o, AgentStatus::VT_CALLSIGN);
     fbb_.Required(o, AgentStatus::VT_AGENT_TYPE);
-    fbb_.Required(o, AgentStatus::VT_OWNER);
+    fbb_.Required(o, AgentStatus::VT_COMMANDER);
     fbb_.Required(o, AgentStatus::VT_CONTROL_STATUS);
     return o;
   }
@@ -4496,49 +4486,45 @@ struct AgentStatusBuilder {
 inline flatbuffers::Offset<AgentStatus> CreateAgentStatus(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::String> display_name = 0,
+    flatbuffers::Offset<flatbuffers::String> uid = 0,
+    flatbuffers::Offset<flatbuffers::String> callsign = 0,
     flatbuffers::Offset<flatbuffers::String> agent_type = 0,
     float battery = 0.0f,
-    flatbuffers::Offset<flatbuffers::String> owner = 0,
-    bool anchor_localization = false,
+    flatbuffers::Offset<flatbuffers::String> commander = 0,
     flatbuffers::Offset<flatbuffers::String> control_status = 0) {
   AgentStatusBuilder builder_(_fbb);
   builder_.add_control_status(control_status);
-  builder_.add_owner(owner);
+  builder_.add_commander(commander);
   builder_.add_battery(battery);
   builder_.add_agent_type(agent_type);
-  builder_.add_display_name(display_name);
-  builder_.add_name(name);
+  builder_.add_callsign(callsign);
+  builder_.add_uid(uid);
   builder_.add___metadata(__metadata);
-  builder_.add_anchor_localization(anchor_localization);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<AgentStatus> CreateAgentStatusDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    const char *name = nullptr,
-    const char *display_name = nullptr,
+    const char *uid = nullptr,
+    const char *callsign = nullptr,
     const char *agent_type = nullptr,
     float battery = 0.0f,
-    const char *owner = nullptr,
-    bool anchor_localization = false,
+    const char *commander = nullptr,
     const char *control_status = nullptr) {
-  auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
+  auto uid__ = uid ? _fbb.CreateString(uid) : 0;
+  auto callsign__ = callsign ? _fbb.CreateString(callsign) : 0;
   auto agent_type__ = agent_type ? _fbb.CreateString(agent_type) : 0;
-  auto owner__ = owner ? _fbb.CreateString(owner) : 0;
+  auto commander__ = commander ? _fbb.CreateString(commander) : 0;
   auto control_status__ = control_status ? _fbb.CreateString(control_status) : 0;
   return fb::augre_msgs::CreateAgentStatus(
       _fbb,
       __metadata,
-      name__,
-      display_name__,
+      uid__,
+      callsign__,
       agent_type__,
       battery,
-      owner__,
-      anchor_localization,
+      commander__,
       control_status__);
 }
 
@@ -4547,10 +4533,13 @@ flatbuffers::Offset<AgentStatus> CreateAgentStatus(flatbuffers::FlatBufferBuilde
 struct DetectedItemT : public flatbuffers::NativeTable {
   typedef DetectedItem TableType;
   std::unique_ptr<fb::MsgMetadataT> __metadata;
-  std::string name;
-  std::string asa_id;
+  std::string uid;
+  std::string callsign;
+  std::string type;
+  std::string type_label;
+  std::string how;
+  std::string how_label;
   std::unique_ptr<fb::geometry_msgs::PoseStampedT> pose;
-  std::unique_ptr<fb::geographic_msgs::GeoPoseStampedT> geopose;
   std::unique_ptr<fb::sensor_msgs::CompressedImageT> cmpr_image;
   std::string url;
   DetectedItemT() {
@@ -4562,27 +4551,39 @@ struct DetectedItem FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef DetectedItemBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT___METADATA = 4,
-    VT_NAME = 6,
-    VT_ASA_ID = 8,
-    VT_POSE = 10,
-    VT_GEOPOSE = 12,
-    VT_CMPR_IMAGE = 14,
-    VT_URL = 16
+    VT_UID = 6,
+    VT_CALLSIGN = 8,
+    VT_TYPE = 10,
+    VT_TYPE_LABEL = 12,
+    VT_HOW = 14,
+    VT_HOW_LABEL = 16,
+    VT_POSE = 18,
+    VT_CMPR_IMAGE = 20,
+    VT_URL = 22
   };
   const fb::MsgMetadata *__metadata() const {
     return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
   }
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  const flatbuffers::String *uid() const {
+    return GetPointer<const flatbuffers::String *>(VT_UID);
   }
-  const flatbuffers::String *asa_id() const {
-    return GetPointer<const flatbuffers::String *>(VT_ASA_ID);
+  const flatbuffers::String *callsign() const {
+    return GetPointer<const flatbuffers::String *>(VT_CALLSIGN);
+  }
+  const flatbuffers::String *type() const {
+    return GetPointer<const flatbuffers::String *>(VT_TYPE);
+  }
+  const flatbuffers::String *type_label() const {
+    return GetPointer<const flatbuffers::String *>(VT_TYPE_LABEL);
+  }
+  const flatbuffers::String *how() const {
+    return GetPointer<const flatbuffers::String *>(VT_HOW);
+  }
+  const flatbuffers::String *how_label() const {
+    return GetPointer<const flatbuffers::String *>(VT_HOW_LABEL);
   }
   const fb::geometry_msgs::PoseStamped *pose() const {
     return GetPointer<const fb::geometry_msgs::PoseStamped *>(VT_POSE);
-  }
-  const fb::geographic_msgs::GeoPoseStamped *geopose() const {
-    return GetPointer<const fb::geographic_msgs::GeoPoseStamped *>(VT_GEOPOSE);
   }
   const fb::sensor_msgs::CompressedImage *cmpr_image() const {
     return GetPointer<const fb::sensor_msgs::CompressedImage *>(VT_CMPR_IMAGE);
@@ -4594,14 +4595,20 @@ struct DetectedItem FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT___METADATA) &&
            verifier.VerifyTable(__metadata()) &&
-           VerifyOffsetRequired(verifier, VT_NAME) &&
-           verifier.VerifyString(name()) &&
-           VerifyOffsetRequired(verifier, VT_ASA_ID) &&
-           verifier.VerifyString(asa_id()) &&
+           VerifyOffsetRequired(verifier, VT_UID) &&
+           verifier.VerifyString(uid()) &&
+           VerifyOffsetRequired(verifier, VT_CALLSIGN) &&
+           verifier.VerifyString(callsign()) &&
+           VerifyOffsetRequired(verifier, VT_TYPE) &&
+           verifier.VerifyString(type()) &&
+           VerifyOffsetRequired(verifier, VT_TYPE_LABEL) &&
+           verifier.VerifyString(type_label()) &&
+           VerifyOffsetRequired(verifier, VT_HOW) &&
+           verifier.VerifyString(how()) &&
+           VerifyOffsetRequired(verifier, VT_HOW_LABEL) &&
+           verifier.VerifyString(how_label()) &&
            VerifyOffsetRequired(verifier, VT_POSE) &&
            verifier.VerifyTable(pose()) &&
-           VerifyOffsetRequired(verifier, VT_GEOPOSE) &&
-           verifier.VerifyTable(geopose()) &&
            VerifyOffsetRequired(verifier, VT_CMPR_IMAGE) &&
            verifier.VerifyTable(cmpr_image()) &&
            VerifyOffsetRequired(verifier, VT_URL) &&
@@ -4620,17 +4627,26 @@ struct DetectedItemBuilder {
   void add___metadata(flatbuffers::Offset<fb::MsgMetadata> __metadata) {
     fbb_.AddOffset(DetectedItem::VT___METADATA, __metadata);
   }
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
-    fbb_.AddOffset(DetectedItem::VT_NAME, name);
+  void add_uid(flatbuffers::Offset<flatbuffers::String> uid) {
+    fbb_.AddOffset(DetectedItem::VT_UID, uid);
   }
-  void add_asa_id(flatbuffers::Offset<flatbuffers::String> asa_id) {
-    fbb_.AddOffset(DetectedItem::VT_ASA_ID, asa_id);
+  void add_callsign(flatbuffers::Offset<flatbuffers::String> callsign) {
+    fbb_.AddOffset(DetectedItem::VT_CALLSIGN, callsign);
+  }
+  void add_type(flatbuffers::Offset<flatbuffers::String> type) {
+    fbb_.AddOffset(DetectedItem::VT_TYPE, type);
+  }
+  void add_type_label(flatbuffers::Offset<flatbuffers::String> type_label) {
+    fbb_.AddOffset(DetectedItem::VT_TYPE_LABEL, type_label);
+  }
+  void add_how(flatbuffers::Offset<flatbuffers::String> how) {
+    fbb_.AddOffset(DetectedItem::VT_HOW, how);
+  }
+  void add_how_label(flatbuffers::Offset<flatbuffers::String> how_label) {
+    fbb_.AddOffset(DetectedItem::VT_HOW_LABEL, how_label);
   }
   void add_pose(flatbuffers::Offset<fb::geometry_msgs::PoseStamped> pose) {
     fbb_.AddOffset(DetectedItem::VT_POSE, pose);
-  }
-  void add_geopose(flatbuffers::Offset<fb::geographic_msgs::GeoPoseStamped> geopose) {
-    fbb_.AddOffset(DetectedItem::VT_GEOPOSE, geopose);
   }
   void add_cmpr_image(flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image) {
     fbb_.AddOffset(DetectedItem::VT_CMPR_IMAGE, cmpr_image);
@@ -4645,10 +4661,13 @@ struct DetectedItemBuilder {
   flatbuffers::Offset<DetectedItem> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<DetectedItem>(end);
-    fbb_.Required(o, DetectedItem::VT_NAME);
-    fbb_.Required(o, DetectedItem::VT_ASA_ID);
+    fbb_.Required(o, DetectedItem::VT_UID);
+    fbb_.Required(o, DetectedItem::VT_CALLSIGN);
+    fbb_.Required(o, DetectedItem::VT_TYPE);
+    fbb_.Required(o, DetectedItem::VT_TYPE_LABEL);
+    fbb_.Required(o, DetectedItem::VT_HOW);
+    fbb_.Required(o, DetectedItem::VT_HOW_LABEL);
     fbb_.Required(o, DetectedItem::VT_POSE);
-    fbb_.Required(o, DetectedItem::VT_GEOPOSE);
     fbb_.Required(o, DetectedItem::VT_CMPR_IMAGE);
     fbb_.Required(o, DetectedItem::VT_URL);
     return o;
@@ -4658,19 +4677,25 @@ struct DetectedItemBuilder {
 inline flatbuffers::Offset<DetectedItem> CreateDetectedItem(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::String> asa_id = 0,
+    flatbuffers::Offset<flatbuffers::String> uid = 0,
+    flatbuffers::Offset<flatbuffers::String> callsign = 0,
+    flatbuffers::Offset<flatbuffers::String> type = 0,
+    flatbuffers::Offset<flatbuffers::String> type_label = 0,
+    flatbuffers::Offset<flatbuffers::String> how = 0,
+    flatbuffers::Offset<flatbuffers::String> how_label = 0,
     flatbuffers::Offset<fb::geometry_msgs::PoseStamped> pose = 0,
-    flatbuffers::Offset<fb::geographic_msgs::GeoPoseStamped> geopose = 0,
     flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image = 0,
     flatbuffers::Offset<flatbuffers::String> url = 0) {
   DetectedItemBuilder builder_(_fbb);
   builder_.add_url(url);
   builder_.add_cmpr_image(cmpr_image);
-  builder_.add_geopose(geopose);
   builder_.add_pose(pose);
-  builder_.add_asa_id(asa_id);
-  builder_.add_name(name);
+  builder_.add_how_label(how_label);
+  builder_.add_how(how);
+  builder_.add_type_label(type_label);
+  builder_.add_type(type);
+  builder_.add_callsign(callsign);
+  builder_.add_uid(uid);
   builder_.add___metadata(__metadata);
   return builder_.Finish();
 }
@@ -4678,22 +4703,32 @@ inline flatbuffers::Offset<DetectedItem> CreateDetectedItem(
 inline flatbuffers::Offset<DetectedItem> CreateDetectedItemDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    const char *name = nullptr,
-    const char *asa_id = nullptr,
+    const char *uid = nullptr,
+    const char *callsign = nullptr,
+    const char *type = nullptr,
+    const char *type_label = nullptr,
+    const char *how = nullptr,
+    const char *how_label = nullptr,
     flatbuffers::Offset<fb::geometry_msgs::PoseStamped> pose = 0,
-    flatbuffers::Offset<fb::geographic_msgs::GeoPoseStamped> geopose = 0,
     flatbuffers::Offset<fb::sensor_msgs::CompressedImage> cmpr_image = 0,
     const char *url = nullptr) {
-  auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto asa_id__ = asa_id ? _fbb.CreateString(asa_id) : 0;
+  auto uid__ = uid ? _fbb.CreateString(uid) : 0;
+  auto callsign__ = callsign ? _fbb.CreateString(callsign) : 0;
+  auto type__ = type ? _fbb.CreateString(type) : 0;
+  auto type_label__ = type_label ? _fbb.CreateString(type_label) : 0;
+  auto how__ = how ? _fbb.CreateString(how) : 0;
+  auto how_label__ = how_label ? _fbb.CreateString(how_label) : 0;
   auto url__ = url ? _fbb.CreateString(url) : 0;
   return fb::augre_msgs::CreateDetectedItem(
       _fbb,
       __metadata,
-      name__,
-      asa_id__,
+      uid__,
+      callsign__,
+      type__,
+      type_label__,
+      how__,
+      how_label__,
       pose,
-      geopose,
       cmpr_image,
       url__);
 }
@@ -8190,12 +8225,11 @@ inline void AgentStatus::UnPackTo(AgentStatusT *_o, const flatbuffers::resolver_
   (void)_o;
   (void)_resolver;
   { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
-  { auto _e = name(); if (_e) _o->name = _e->str(); }
-  { auto _e = display_name(); if (_e) _o->display_name = _e->str(); }
+  { auto _e = uid(); if (_e) _o->uid = _e->str(); }
+  { auto _e = callsign(); if (_e) _o->callsign = _e->str(); }
   { auto _e = agent_type(); if (_e) _o->agent_type = _e->str(); }
   { auto _e = battery(); _o->battery = _e; }
-  { auto _e = owner(); if (_e) _o->owner = _e->str(); }
-  { auto _e = anchor_localization(); _o->anchor_localization = _e; }
+  { auto _e = commander(); if (_e) _o->commander = _e->str(); }
   { auto _e = control_status(); if (_e) _o->control_status = _e->str(); }
 }
 
@@ -8208,22 +8242,20 @@ inline flatbuffers::Offset<AgentStatus> CreateAgentStatus(flatbuffers::FlatBuffe
   (void)_o;
   struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const AgentStatusT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _name = _fbb.CreateString(_o->name);
-  auto _display_name = _fbb.CreateString(_o->display_name);
+  auto _uid = _fbb.CreateString(_o->uid);
+  auto _callsign = _fbb.CreateString(_o->callsign);
   auto _agent_type = _fbb.CreateString(_o->agent_type);
   auto _battery = _o->battery;
-  auto _owner = _fbb.CreateString(_o->owner);
-  auto _anchor_localization = _o->anchor_localization;
+  auto _commander = _fbb.CreateString(_o->commander);
   auto _control_status = _fbb.CreateString(_o->control_status);
   return fb::augre_msgs::CreateAgentStatus(
       _fbb,
       ___metadata,
-      _name,
-      _display_name,
+      _uid,
+      _callsign,
       _agent_type,
       _battery,
-      _owner,
-      _anchor_localization,
+      _commander,
       _control_status);
 }
 
@@ -8237,10 +8269,13 @@ inline void DetectedItem::UnPackTo(DetectedItemT *_o, const flatbuffers::resolve
   (void)_o;
   (void)_resolver;
   { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
-  { auto _e = name(); if (_e) _o->name = _e->str(); }
-  { auto _e = asa_id(); if (_e) _o->asa_id = _e->str(); }
+  { auto _e = uid(); if (_e) _o->uid = _e->str(); }
+  { auto _e = callsign(); if (_e) _o->callsign = _e->str(); }
+  { auto _e = type(); if (_e) _o->type = _e->str(); }
+  { auto _e = type_label(); if (_e) _o->type_label = _e->str(); }
+  { auto _e = how(); if (_e) _o->how = _e->str(); }
+  { auto _e = how_label(); if (_e) _o->how_label = _e->str(); }
   { auto _e = pose(); if (_e) _o->pose = std::unique_ptr<fb::geometry_msgs::PoseStampedT>(_e->UnPack(_resolver)); }
-  { auto _e = geopose(); if (_e) _o->geopose = std::unique_ptr<fb::geographic_msgs::GeoPoseStampedT>(_e->UnPack(_resolver)); }
   { auto _e = cmpr_image(); if (_e) _o->cmpr_image = std::unique_ptr<fb::sensor_msgs::CompressedImageT>(_e->UnPack(_resolver)); }
   { auto _e = url(); if (_e) _o->url = _e->str(); }
 }
@@ -8254,19 +8289,25 @@ inline flatbuffers::Offset<DetectedItem> CreateDetectedItem(flatbuffers::FlatBuf
   (void)_o;
   struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const DetectedItemT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _name = _fbb.CreateString(_o->name);
-  auto _asa_id = _fbb.CreateString(_o->asa_id);
+  auto _uid = _fbb.CreateString(_o->uid);
+  auto _callsign = _fbb.CreateString(_o->callsign);
+  auto _type = _fbb.CreateString(_o->type);
+  auto _type_label = _fbb.CreateString(_o->type_label);
+  auto _how = _fbb.CreateString(_o->how);
+  auto _how_label = _fbb.CreateString(_o->how_label);
   auto _pose = _o->pose ? CreatePoseStamped(_fbb, _o->pose.get(), _rehasher) : 0;
-  auto _geopose = _o->geopose ? CreateGeoPoseStamped(_fbb, _o->geopose.get(), _rehasher) : 0;
   auto _cmpr_image = _o->cmpr_image ? CreateCompressedImage(_fbb, _o->cmpr_image.get(), _rehasher) : 0;
   auto _url = _fbb.CreateString(_o->url);
   return fb::augre_msgs::CreateDetectedItem(
       _fbb,
       ___metadata,
-      _name,
-      _asa_id,
+      _uid,
+      _callsign,
+      _type,
+      _type_label,
+      _how,
+      _how_label,
       _pose,
-      _geopose,
       _cmpr_image,
       _url);
 }

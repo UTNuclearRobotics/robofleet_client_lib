@@ -356,12 +356,11 @@ flatbuffers::uoffset_t encode(
     return fb::augre_msgs::CreateAgentStatusDirect(
         fbb,
         metadata,
-        msg.name.c_str(),
-        msg.display_name.c_str(),
+        msg.uid.c_str(),
+        msg.callsign.c_str(),
         msg.agent_type.c_str(),
         msg.battery,
-        msg.owner.c_str(),
-        msg.anchor_localization,
+        msg.commander.c_str(),
         msg.control_status.c_str())
         .o;
 }

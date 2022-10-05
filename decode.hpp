@@ -348,12 +348,11 @@ template <>
 AgentStatus decode(
     const fb::augre_msgs::AgentStatus* const src) {
     AgentStatus dst;
-    dst.name = src->name()->str();
-    dst.display_name = src->display_name()->str();
+    dst.uid = src->uid()->str();
+    dst.callsign = src->callsign()->str();
     dst.agent_type = src->agent_type()->str();
     dst.battery = src->battery();
-    dst.owner = src->owner()->str();
-    dst.anchor_localization = src->anchor_localization();
+    dst.commander = src->commander()->str();
     dst.control_status = src->control_status()->str();
     return dst;
 }
@@ -366,10 +365,13 @@ struct flatbuffers_type_for<DetectedItem_augre> {
 template <>
 DetectedItem_augre decode(const fb::augre_msgs::DetectedItem* const src) {
     DetectedItem_augre dst;
-    dst.name = src->name()->str();
-    dst.asa_id = src->asa_id()->str();
+    dst.uid = src->uid()->str();
+    dst.callsign = src->callsign()->str();
+    dst.type = src->type()->str();
+    dst.type_label = src->type_label()->str();
+    dst.how = src->how()->str();
+    dst.how_label = src->how_label()->str();
     dst.pose = decode<PoseStamped>(src->pose());
-    dst.geopose = decode<GeoPoseStamped>(src->geopose());
     dst.cmpr_image = decode<CompressedImage>(src->cmpr_image());
     dst.url = src->url()->str();
     return dst;

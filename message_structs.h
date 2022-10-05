@@ -231,21 +231,23 @@ struct DetectedItem {
 // augre_msgs
 */
 struct AgentStatus {
-	std::string name;
-	std::string display_name;
+	std::string uid;
+	std::string callsign;
 	std::string agent_type;
 	float battery;
-	std::string owner;
-	bool anchor_localization;
+	std::string commander;
 	std::string control_status;
 };
 
 // TODO: FIX STRUCT NAME
 struct DetectedItem_augre {
-	std::string name;
-	std::string asa_id;
+	std::string uid;
+	std::string callsign;
+	std::string type;
+	std::string type_label;
+	std::string how;
+	std::string how_label;
 	PoseStamped pose;
-	GeoPoseStamped geopose;
 	CompressedImage cmpr_image;
 	std::string url;
 };
