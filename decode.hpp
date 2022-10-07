@@ -187,7 +187,7 @@ Transform decode(
     dst.rotation.x = src->rotation()->x();
     dst.rotation.y = src->rotation()->y();
     dst.rotation.z = src->rotation()->z();
-    dst.rotation.w = src->rotation()->z();
+    dst.rotation.w = src->rotation()->w();
     return dst;
 }    
 
