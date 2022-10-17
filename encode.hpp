@@ -248,6 +248,19 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// TF2_msg/TFMessage
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TFMessage& msg,
+    const MetadataOffset& metadata) {
+    auto transforms = encode_vector<fb::geometry_msgs::TransformStamped>(fbb, 0, msg.transforms);
+    return fb::tf2_msgs::CreateTFMessage(
+        fbb,
+        metadata,
+        transforms)
+        .o;
+}
+
 // geometry_msgs/Twist
 template <>
 flatbuffers::uoffset_t encode(
