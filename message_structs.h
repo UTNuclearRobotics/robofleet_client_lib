@@ -23,6 +23,10 @@ struct String {
 	std::string data;
 };
 
+struct Empty {
+
+};
+
 struct RobofleetSubscription {
 	std::string topic_regex;
 	uint8_t action;

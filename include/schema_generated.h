@@ -62,6 +62,10 @@ struct String;
 struct StringBuilder;
 struct StringT;
 
+struct Empty;
+struct EmptyBuilder;
+struct EmptyT;
+
 }  // namespace std_msgs
 
 namespace geometry_msgs {
@@ -2267,6 +2271,61 @@ inline flatbuffers::Offset<String> CreateStringDirect(
 }
 
 flatbuffers::Offset<String> CreateString(flatbuffers::FlatBufferBuilder &_fbb, const StringT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+struct EmptyT : public flatbuffers::NativeTable {
+  typedef Empty TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata;
+  EmptyT() {
+  }
+};
+
+struct Empty FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef EmptyT NativeTableType;
+  typedef EmptyBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           verifier.EndTable();
+  }
+  EmptyT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(EmptyT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static flatbuffers::Offset<Empty> Pack(flatbuffers::FlatBufferBuilder &_fbb, const EmptyT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct EmptyBuilder {
+  typedef Empty Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add___metadata(flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(Empty::VT___METADATA, __metadata);
+  }
+  explicit EmptyBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<Empty> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Empty>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Empty> CreateEmpty(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<fb::MsgMetadata> __metadata = 0) {
+  EmptyBuilder builder_(_fbb);
+  builder_.add___metadata(__metadata);
+  return builder_.Finish();
+}
+
+flatbuffers::Offset<Empty> CreateEmpty(flatbuffers::FlatBufferBuilder &_fbb, const EmptyT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
 }  // namespace std_msgs
 
@@ -7446,6 +7505,32 @@ inline flatbuffers::Offset<String> CreateString(flatbuffers::FlatBufferBuilder &
       _fbb,
       ___metadata,
       _data);
+}
+
+inline EmptyT *Empty::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+  std::unique_ptr<fb::std_msgs::EmptyT> _o = std::unique_ptr<fb::std_msgs::EmptyT>(new EmptyT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void Empty::UnPackTo(EmptyT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); }
+}
+
+inline flatbuffers::Offset<Empty> Empty::Pack(flatbuffers::FlatBufferBuilder &_fbb, const EmptyT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateEmpty(_fbb, _o, _rehasher);
+}
+
+inline flatbuffers::Offset<Empty> CreateEmpty(flatbuffers::FlatBufferBuilder &_fbb, const EmptyT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const EmptyT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  return fb::std_msgs::CreateEmpty(
+      _fbb,
+      ___metadata);
 }
 
 }  // namespace std_msgs

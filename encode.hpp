@@ -98,6 +98,14 @@ flatbuffers::uoffset_t encode(
     .o;
 }
 
+// std_msgs/Empty
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Empty& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateEmpty(fbb, metadata)
+        .o;
+}
+
 // amrl_msgs/RobofleetSubscription
 template <>
 flatbuffers::uoffset_t encode(
