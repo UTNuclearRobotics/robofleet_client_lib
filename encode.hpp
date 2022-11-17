@@ -98,6 +98,14 @@ flatbuffers::uoffset_t encode(
     .o;
 }
 
+// std_msgs/Empty
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Empty& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateEmpty(fbb, metadata)
+        .o;
+}
+
 // amrl_msgs/RobofleetSubscription
 template <>
 flatbuffers::uoffset_t encode(
@@ -141,7 +149,13 @@ flatbuffers::uoffset_t encode(
 template <>
 flatbuffers::uoffset_t encode(
 	FBB& fbb, const Point& msg, const MetadataOffset& metadata) {
-	return fb::geometry_msgs::CreatePoint(fbb, metadata, msg.x, msg.y, msg.z).o;
+	return fb::geometry_msgs::CreatePoint(
+        fbb, 
+        metadata, 
+        msg.x, 
+        msg.y, 
+        msg.z)
+        .o;
 }
 
 // geometry_msgs/Quaternion
@@ -150,7 +164,12 @@ flatbuffers::uoffset_t encode(
 	FBB& fbb, const Quaternion& msg,
 	const MetadataOffset& metadata) {
 	return fb::geometry_msgs::CreateQuaternion(
-		fbb, metadata, msg.x, msg.y, msg.z, msg.w)
+		fbb, 
+        metadata, 
+        msg.x, 
+        msg.y,
+        msg.z, 
+        msg.w)
 		.o;
 }
 
@@ -179,6 +198,236 @@ flatbuffers::uoffset_t encode(
 		.o;
 }
 
+// geometry_msgs/PoseWithCovariance
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PoseWithCovariance& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreatePoseWithCovarianceDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.pose, 0),
+        &msg.covariance)
+        .o;
+}
+
+
+// geometry_msgs/PoseWithCovarianceStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PoseWithCovarianceStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreatePoseWithCovarianceStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.pose, 0))
+        .o;
+}
+
+
+// geometry_msgs/Transform
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Transform& msg,
+    const MetadataOffset& metadata) {
+
+    auto vector3 = fb::geometry_msgs::CreateVector3(
+        fbb, 0, msg.translation.x, msg.translation.y, msg.translation.z);
+    return fb::geometry_msgs::CreateTransform(
+        fbb,
+        metadata,
+        vector3,
+        encode(fbb, msg.rotation, 0))
+        .o;
+}
+
+// geometry_msgs/TransformStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TransformStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreateTransformStampedDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.child_frame_id.c_str(),
+        encode(fbb, msg.transform, 0))
+        .o;
+}
+
+// TF2_msg/TFMessage
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TFMessage& msg,
+    const MetadataOffset& metadata) {
+    auto transforms = encode_vector<fb::geometry_msgs::TransformStamped>(fbb, 0, msg.transforms);
+    return fb::tf2_msgs::CreateTFMessage(
+        fbb,
+        metadata,
+        transforms)
+        .o;
+}
+
+// geometry_msgs/Twist
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Twist& msg,
+    const MetadataOffset& metadata) {
+    auto vector3_linear = fb::geometry_msgs::CreateVector3(
+        fbb, 0, msg.linear.x, msg.linear.y, msg.linear.z);
+    auto vector3_angular = fb::geometry_msgs::CreateVector3(
+        fbb, 0, msg.angular.x, msg.angular.y, msg.angular.z);
+    return fb::geometry_msgs::CreateTwist(
+        fbb,
+        metadata,
+        vector3_linear,
+        vector3_angular)
+        .o;
+}
+
+// geometry_msgs/TwistStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TwistStamped& msg,
+    const MetadataOffset& metadata) {    
+    return fb::geometry_msgs::CreateTwistStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.twist, 0))
+        .o;
+}
+
+// geographic_msgs/GeoPoint
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPoint& msg, const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPoint(
+        fbb, 
+        metadata, 
+        msg.latitude, 
+        msg.longitude, 
+        msg.altitude)
+        .o;
+}
+
+// geographic_Msgs/GeoPose
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPose& msg,
+    const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPose(
+        fbb,
+        metadata,
+        encode(fbb, msg.position, 0),
+        encode(fbb, msg.orientation, 0))
+        .o;
+}
+
+// geographic_Msgs/GeoPoseWithCovariance
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPoseWithCovariance& msg,
+    const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPoseWithCovarianceDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.pose, 0),
+        &msg.covariance)
+        .o;
+}
+
+// geographic_Msgs/GeoPoseWithCovarianceStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const GeoPoseWithCovarianceStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::geographic_msgs::CreateGeoPoseWithCovarianceStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.pose, 0))
+        .o;
+}
+
+// nav_msgs/Path
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Path& msg,
+    const MetadataOffset& metadata) {
+    auto poses = encode_vector<fb::geometry_msgs::PoseStamped>(fbb, 0, msg.poses);
+    return fb::nav_msgs::CreatePath(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        poses)
+        .o;
+}
+
+/*
+* AugRE Specific Messages
+*/
+
+// augre_msgs/AgentStatus
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AgentStatus& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateAgentStatusDirect(
+        fbb,
+        metadata,
+        msg.uid.c_str(),
+        msg.callsign.c_str(),
+        msg.agent_type.c_str(),
+        msg.battery,
+        msg.commander.c_str(),
+        msg.control_status.c_str())
+        .o;
+}
+
+// augre_msgs/TransformWithCovarianceStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TransformWithCovarianceStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateTransformWithCovarianceStampedDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.transform, 0),
+        &msg.covariance)
+        .o;
+}
+
+/*
+* GTSAM Specific Messages
+*/
+
+// asa_db_portal/AzureSpatialAnchor
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AzureSpatialAnchor& msg,
+    const MetadataOffset& metadata) {
+    auto AsaId = fbb.CreateString(msg.asa_id);
+    auto RepId = fbb.CreateString(msg.rep_id);
+    auto NameSpace = fbb.CreateString(msg.ns);
+    auto time_stamp = fb::RosTime(msg.timestamp._nsec, msg.timestamp._sec);
+    auto neighbors = encode_vector<std::string>(fbb, 0, msg.neighbors);
+    return fb::asa_db_portal::CreateAzureSpatialAnchor(
+        fbb, 
+        metadata, 
+        AsaId, 
+        RepId, 
+        NameSpace, 
+        &time_stamp, 
+        encode(fbb, msg.pose, 0), 
+        encode(fbb, msg.geopose, 0), 
+        neighbors).o;
+}
+
+/*
+*  TeMoto
+*/
 // temoto_action_engine/UmrfGraphDiff
 template <>
 flatbuffers::uoffset_t encode(

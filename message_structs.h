@@ -23,6 +23,10 @@ struct String {
 	std::string data;
 };
 
+struct Empty {
+
+};
+
 struct RobofleetSubscription {
 	std::string topic_regex;
 	uint8_t action;
@@ -51,7 +55,11 @@ struct RobotStatus {
 	std::string location;
 };
 
-// geometry_msgs
+
+/*
+* geometry_msgs
+*/
+
 struct Point {
 	float x;
 	float y;
@@ -89,7 +97,7 @@ struct PoseStamped {
 
 struct PoseWithCovariance {
 	Pose pose;
-	double covariance[36];
+	std::vector<double> covariance; // TODO: Swap to a std::vector<float> covariance;
 };
 
 struct PoseWithCovarianceStamped {
@@ -102,15 +110,44 @@ struct Twist {
 	Vector3 angular;
 };
 
+struct TwistStamped {
+	Header header;
+	Twist twist;
+};
+
 struct TwistWithCovariance {
 	Twist twist;
-	double covariance[36];
+	double covariance[36]; // TODO: Swap to a std::vector<float> covariance;
 };
 
 struct TwistWithCovarianceStamped {
 	Header header;
 	TwistWithCovariance twist;
 };
+
+struct Transform {
+	Vector3 translation;
+	Quaternion rotation;
+};
+
+struct TransformStamped {
+	Header header;
+	std::string child_frame_id;
+	Transform transform;
+};
+
+/*
+* tf2_msgs
+*/
+
+struct TFMessage {
+	std::vector<TransformStamped> transforms;
+};
+
+
+/*
+* geographic_msgs
+*/
 
 struct GeoPoint {
 	double latitude;
@@ -128,6 +165,20 @@ struct GeoPoseStamped {
 	GeoPose pose;
 };
 
+struct GeoPoseWithCovariance {
+	GeoPose pose;
+	std::vector<double> covariance;
+};
+
+struct GeoPoseWithCovarianceStamped {
+	Header header;
+	GeoPoseWithCovariance pose;
+};
+
+/*
+* sensor_msgs
+*/
+
 struct NavSatStatus {
 	int8 status;
 	uint16 service;
@@ -144,7 +195,16 @@ struct NavSatFix {
 	uint8 position_covariance_type;
 };
 
-// nav_msgs
+struct CompressedImage {
+	Header header;
+	std::string format;
+	std::vector<uint8_t> data;
+};
+
+/*
+* nav_msgs
+*/
+
 struct Odometry {
 	Header header;
 	std::string child_frame_id;
@@ -155,13 +215,6 @@ struct Odometry {
 struct Path {
 	Header header;
 	std::vector<PoseStamped> poses;
-};
-
-// sensor_msgs
-struct CompressedImage {
-	Header header;
-	std::string format;
-	std::vector<uint8_t> data;
 };
 
 // modified atak dectection_msgs 
@@ -178,9 +231,55 @@ struct DetectedItem {
 	CompressedImage cmpr_image;
 };
 
-// TeMoto
-// UMRFgraphs
+/*
+// augre_msgs
+*/
+struct AgentStatus {
+	std::string uid;
+	std::string callsign;
+	std::string agent_type;
+	float battery;
+	std::string commander;
+	std::string control_status;
+};
 
+// TODO: FIX STRUCT NAME
+struct DetectedItem_augre {
+	std::string uid;
+	std::string callsign;
+	std::string type;
+	std::string type_label;
+	std::string how;
+	std::string how_label;
+	PoseStamped pose;
+	CompressedImage cmpr_image;
+	std::string url;
+};
+
+struct TransformWithCovarianceStamped {
+	TransformStamped transform;
+	std::vector<float> covariance;
+};
+
+/*
+* asa_db_portal msgs
+*/
+
+struct AzureSpatialAnchor {
+	std::string asa_id;
+	std::string rep_id;
+	std::string ns;
+	Time timestamp;
+	PoseWithCovarianceStamped pose;
+	GeoPoseWithCovarianceStamped geopose;
+	std::vector<std::string> neighbors;
+};
+
+/*
+ *  TeMoto_msgs
+ */
+
+// UMRFgraphs
 struct UMRFgraphDiff {
 	std::string ADD;
 	std::string SUBTRACT = "subtract";
@@ -201,3 +300,43 @@ struct StopUMRF {
 	std::vector<std::string> targets;
 };
 
+/*
+ *  leg_tracker
+ */
+
+// Detection
+struct Detection {
+	Point position;
+	float confidence;
+	uint32_t label;
+};
+
+// Detection Array
+struct DetectionArray {
+	Header header;
+	std::vector<Detection> detections;
+};
+
+// Leg
+struct Leg {
+	Point position;
+	float confidence;
+};
+
+// Leg Array
+struct LegArray {
+	Header header;
+	std::vector<Leg> legs;
+};
+
+// Person
+struct Person {
+	Pose pose;
+	uint32_t id;
+};
+
+// Leg Array
+struct PersonArray {
+	Header header;
+	std::vector<Person> people;
+};
