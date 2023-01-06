@@ -90,12 +90,21 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
-// std_msgs/String
+// std::string
 template <>
 flatbuffers::uoffset_t encode(
     FBB& fbb, const std::string& msg, const MetadataOffset& metadata) {
     return fbb.CreateString(msg)
     .o;
+}
+
+//std_msgs/String
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const String& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateStringDirect(
+        fbb, metadata, msg.data.c_str())
+        .o;
 }
 
 // std_msgs/Empty
