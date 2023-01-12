@@ -269,6 +269,7 @@ struct AzureSpatialAnchor {
 	std::string asa_id;
 	std::string rep_id;
 	std::string ns;
+	std::string anchor_type;
 	Time timestamp;
 	PoseWithCovarianceStamped pose;
 	GeoPoseWithCovarianceStamped geopose;

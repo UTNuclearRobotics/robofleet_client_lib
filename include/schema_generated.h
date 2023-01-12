@@ -4898,6 +4898,7 @@ struct AzureSpatialAnchorT : public flatbuffers::NativeTable {
   std::string asa_id;
   std::string rep_id;
   std::string ns;
+  std::string anchor_type;
   std::unique_ptr<fb::RosTime> timestamp;
   std::unique_ptr<fb::geometry_msgs::PoseWithCovarianceStampedT> pose;
   std::unique_ptr<fb::geographic_msgs::GeoPoseWithCovarianceStampedT> geopose;
@@ -4914,10 +4915,11 @@ struct AzureSpatialAnchor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ASA_ID = 6,
     VT_REP_ID = 8,
     VT_NS = 10,
-    VT_TIMESTAMP = 12,
-    VT_POSE = 14,
-    VT_GEOPOSE = 16,
-    VT_NEIGHBORS = 18
+    VT_ANCHOR_TYPE = 12,
+    VT_TIMESTAMP = 14,
+    VT_POSE = 16,
+    VT_GEOPOSE = 18,
+    VT_NEIGHBORS = 20
   };
   const fb::MsgMetadata *__metadata() const {
     return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
@@ -4930,6 +4932,9 @@ struct AzureSpatialAnchor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const flatbuffers::String *ns() const {
     return GetPointer<const flatbuffers::String *>(VT_NS);
+  }
+  const flatbuffers::String *anchor_type() const {
+    return GetPointer<const flatbuffers::String *>(VT_ANCHOR_TYPE);
   }
   const fb::RosTime *timestamp() const {
     return GetStruct<const fb::RosTime *>(VT_TIMESTAMP);
@@ -4953,6 +4958,8 @@ struct AzureSpatialAnchor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(rep_id()) &&
            VerifyOffsetRequired(verifier, VT_NS) &&
            verifier.VerifyString(ns()) &&
+           VerifyOffsetRequired(verifier, VT_ANCHOR_TYPE) &&
+           verifier.VerifyString(anchor_type()) &&
            VerifyFieldRequired<fb::RosTime>(verifier, VT_TIMESTAMP) &&
            VerifyOffsetRequired(verifier, VT_POSE) &&
            verifier.VerifyTable(pose()) &&
@@ -4984,6 +4991,9 @@ struct AzureSpatialAnchorBuilder {
   void add_ns(flatbuffers::Offset<flatbuffers::String> ns) {
     fbb_.AddOffset(AzureSpatialAnchor::VT_NS, ns);
   }
+  void add_anchor_type(flatbuffers::Offset<flatbuffers::String> anchor_type) {
+    fbb_.AddOffset(AzureSpatialAnchor::VT_ANCHOR_TYPE, anchor_type);
+  }
   void add_timestamp(const fb::RosTime *timestamp) {
     fbb_.AddStruct(AzureSpatialAnchor::VT_TIMESTAMP, timestamp);
   }
@@ -5006,6 +5016,7 @@ struct AzureSpatialAnchorBuilder {
     fbb_.Required(o, AzureSpatialAnchor::VT_ASA_ID);
     fbb_.Required(o, AzureSpatialAnchor::VT_REP_ID);
     fbb_.Required(o, AzureSpatialAnchor::VT_NS);
+    fbb_.Required(o, AzureSpatialAnchor::VT_ANCHOR_TYPE);
     fbb_.Required(o, AzureSpatialAnchor::VT_TIMESTAMP);
     fbb_.Required(o, AzureSpatialAnchor::VT_POSE);
     fbb_.Required(o, AzureSpatialAnchor::VT_GEOPOSE);
@@ -5020,6 +5031,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchor(
     flatbuffers::Offset<flatbuffers::String> asa_id = 0,
     flatbuffers::Offset<flatbuffers::String> rep_id = 0,
     flatbuffers::Offset<flatbuffers::String> ns = 0,
+    flatbuffers::Offset<flatbuffers::String> anchor_type = 0,
     const fb::RosTime *timestamp = 0,
     flatbuffers::Offset<fb::geometry_msgs::PoseWithCovarianceStamped> pose = 0,
     flatbuffers::Offset<fb::geographic_msgs::GeoPoseWithCovarianceStamped> geopose = 0,
@@ -5029,6 +5041,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchor(
   builder_.add_geopose(geopose);
   builder_.add_pose(pose);
   builder_.add_timestamp(timestamp);
+  builder_.add_anchor_type(anchor_type);
   builder_.add_ns(ns);
   builder_.add_rep_id(rep_id);
   builder_.add_asa_id(asa_id);
@@ -5042,6 +5055,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchorDirect(
     const char *asa_id = nullptr,
     const char *rep_id = nullptr,
     const char *ns = nullptr,
+    const char *anchor_type = nullptr,
     const fb::RosTime *timestamp = 0,
     flatbuffers::Offset<fb::geometry_msgs::PoseWithCovarianceStamped> pose = 0,
     flatbuffers::Offset<fb::geographic_msgs::GeoPoseWithCovarianceStamped> geopose = 0,
@@ -5049,6 +5063,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchorDirect(
   auto asa_id__ = asa_id ? _fbb.CreateString(asa_id) : 0;
   auto rep_id__ = rep_id ? _fbb.CreateString(rep_id) : 0;
   auto ns__ = ns ? _fbb.CreateString(ns) : 0;
+  auto anchor_type__ = anchor_type ? _fbb.CreateString(anchor_type) : 0;
   auto neighbors__ = neighbors ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*neighbors) : 0;
   return fb::asa_db_portal::CreateAzureSpatialAnchor(
       _fbb,
@@ -5056,6 +5071,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchorDirect(
       asa_id__,
       rep_id__,
       ns__,
+      anchor_type__,
       timestamp,
       pose,
       geopose,
@@ -8446,6 +8462,7 @@ inline void AzureSpatialAnchor::UnPackTo(AzureSpatialAnchorT *_o, const flatbuff
   { auto _e = asa_id(); if (_e) _o->asa_id = _e->str(); }
   { auto _e = rep_id(); if (_e) _o->rep_id = _e->str(); }
   { auto _e = ns(); if (_e) _o->ns = _e->str(); }
+  { auto _e = anchor_type(); if (_e) _o->anchor_type = _e->str(); }
   { auto _e = timestamp(); if (_e) _o->timestamp = std::unique_ptr<fb::RosTime>(new fb::RosTime(*_e)); }
   { auto _e = pose(); if (_e) _o->pose = std::unique_ptr<fb::geometry_msgs::PoseWithCovarianceStampedT>(_e->UnPack(_resolver)); }
   { auto _e = geopose(); if (_e) _o->geopose = std::unique_ptr<fb::geographic_msgs::GeoPoseWithCovarianceStampedT>(_e->UnPack(_resolver)); }
@@ -8464,6 +8481,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchor(flatbuff
   auto _asa_id = _fbb.CreateString(_o->asa_id);
   auto _rep_id = _fbb.CreateString(_o->rep_id);
   auto _ns = _fbb.CreateString(_o->ns);
+  auto _anchor_type = _fbb.CreateString(_o->anchor_type);
   auto _timestamp = _o->timestamp ? _o->timestamp.get() : 0;
   auto _pose = _o->pose ? CreatePoseWithCovarianceStamped(_fbb, _o->pose.get(), _rehasher) : 0;
   auto _geopose = _o->geopose ? CreateGeoPoseWithCovarianceStamped(_fbb, _o->geopose.get(), _rehasher) : 0;
@@ -8474,6 +8492,7 @@ inline flatbuffers::Offset<AzureSpatialAnchor> CreateAzureSpatialAnchor(flatbuff
       _asa_id,
       _rep_id,
       _ns,
+      _anchor_type,
       _timestamp,
       _pose,
       _geopose,
