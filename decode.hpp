@@ -208,6 +208,42 @@ TransformStamped decode(
 }
 
 /*
+* Navigation Messages
+*/
+
+// nav_msgs/MapMetaData
+template <>
+struct flatbuffers_type_for<MapMetaData> {
+    typedef fb::nav_msgs::MapMetaData type;
+};
+template <>
+MapMetaData decode(
+    const fb::nav_msgs::MapMetaData* const src) {
+    MapMetaData dst;
+    dst.map_load_time = src->map_load_time();
+    dst.resolution = src->resolution();
+    dst.width = src->width();
+    dst.height = src->height();
+    dst.origin = src->origin();
+    return dst;
+}
+
+// nav_msgs/OccupancyGrid
+template <>
+struct flatbuffers_type_for<OccupancyGrid> {
+    typedef fb::nav_msgs::OccupancyGrid type;
+};
+template <>
+OccupancyGrid decode(
+    const fb::nav_msgs::OccupancyGrid* const src) {
+    OccupancyGrid dst;
+    dst.header = src->header();
+    dst.info = src->info();
+    dst.data = src->data();
+    return dst;
+}
+
+/*
 * Geographic Messages
 */
 
