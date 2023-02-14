@@ -299,6 +299,40 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+/*
+   Navigation Messages
+*/
+
+// nav_msgs/MapMetaData
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const MapMetaData& msg,
+    const MetadataOffset& metadata) {
+    return fb::nav_msgs::CreateMapMetaData(
+        fbb,
+        metadata,
+        encode(fbb, msg.map_load_time, 0),
+        encode(fbb, msg.resolution, 0),
+        encode(fbb, msg.width, 0),
+        encode(fbb, msg.height, 0),
+        encode(fbb, msg.origin, 0))
+        .o;
+}
+
+// nav_msgs/OccupancyGrid
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const OccupancyGrid& msg,
+    const MetadataOffset& metadata) {
+    return fb::nav_msgs::CreateOccupancyGrid(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.info, 0),
+        encode(fbb, msg.data, 0))
+        .o;
+}
+
 // geographic_msgs/GeoPoint
 template <>
 flatbuffers::uoffset_t encode(
