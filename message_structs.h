@@ -217,6 +217,19 @@ struct Path {
 	std::vector<PoseStamped> poses;
 };
 
+struct MapMetaData {
+	Time map_load_time;
+	float resolution;
+	uint32_t width;
+	uint32_t height;
+	Pose origin;
+};
+
+struct OccupancyGrid {
+	Header header;
+	std::vector<uint8_t> data;
+};
+
 // modified atak dectection_msgs 
 struct DetectedItem {
 	std::string name;
