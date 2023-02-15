@@ -90,12 +90,21 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
-// std_msgs/String
+// std::string
 template <>
 flatbuffers::uoffset_t encode(
     FBB& fbb, const std::string& msg, const MetadataOffset& metadata) {
     return fbb.CreateString(msg)
     .o;
+}
+
+//std_msgs/String
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const String& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateStringDirect(
+        fbb, metadata, msg.data.c_str())
+        .o;
 }
 
 // std_msgs/Empty
@@ -446,14 +455,16 @@ flatbuffers::uoffset_t encode(
     auto AsaId = fbb.CreateString(msg.asa_id);
     auto RepId = fbb.CreateString(msg.rep_id);
     auto NameSpace = fbb.CreateString(msg.ns);
-    auto time_stamp = fb::RosTime(msg.timestamp._nsec, msg.timestamp._sec);
+    auto anchor_type = fbb.CreateString(msg.anchor_type);
+    auto time_stamp = fb::RosTime(msg.timestamp._sec, msg.timestamp._nsec);
     auto neighbors = encode_vector<std::string>(fbb, 0, msg.neighbors);
     return fb::asa_db_portal::CreateAzureSpatialAnchor(
         fbb, 
         metadata, 
         AsaId, 
         RepId, 
-        NameSpace, 
+        NameSpace,
+        anchor_type,
         &time_stamp, 
         encode(fbb, msg.pose, 0), 
         encode(fbb, msg.geopose, 0), 

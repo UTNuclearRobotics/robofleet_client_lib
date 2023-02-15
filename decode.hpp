@@ -449,6 +449,7 @@ AzureSpatialAnchor decode(const fb::asa_db_portal::AzureSpatialAnchor* const src
     dst.asa_id = src->asa_id()->str();
     dst.rep_id = src->rep_id()->str();
     dst.ns = src->ns()->str();
+    dst.anchor_type = src->anchor_type()->str();
     dst.timestamp = decode<Time>(src->timestamp());
     dst.pose = decode<PoseWithCovarianceStamped>(src->pose());
     dst.geopose = decode<GeoPoseWithCovarianceStamped>(src->geopose());
