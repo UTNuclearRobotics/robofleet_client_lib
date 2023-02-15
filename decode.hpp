@@ -220,11 +220,11 @@ template <>
 MapMetaData decode(
     const fb::nav_msgs::MapMetaData* const src) {
     MapMetaData dst;
-    dst.map_load_time = src->map_load_time();
+    dst.map_load_time = decode<Time>(src->map_load_time());
     dst.resolution = src->resolution();
     dst.width = src->width();
     dst.height = src->height();
-    dst.origin = src->origin();
+    dst.origin = decode<Pose>(src->origin());
     return dst;
 }
 
@@ -237,9 +237,10 @@ template <>
 OccupancyGrid decode(
     const fb::nav_msgs::OccupancyGrid* const src) {
     OccupancyGrid dst;
-    dst.header = src->header();
-    dst.info = src->info();
-    dst.data = src->data();
+    dst.header = decode<Header>(src->header());
+    dst.info = decode<MapMetaData>(src->info());
+    dst.data.resize(src->data()->size());
+    std::copy(src->data()->begin(), src->data()->end(), dst.data.begin());
     return dst;
 }
 
