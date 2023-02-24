@@ -11,3 +11,6 @@
 #include "msg_schemas/std_msgs_generated.h"
 #include "msg_schemas/temoto_action_engine_generated.h"
 #include "msg_schemas/uuid_msgs_generated.h"
+#include "msg_schemas/amrl_msgs_generated.h"
+#include "msg_schemas/nav_msgs_generated.h"
+#include "msg_schemas/tf2_msgs_generated.h"

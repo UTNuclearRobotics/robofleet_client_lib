@@ -13,6 +13,8 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
               FLATBUFFERS_VERSION_REVISION == 21,
              "Non-compatible flatbuffers version included");
 
+#include "base_schema_generated.h"
+
 namespace fb {
 namespace temoto_action_engine {
 
@@ -520,36 +522,48 @@ struct UmrfGraphDiffT : public ::flatbuffers::NativeTable {
   UmrfGraphDiffT &operator=(UmrfGraphDiffT o) FLATBUFFERS_NOEXCEPT;
 };
 
-struct UmrfGraphDiff FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef UmrfGraphDiffT NativeTableType;
-  typedef UmrfGraphDiffBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT___METADATA = 4,
-    VT_OPERATION = 6,
-    VT_UMRF_JSON = 8
-  };
-  const fb::MsgMetadata *__metadata() const {
-    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
-  }
-  const ::flatbuffers::String *operation() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_OPERATION);
-  }
-  const ::flatbuffers::String *umrf_json() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_JSON);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT___METADATA) &&
-           verifier.VerifyTable(__metadata()) &&
-           VerifyOffsetRequired(verifier, VT_OPERATION) &&
-           verifier.VerifyString(operation()) &&
-           VerifyOffsetRequired(verifier, VT_UMRF_JSON) &&
-           verifier.VerifyString(umrf_json()) &&
-           verifier.EndTable();
-  }
-  UmrfGraphDiffT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(UmrfGraphDiffT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static ::flatbuffers::Offset<UmrfGraphDiff> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+struct UmrfGraphDiff FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+    typedef UmrfGraphDiffT NativeTableType;
+    typedef UmrfGraphDiffBuilder Builder;
+    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+        VT___METADATA = 4,
+        VT_ADD = 6,
+        VT_SUBTRACT = 8,
+        VT_OPERATION = 10,
+        VT_UMRF_JSON = 12
+    };
+    const fb::MsgMetadata* __metadata() const {
+        return GetPointer<const fb::MsgMetadata*>(VT___METADATA);
+    }
+    const flatbuffers::String* ADD() const {
+        return GetPointer<const flatbuffers::String*>(VT_ADD);
+    }
+    const flatbuffers::String* SUBTRACT() const {
+        return GetPointer<const flatbuffers::String*>(VT_SUBTRACT);
+    }
+    const flatbuffers::String* operation() const {
+        return GetPointer<const flatbuffers::String*>(VT_OPERATION);
+    }
+    const flatbuffers::String* umrf_json() const {
+        return GetPointer<const flatbuffers::String*>(VT_UMRF_JSON);
+    }
+    bool Verify(flatbuffers::Verifier& verifier) const {
+        return VerifyTableStart(verifier) &&
+            VerifyOffset(verifier, VT___METADATA) &&
+            verifier.VerifyTable(__metadata()) &&
+            VerifyOffsetRequired(verifier, VT_ADD) &&
+            verifier.VerifyString(ADD()) &&
+            VerifyOffsetRequired(verifier, VT_SUBTRACT) &&
+            verifier.VerifyString(SUBTRACT()) &&
+            VerifyOffsetRequired(verifier, VT_OPERATION) &&
+            verifier.VerifyString(operation()) &&
+            VerifyOffsetRequired(verifier, VT_UMRF_JSON) &&
+            verifier.VerifyString(umrf_json()) &&
+            verifier.EndTable();
+    }
+    UmrfGraphDiffT* UnPack(const flatbuffers::resolver_function_t* _resolver = nullptr) const;
+    void UnPackTo(UmrfGraphDiffT* _o, const flatbuffers::resolver_function_t* _resolver = nullptr) const;
+    static flatbuffers::Offset<UmrfGraphDiff> Pack(flatbuffers::FlatBufferBuilder& _fbb, const UmrfGraphDiffT* _o, const flatbuffers::rehasher_function_t* _rehasher = nullptr);
 };
 
 struct UmrfGraphDiffBuilder {

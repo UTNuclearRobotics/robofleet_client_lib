@@ -13,8 +13,9 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
               FLATBUFFERS_VERSION_REVISION == 21,
              "Non-compatible flatbuffers version included");
 
-#include "msg_schemas/geometry_msgs_generated.h"
-#include "msg_schemas/std_msgs_generated.h"
+#include "base_schema_generated.h"
+#include "geometry_msgs_generated.h"
+#include "std_msgs_generated.h"
 
 namespace fb {
 namespace leg_tracker {

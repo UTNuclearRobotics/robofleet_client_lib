@@ -54,8 +54,8 @@ struct flatbuffers_type_for<Time> {
 template <>
 Time decode(const fb::RosTime* const src) {
     Time dst;
-    dst._sec = src->secs();
-    dst._nsec = src->nsecs();
+    dst._sec = src->sec();
+    dst._nsec = src->nsec();
     return dst;
 }
 
@@ -323,8 +323,8 @@ template <>
 DetectedItem decode(const fb::amrl_msgs::DetectedItem* const src) {
     DetectedItem dst;
     dst.name = src->name()->str();
-    dst.repID = src->repID()->str();
-    dst.anchorID = src->anchorID()->str();
+    dst.repID = src->repid()->str();
+    dst.anchorID = src->anchorid()->str();
     dst.x = src->x();
     dst.y = src->y();
     dst.z = src->z();

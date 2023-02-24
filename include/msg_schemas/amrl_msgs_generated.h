@@ -4,7 +4,7 @@
 #ifndef FLATBUFFERS_GENERATED_AMRLMSGS_FB_AMRL_MSGS_H_
 #define FLATBUFFERS_GENERATED_AMRLMSGS_FB_AMRL_MSGS_H_
 
-#include "flatbuffers/flatbuffers.h"
+#include "./flatbuffers/flatbuffers.h"
 
 // Ensure the included flatbuffers.h is the same version as when this file was
 // generated, otherwise it may not be compatible.
@@ -13,10 +13,10 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
               FLATBUFFERS_VERSION_REVISION == 21,
              "Non-compatible flatbuffers version included");
 
-#include "robofleet_client/base_schema_generated.h"
-#include "geometry_msgs_robofleet/geometry_msgs_generated.h"
-#include "sensor_msgs_robofleet/sensor_msgs_generated.h"
-#include "std_msgs_robofleet/std_msgs_generated.h"
+#include "base_schema_generated.h"
+#include "geometry_msgs_generated.h"
+#include "sensor_msgs_generated.h"
+#include "std_msgs_generated.h"
 
 namespace fb {
 namespace amrl_msgs {

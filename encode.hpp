@@ -447,8 +447,6 @@ flatbuffers::uoffset_t encode(
     return fb::temoto_action_engine::CreateUmrfGraphDiffDirect(
         fbb,
         metadata,
-        msg.ADD.c_str(),
-        msg.SUBTRACT.c_str(),
         msg.operation.c_str(),
         msg.umrf_json.c_str())
         .o;
