@@ -277,7 +277,7 @@ GeoPoseWithCovarianceStamped decode(
 
 
 /*
-* Sensor Messages
+* ROS Sensor Messages
 */
 
 template <>
@@ -311,6 +311,65 @@ CompressedImage decode(
     dst.data.resize(src->data()->size());
     std::copy(src->data()->begin(), src->data()->end(), dst.data.begin());
     dst.format = src->format()->str();
+    return dst;
+}
+
+
+/*
+   ROS Navigation Messages
+*/
+
+// nav_msgs/Path
+template <>
+struct flatbuffers_type_for<Path> {
+    typedef fb::nav_msgs::Path type;
+};
+template <>
+Path decode(const fb::nav_msgs::Path* const src) {
+    Path dst;
+    dst.header = decode<Header>(src->header());
+    dst.poses.resize(src->poses()->size());
+    auto src3 = src->poses()->begin();
+    auto dst3 = dst.poses.begin();
+    while (src3 != src->poses()->end()) {
+        *dst3 = decode<PoseStamped>(*src3);
+        ++src3;
+        ++dst3;
+    }
+    return dst;
+}
+
+
+// nav_msgs/MapMetaData
+template <>
+struct flatbuffers_type_for<MapMetaData> {
+    typedef fb::nav_msgs::MapMetaData type;
+};
+template <>
+MapMetaData decode(
+    const fb::nav_msgs::MapMetaData* const src) {
+    MapMetaData dst;
+    dst.map_load_time = decode<Time>(src->map_load_time());
+    dst.resolution = src->resolution();
+    dst.width = src->width();
+    dst.height = src->height();
+    dst.origin = decode<Pose>(src->origin());
+    return dst;
+}
+
+// nav_msgs/OccupancyGrid
+template <>
+struct flatbuffers_type_for<OccupancyGrid> {
+    typedef fb::nav_msgs::OccupancyGrid type;
+};
+template <>
+OccupancyGrid decode(
+    const fb::nav_msgs::OccupancyGrid* const src) {
+    OccupancyGrid dst;
+    dst.header = decode<Header>(src->header());
+    dst.info = decode<MapMetaData>(src->info());
+    dst.data.resize(src->data()->size());
+    std::copy(src->data()->begin(), src->data()->end(), dst.data.begin());
     return dst;
 }
 
@@ -508,25 +567,6 @@ StartUMRF decode(
     return dst;
 }
 
-// nav_msgs/Path
-template <>
-struct flatbuffers_type_for<Path> {
-    typedef fb::nav_msgs::Path type;
-};
-template <>
-Path decode(const fb::nav_msgs::Path* const src) {
-    Path dst;
-    dst.header = decode<Header>(src->header());
-    dst.poses.resize(src->poses()->size());
-    auto src3 = src->poses()->begin();
-    auto dst3 = dst.poses.begin();
-    while (src3 != src->poses()->end()) {
-        *dst3 = decode<PoseStamped>(*src3);
-        ++src3;
-        ++dst3;
-    }
-    return dst;
-}
 
 
 // tf2_msgs/TFMessage
