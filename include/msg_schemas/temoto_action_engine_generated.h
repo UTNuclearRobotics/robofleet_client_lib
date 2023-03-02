@@ -4,7 +4,7 @@
 #ifndef FLATBUFFERS_GENERATED_TEMOTOACTIONENGINE_FB_TEMOTO_ACTION_ENGINE_H_
 #define FLATBUFFERS_GENERATED_TEMOTOACTIONENGINE_FB_TEMOTO_ACTION_ENGINE_H_
 
-#include "./flatbuffers/flatbuffers.h"
+#include "flatbuffers/flatbuffers.h"
 
 // Ensure the included flatbuffers.h is the same version as when this file was
 // generated, otherwise it may not be compatible.
@@ -13,10 +13,14 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
               FLATBUFFERS_VERSION_REVISION == 21,
              "Non-compatible flatbuffers version included");
 
-#include "base_schema_generated.h"
+#include "robofleet_client/base_schema_generated.h"
 
 namespace fb {
 namespace temoto_action_engine {
+
+struct UmrfGraphDiff;
+struct UmrfGraphDiffBuilder;
+struct UmrfGraphDiffT;
 
 struct GetUmrfGraphsRequest;
 struct GetUmrfGraphsRequestBuilder;
@@ -26,9 +30,13 @@ struct GetUmrfGraphsResponse;
 struct GetUmrfGraphsResponseBuilder;
 struct GetUmrfGraphsResponseT;
 
-struct BroadcastStartUmrfGraph;
-struct BroadcastStartUmrfGraphBuilder;
-struct BroadcastStartUmrfGraphT;
+struct StartUmrfGraphRequest;
+struct StartUmrfGraphRequestBuilder;
+struct StartUmrfGraphRequestT;
+
+struct StartUmrfGraphResponse;
+struct StartUmrfGraphResponseBuilder;
+struct StartUmrfGraphResponseT;
 
 struct StopUmrfGraphRequest;
 struct StopUmrfGraphRequestBuilder;
@@ -38,21 +46,142 @@ struct StopUmrfGraphResponse;
 struct StopUmrfGraphResponseBuilder;
 struct StopUmrfGraphResponseT;
 
-struct UmrfGraphDiff;
-struct UmrfGraphDiffBuilder;
-struct UmrfGraphDiffT;
-
-struct StartUmrfGraphRequest;
-struct StartUmrfGraphRequestBuilder;
-struct StartUmrfGraphRequestT;
-
-struct StartUmrfGraphResponse;
-struct StartUmrfGraphResponseBuilder;
-struct StartUmrfGraphResponseT;
+struct BroadcastStartUmrfGraph;
+struct BroadcastStartUmrfGraphBuilder;
+struct BroadcastStartUmrfGraphT;
 
 struct BroadcastStopUmrfGraph;
 struct BroadcastStopUmrfGraphBuilder;
 struct BroadcastStopUmrfGraphT;
+
+struct UmrfGraphDiffT : public ::flatbuffers::NativeTable {
+  typedef UmrfGraphDiff TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata{};
+  std::string add{};
+  std::string subtract{};
+  std::string operation{};
+  std::string umrf_json{};
+  UmrfGraphDiffT() = default;
+  UmrfGraphDiffT(const UmrfGraphDiffT &o);
+  UmrfGraphDiffT(UmrfGraphDiffT&&) FLATBUFFERS_NOEXCEPT = default;
+  UmrfGraphDiffT &operator=(UmrfGraphDiffT o) FLATBUFFERS_NOEXCEPT;
+};
+
+struct UmrfGraphDiff FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UmrfGraphDiffT NativeTableType;
+  typedef UmrfGraphDiffBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4,
+    VT_ADD = 6,
+    VT_SUBTRACT = 8,
+    VT_OPERATION = 10,
+    VT_UMRF_JSON = 12
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  const ::flatbuffers::String *add() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ADD);
+  }
+  const ::flatbuffers::String *subtract() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_SUBTRACT);
+  }
+  const ::flatbuffers::String *operation() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_OPERATION);
+  }
+  const ::flatbuffers::String *umrf_json() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_JSON);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           VerifyOffsetRequired(verifier, VT_ADD) &&
+           verifier.VerifyString(add()) &&
+           VerifyOffsetRequired(verifier, VT_SUBTRACT) &&
+           verifier.VerifyString(subtract()) &&
+           VerifyOffsetRequired(verifier, VT_OPERATION) &&
+           verifier.VerifyString(operation()) &&
+           VerifyOffsetRequired(verifier, VT_UMRF_JSON) &&
+           verifier.VerifyString(umrf_json()) &&
+           verifier.EndTable();
+  }
+  UmrfGraphDiffT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(UmrfGraphDiffT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<UmrfGraphDiff> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct UmrfGraphDiffBuilder {
+  typedef UmrfGraphDiff Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(UmrfGraphDiff::VT___METADATA, __metadata);
+  }
+  void add_add(::flatbuffers::Offset<::flatbuffers::String> add) {
+    fbb_.AddOffset(UmrfGraphDiff::VT_ADD, add);
+  }
+  void add_subtract(::flatbuffers::Offset<::flatbuffers::String> subtract) {
+    fbb_.AddOffset(UmrfGraphDiff::VT_SUBTRACT, subtract);
+  }
+  void add_operation(::flatbuffers::Offset<::flatbuffers::String> operation) {
+    fbb_.AddOffset(UmrfGraphDiff::VT_OPERATION, operation);
+  }
+  void add_umrf_json(::flatbuffers::Offset<::flatbuffers::String> umrf_json) {
+    fbb_.AddOffset(UmrfGraphDiff::VT_UMRF_JSON, umrf_json);
+  }
+  explicit UmrfGraphDiffBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UmrfGraphDiff> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UmrfGraphDiff>(end);
+    fbb_.Required(o, UmrfGraphDiff::VT_ADD);
+    fbb_.Required(o, UmrfGraphDiff::VT_SUBTRACT);
+    fbb_.Required(o, UmrfGraphDiff::VT_OPERATION);
+    fbb_.Required(o, UmrfGraphDiff::VT_UMRF_JSON);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiff(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> add = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> subtract = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> operation = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> umrf_json = 0) {
+  UmrfGraphDiffBuilder builder_(_fbb);
+  builder_.add_umrf_json(umrf_json);
+  builder_.add_operation(operation);
+  builder_.add_subtract(subtract);
+  builder_.add_add(add);
+  builder_.add___metadata(__metadata);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiffDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    const char *add = nullptr,
+    const char *subtract = nullptr,
+    const char *operation = nullptr,
+    const char *umrf_json = nullptr) {
+  auto add__ = add ? _fbb.CreateString(add) : 0;
+  auto subtract__ = subtract ? _fbb.CreateString(subtract) : 0;
+  auto operation__ = operation ? _fbb.CreateString(operation) : 0;
+  auto umrf_json__ = umrf_json ? _fbb.CreateString(umrf_json) : 0;
+  return fb::temoto_action_engine::CreateUmrfGraphDiff(
+      _fbb,
+      __metadata,
+      add__,
+      subtract__,
+      operation__,
+      umrf_json__);
+}
+
+::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiff(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
 struct GetUmrfGraphsRequestT : public ::flatbuffers::NativeTable {
   typedef GetUmrfGraphsRequest TableType;
@@ -217,408 +346,6 @@ inline ::flatbuffers::Offset<GetUmrfGraphsResponse> CreateGetUmrfGraphsResponseD
 }
 
 ::flatbuffers::Offset<GetUmrfGraphsResponse> CreateGetUmrfGraphsResponse(::flatbuffers::FlatBufferBuilder &_fbb, const GetUmrfGraphsResponseT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-
-struct BroadcastStartUmrfGraphT : public ::flatbuffers::NativeTable {
-  typedef BroadcastStartUmrfGraph TableType;
-  std::unique_ptr<fb::MsgMetadataT> __metadata{};
-  std::string umrf_graph_name{};
-  bool name_match_required = false;
-  std::vector<std::string> targets{};
-  std::string umrf_graph_json{};
-  std::vector<std::unique_ptr<fb::temoto_action_engine::UmrfGraphDiffT>> umrf_graph_diffs{};
-  BroadcastStartUmrfGraphT() = default;
-  BroadcastStartUmrfGraphT(const BroadcastStartUmrfGraphT &o);
-  BroadcastStartUmrfGraphT(BroadcastStartUmrfGraphT&&) FLATBUFFERS_NOEXCEPT = default;
-  BroadcastStartUmrfGraphT &operator=(BroadcastStartUmrfGraphT o) FLATBUFFERS_NOEXCEPT;
-};
-
-struct BroadcastStartUmrfGraph FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef BroadcastStartUmrfGraphT NativeTableType;
-  typedef BroadcastStartUmrfGraphBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT___METADATA = 4,
-    VT_UMRF_GRAPH_NAME = 6,
-    VT_NAME_MATCH_REQUIRED = 8,
-    VT_TARGETS = 10,
-    VT_UMRF_GRAPH_JSON = 12,
-    VT_UMRF_GRAPH_DIFFS = 14
-  };
-  const fb::MsgMetadata *__metadata() const {
-    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
-  }
-  const ::flatbuffers::String *umrf_graph_name() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_GRAPH_NAME);
-  }
-  bool name_match_required() const {
-    return GetField<uint8_t>(VT_NAME_MATCH_REQUIRED, 0) != 0;
-  }
-  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *targets() const {
-    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_TARGETS);
-  }
-  const ::flatbuffers::String *umrf_graph_json() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_GRAPH_JSON);
-  }
-  const ::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> *umrf_graph_diffs() const {
-    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> *>(VT_UMRF_GRAPH_DIFFS);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT___METADATA) &&
-           verifier.VerifyTable(__metadata()) &&
-           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_NAME) &&
-           verifier.VerifyString(umrf_graph_name()) &&
-           VerifyField<uint8_t>(verifier, VT_NAME_MATCH_REQUIRED, 1) &&
-           VerifyOffsetRequired(verifier, VT_TARGETS) &&
-           verifier.VerifyVector(targets()) &&
-           verifier.VerifyVectorOfStrings(targets()) &&
-           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_JSON) &&
-           verifier.VerifyString(umrf_graph_json()) &&
-           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_DIFFS) &&
-           verifier.VerifyVector(umrf_graph_diffs()) &&
-           verifier.VerifyVectorOfTables(umrf_graph_diffs()) &&
-           verifier.EndTable();
-  }
-  BroadcastStartUmrfGraphT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(BroadcastStartUmrfGraphT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static ::flatbuffers::Offset<BroadcastStartUmrfGraph> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-};
-
-struct BroadcastStartUmrfGraphBuilder {
-  typedef BroadcastStartUmrfGraph Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
-    fbb_.AddOffset(BroadcastStartUmrfGraph::VT___METADATA, __metadata);
-  }
-  void add_umrf_graph_name(::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name) {
-    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_UMRF_GRAPH_NAME, umrf_graph_name);
-  }
-  void add_name_match_required(bool name_match_required) {
-    fbb_.AddElement<uint8_t>(BroadcastStartUmrfGraph::VT_NAME_MATCH_REQUIRED, static_cast<uint8_t>(name_match_required), 0);
-  }
-  void add_targets(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> targets) {
-    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_TARGETS, targets);
-  }
-  void add_umrf_graph_json(::flatbuffers::Offset<::flatbuffers::String> umrf_graph_json) {
-    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_UMRF_GRAPH_JSON, umrf_graph_json);
-  }
-  void add_umrf_graph_diffs(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>>> umrf_graph_diffs) {
-    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_UMRF_GRAPH_DIFFS, umrf_graph_diffs);
-  }
-  explicit BroadcastStartUmrfGraphBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<BroadcastStartUmrfGraph> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<BroadcastStartUmrfGraph>(end);
-    fbb_.Required(o, BroadcastStartUmrfGraph::VT_UMRF_GRAPH_NAME);
-    fbb_.Required(o, BroadcastStartUmrfGraph::VT_TARGETS);
-    fbb_.Required(o, BroadcastStartUmrfGraph::VT_UMRF_GRAPH_JSON);
-    fbb_.Required(o, BroadcastStartUmrfGraph::VT_UMRF_GRAPH_DIFFS);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraph(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name = 0,
-    bool name_match_required = false,
-    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> targets = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> umrf_graph_json = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>>> umrf_graph_diffs = 0) {
-  BroadcastStartUmrfGraphBuilder builder_(_fbb);
-  builder_.add_umrf_graph_diffs(umrf_graph_diffs);
-  builder_.add_umrf_graph_json(umrf_graph_json);
-  builder_.add_targets(targets);
-  builder_.add_umrf_graph_name(umrf_graph_name);
-  builder_.add___metadata(__metadata);
-  builder_.add_name_match_required(name_match_required);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraphDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    const char *umrf_graph_name = nullptr,
-    bool name_match_required = false,
-    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *targets = nullptr,
-    const char *umrf_graph_json = nullptr,
-    const std::vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> *umrf_graph_diffs = nullptr) {
-  auto umrf_graph_name__ = umrf_graph_name ? _fbb.CreateString(umrf_graph_name) : 0;
-  auto targets__ = targets ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*targets) : 0;
-  auto umrf_graph_json__ = umrf_graph_json ? _fbb.CreateString(umrf_graph_json) : 0;
-  auto umrf_graph_diffs__ = umrf_graph_diffs ? _fbb.CreateVector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>>(*umrf_graph_diffs) : 0;
-  return fb::temoto_action_engine::CreateBroadcastStartUmrfGraph(
-      _fbb,
-      __metadata,
-      umrf_graph_name__,
-      name_match_required,
-      targets__,
-      umrf_graph_json__,
-      umrf_graph_diffs__);
-}
-
-::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraph(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-
-struct StopUmrfGraphRequestT : public ::flatbuffers::NativeTable {
-  typedef StopUmrfGraphRequest TableType;
-  std::unique_ptr<fb::MsgMetadataT> __metadata{};
-  std::string umrf_graph_name{};
-  StopUmrfGraphRequestT() = default;
-  StopUmrfGraphRequestT(const StopUmrfGraphRequestT &o);
-  StopUmrfGraphRequestT(StopUmrfGraphRequestT&&) FLATBUFFERS_NOEXCEPT = default;
-  StopUmrfGraphRequestT &operator=(StopUmrfGraphRequestT o) FLATBUFFERS_NOEXCEPT;
-};
-
-struct StopUmrfGraphRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef StopUmrfGraphRequestT NativeTableType;
-  typedef StopUmrfGraphRequestBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT___METADATA = 4,
-    VT_UMRF_GRAPH_NAME = 6
-  };
-  const fb::MsgMetadata *__metadata() const {
-    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
-  }
-  const ::flatbuffers::String *umrf_graph_name() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_GRAPH_NAME);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT___METADATA) &&
-           verifier.VerifyTable(__metadata()) &&
-           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_NAME) &&
-           verifier.VerifyString(umrf_graph_name()) &&
-           verifier.EndTable();
-  }
-  StopUmrfGraphRequestT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(StopUmrfGraphRequestT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static ::flatbuffers::Offset<StopUmrfGraphRequest> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-};
-
-struct StopUmrfGraphRequestBuilder {
-  typedef StopUmrfGraphRequest Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
-    fbb_.AddOffset(StopUmrfGraphRequest::VT___METADATA, __metadata);
-  }
-  void add_umrf_graph_name(::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name) {
-    fbb_.AddOffset(StopUmrfGraphRequest::VT_UMRF_GRAPH_NAME, umrf_graph_name);
-  }
-  explicit StopUmrfGraphRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<StopUmrfGraphRequest> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<StopUmrfGraphRequest>(end);
-    fbb_.Required(o, StopUmrfGraphRequest::VT_UMRF_GRAPH_NAME);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequest(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name = 0) {
-  StopUmrfGraphRequestBuilder builder_(_fbb);
-  builder_.add_umrf_graph_name(umrf_graph_name);
-  builder_.add___metadata(__metadata);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequestDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    const char *umrf_graph_name = nullptr) {
-  auto umrf_graph_name__ = umrf_graph_name ? _fbb.CreateString(umrf_graph_name) : 0;
-  return fb::temoto_action_engine::CreateStopUmrfGraphRequest(
-      _fbb,
-      __metadata,
-      umrf_graph_name__);
-}
-
-::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequest(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-
-struct StopUmrfGraphResponseT : public ::flatbuffers::NativeTable {
-  typedef StopUmrfGraphResponse TableType;
-  std::unique_ptr<fb::MsgMetadataT> __metadata{};
-  bool success = false;
-  StopUmrfGraphResponseT() = default;
-  StopUmrfGraphResponseT(const StopUmrfGraphResponseT &o);
-  StopUmrfGraphResponseT(StopUmrfGraphResponseT&&) FLATBUFFERS_NOEXCEPT = default;
-  StopUmrfGraphResponseT &operator=(StopUmrfGraphResponseT o) FLATBUFFERS_NOEXCEPT;
-};
-
-struct StopUmrfGraphResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef StopUmrfGraphResponseT NativeTableType;
-  typedef StopUmrfGraphResponseBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT___METADATA = 4,
-    VT_SUCCESS = 6
-  };
-  const fb::MsgMetadata *__metadata() const {
-    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
-  }
-  bool success() const {
-    return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT___METADATA) &&
-           verifier.VerifyTable(__metadata()) &&
-           VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
-           verifier.EndTable();
-  }
-  StopUmrfGraphResponseT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(StopUmrfGraphResponseT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static ::flatbuffers::Offset<StopUmrfGraphResponse> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-};
-
-struct StopUmrfGraphResponseBuilder {
-  typedef StopUmrfGraphResponse Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
-    fbb_.AddOffset(StopUmrfGraphResponse::VT___METADATA, __metadata);
-  }
-  void add_success(bool success) {
-    fbb_.AddElement<uint8_t>(StopUmrfGraphResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
-  }
-  explicit StopUmrfGraphResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<StopUmrfGraphResponse> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<StopUmrfGraphResponse>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<StopUmrfGraphResponse> CreateStopUmrfGraphResponse(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    bool success = false) {
-  StopUmrfGraphResponseBuilder builder_(_fbb);
-  builder_.add___metadata(__metadata);
-  builder_.add_success(success);
-  return builder_.Finish();
-}
-
-::flatbuffers::Offset<StopUmrfGraphResponse> CreateStopUmrfGraphResponse(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
-
-struct UmrfGraphDiffT : public ::flatbuffers::NativeTable {
-  typedef UmrfGraphDiff TableType;
-  std::unique_ptr<fb::MsgMetadataT> __metadata{};
-  std::string operation{};
-  std::string umrf_json{};
-  UmrfGraphDiffT() = default;
-  UmrfGraphDiffT(const UmrfGraphDiffT &o);
-  UmrfGraphDiffT(UmrfGraphDiffT&&) FLATBUFFERS_NOEXCEPT = default;
-  UmrfGraphDiffT &operator=(UmrfGraphDiffT o) FLATBUFFERS_NOEXCEPT;
-};
-
-struct UmrfGraphDiff FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-    typedef UmrfGraphDiffT NativeTableType;
-    typedef UmrfGraphDiffBuilder Builder;
-    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-        VT___METADATA = 4,
-        VT_ADD = 6,
-        VT_SUBTRACT = 8,
-        VT_OPERATION = 10,
-        VT_UMRF_JSON = 12
-    };
-    const fb::MsgMetadata* __metadata() const {
-        return GetPointer<const fb::MsgMetadata*>(VT___METADATA);
-    }
-    const flatbuffers::String* ADD() const {
-        return GetPointer<const flatbuffers::String*>(VT_ADD);
-    }
-    const flatbuffers::String* SUBTRACT() const {
-        return GetPointer<const flatbuffers::String*>(VT_SUBTRACT);
-    }
-    const flatbuffers::String* operation() const {
-        return GetPointer<const flatbuffers::String*>(VT_OPERATION);
-    }
-    const flatbuffers::String* umrf_json() const {
-        return GetPointer<const flatbuffers::String*>(VT_UMRF_JSON);
-    }
-    bool Verify(flatbuffers::Verifier& verifier) const {
-        return VerifyTableStart(verifier) &&
-            VerifyOffset(verifier, VT___METADATA) &&
-            verifier.VerifyTable(__metadata()) &&
-            VerifyOffsetRequired(verifier, VT_ADD) &&
-            verifier.VerifyString(ADD()) &&
-            VerifyOffsetRequired(verifier, VT_SUBTRACT) &&
-            verifier.VerifyString(SUBTRACT()) &&
-            VerifyOffsetRequired(verifier, VT_OPERATION) &&
-            verifier.VerifyString(operation()) &&
-            VerifyOffsetRequired(verifier, VT_UMRF_JSON) &&
-            verifier.VerifyString(umrf_json()) &&
-            verifier.EndTable();
-    }
-    UmrfGraphDiffT* UnPack(const flatbuffers::resolver_function_t* _resolver = nullptr) const;
-    void UnPackTo(UmrfGraphDiffT* _o, const flatbuffers::resolver_function_t* _resolver = nullptr) const;
-    static flatbuffers::Offset<UmrfGraphDiff> Pack(flatbuffers::FlatBufferBuilder& _fbb, const UmrfGraphDiffT* _o, const flatbuffers::rehasher_function_t* _rehasher = nullptr);
-};
-
-struct UmrfGraphDiffBuilder {
-  typedef UmrfGraphDiff Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
-    fbb_.AddOffset(UmrfGraphDiff::VT___METADATA, __metadata);
-  }
-  void add_operation(::flatbuffers::Offset<::flatbuffers::String> operation) {
-    fbb_.AddOffset(UmrfGraphDiff::VT_OPERATION, operation);
-  }
-  void add_umrf_json(::flatbuffers::Offset<::flatbuffers::String> umrf_json) {
-    fbb_.AddOffset(UmrfGraphDiff::VT_UMRF_JSON, umrf_json);
-  }
-  explicit UmrfGraphDiffBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<UmrfGraphDiff> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<UmrfGraphDiff>(end);
-    fbb_.Required(o, UmrfGraphDiff::VT_OPERATION);
-    fbb_.Required(o, UmrfGraphDiff::VT_UMRF_JSON);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiff(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> operation = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> umrf_json = 0) {
-  UmrfGraphDiffBuilder builder_(_fbb);
-  builder_.add_umrf_json(umrf_json);
-  builder_.add_operation(operation);
-  builder_.add___metadata(__metadata);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiffDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
-    const char *operation = nullptr,
-    const char *umrf_json = nullptr) {
-  auto operation__ = operation ? _fbb.CreateString(operation) : 0;
-  auto umrf_json__ = umrf_json ? _fbb.CreateString(umrf_json) : 0;
-  return fb::temoto_action_engine::CreateUmrfGraphDiff(
-      _fbb,
-      __metadata,
-      operation__,
-      umrf_json__);
-}
-
-::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiff(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
 struct StartUmrfGraphRequestT : public ::flatbuffers::NativeTable {
   typedef StartUmrfGraphRequest TableType;
@@ -798,6 +525,299 @@ inline ::flatbuffers::Offset<StartUmrfGraphResponse> CreateStartUmrfGraphRespons
 
 ::flatbuffers::Offset<StartUmrfGraphResponse> CreateStartUmrfGraphResponse(::flatbuffers::FlatBufferBuilder &_fbb, const StartUmrfGraphResponseT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
+struct StopUmrfGraphRequestT : public ::flatbuffers::NativeTable {
+  typedef StopUmrfGraphRequest TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata{};
+  std::string umrf_graph_name{};
+  StopUmrfGraphRequestT() = default;
+  StopUmrfGraphRequestT(const StopUmrfGraphRequestT &o);
+  StopUmrfGraphRequestT(StopUmrfGraphRequestT&&) FLATBUFFERS_NOEXCEPT = default;
+  StopUmrfGraphRequestT &operator=(StopUmrfGraphRequestT o) FLATBUFFERS_NOEXCEPT;
+};
+
+struct StopUmrfGraphRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef StopUmrfGraphRequestT NativeTableType;
+  typedef StopUmrfGraphRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4,
+    VT_UMRF_GRAPH_NAME = 6
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  const ::flatbuffers::String *umrf_graph_name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_GRAPH_NAME);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_NAME) &&
+           verifier.VerifyString(umrf_graph_name()) &&
+           verifier.EndTable();
+  }
+  StopUmrfGraphRequestT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(StopUmrfGraphRequestT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<StopUmrfGraphRequest> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct StopUmrfGraphRequestBuilder {
+  typedef StopUmrfGraphRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(StopUmrfGraphRequest::VT___METADATA, __metadata);
+  }
+  void add_umrf_graph_name(::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name) {
+    fbb_.AddOffset(StopUmrfGraphRequest::VT_UMRF_GRAPH_NAME, umrf_graph_name);
+  }
+  explicit StopUmrfGraphRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<StopUmrfGraphRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<StopUmrfGraphRequest>(end);
+    fbb_.Required(o, StopUmrfGraphRequest::VT_UMRF_GRAPH_NAME);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name = 0) {
+  StopUmrfGraphRequestBuilder builder_(_fbb);
+  builder_.add_umrf_graph_name(umrf_graph_name);
+  builder_.add___metadata(__metadata);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequestDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    const char *umrf_graph_name = nullptr) {
+  auto umrf_graph_name__ = umrf_graph_name ? _fbb.CreateString(umrf_graph_name) : 0;
+  return fb::temoto_action_engine::CreateStopUmrfGraphRequest(
+      _fbb,
+      __metadata,
+      umrf_graph_name__);
+}
+
+::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequest(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+struct StopUmrfGraphResponseT : public ::flatbuffers::NativeTable {
+  typedef StopUmrfGraphResponse TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata{};
+  bool success = false;
+  StopUmrfGraphResponseT() = default;
+  StopUmrfGraphResponseT(const StopUmrfGraphResponseT &o);
+  StopUmrfGraphResponseT(StopUmrfGraphResponseT&&) FLATBUFFERS_NOEXCEPT = default;
+  StopUmrfGraphResponseT &operator=(StopUmrfGraphResponseT o) FLATBUFFERS_NOEXCEPT;
+};
+
+struct StopUmrfGraphResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef StopUmrfGraphResponseT NativeTableType;
+  typedef StopUmrfGraphResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4,
+    VT_SUCCESS = 6
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  bool success() const {
+    return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
+           verifier.EndTable();
+  }
+  StopUmrfGraphResponseT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(StopUmrfGraphResponseT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<StopUmrfGraphResponse> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct StopUmrfGraphResponseBuilder {
+  typedef StopUmrfGraphResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(StopUmrfGraphResponse::VT___METADATA, __metadata);
+  }
+  void add_success(bool success) {
+    fbb_.AddElement<uint8_t>(StopUmrfGraphResponse::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+  }
+  explicit StopUmrfGraphResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<StopUmrfGraphResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<StopUmrfGraphResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<StopUmrfGraphResponse> CreateStopUmrfGraphResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    bool success = false) {
+  StopUmrfGraphResponseBuilder builder_(_fbb);
+  builder_.add___metadata(__metadata);
+  builder_.add_success(success);
+  return builder_.Finish();
+}
+
+::flatbuffers::Offset<StopUmrfGraphResponse> CreateStopUmrfGraphResponse(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+struct BroadcastStartUmrfGraphT : public ::flatbuffers::NativeTable {
+  typedef BroadcastStartUmrfGraph TableType;
+  std::unique_ptr<fb::MsgMetadataT> __metadata{};
+  std::string umrf_graph_name{};
+  bool name_match_required = false;
+  std::vector<std::string> targets{};
+  std::string umrf_graph_json{};
+  std::vector<std::unique_ptr<fb::temoto_action_engine::UmrfGraphDiffT>> umrf_graph_diffs{};
+  BroadcastStartUmrfGraphT() = default;
+  BroadcastStartUmrfGraphT(const BroadcastStartUmrfGraphT &o);
+  BroadcastStartUmrfGraphT(BroadcastStartUmrfGraphT&&) FLATBUFFERS_NOEXCEPT = default;
+  BroadcastStartUmrfGraphT &operator=(BroadcastStartUmrfGraphT o) FLATBUFFERS_NOEXCEPT;
+};
+
+struct BroadcastStartUmrfGraph FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BroadcastStartUmrfGraphT NativeTableType;
+  typedef BroadcastStartUmrfGraphBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT___METADATA = 4,
+    VT_UMRF_GRAPH_NAME = 6,
+    VT_NAME_MATCH_REQUIRED = 8,
+    VT_TARGETS = 10,
+    VT_UMRF_GRAPH_JSON = 12,
+    VT_UMRF_GRAPH_DIFFS = 14
+  };
+  const fb::MsgMetadata *__metadata() const {
+    return GetPointer<const fb::MsgMetadata *>(VT___METADATA);
+  }
+  const ::flatbuffers::String *umrf_graph_name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_GRAPH_NAME);
+  }
+  bool name_match_required() const {
+    return GetField<uint8_t>(VT_NAME_MATCH_REQUIRED, 0) != 0;
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *targets() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_TARGETS);
+  }
+  const ::flatbuffers::String *umrf_graph_json() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_UMRF_GRAPH_JSON);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> *umrf_graph_diffs() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> *>(VT_UMRF_GRAPH_DIFFS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT___METADATA) &&
+           verifier.VerifyTable(__metadata()) &&
+           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_NAME) &&
+           verifier.VerifyString(umrf_graph_name()) &&
+           VerifyField<uint8_t>(verifier, VT_NAME_MATCH_REQUIRED, 1) &&
+           VerifyOffsetRequired(verifier, VT_TARGETS) &&
+           verifier.VerifyVector(targets()) &&
+           verifier.VerifyVectorOfStrings(targets()) &&
+           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_JSON) &&
+           verifier.VerifyString(umrf_graph_json()) &&
+           VerifyOffsetRequired(verifier, VT_UMRF_GRAPH_DIFFS) &&
+           verifier.VerifyVector(umrf_graph_diffs()) &&
+           verifier.VerifyVectorOfTables(umrf_graph_diffs()) &&
+           verifier.EndTable();
+  }
+  BroadcastStartUmrfGraphT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(BroadcastStartUmrfGraphT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<BroadcastStartUmrfGraph> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct BroadcastStartUmrfGraphBuilder {
+  typedef BroadcastStartUmrfGraph Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add___metadata(::flatbuffers::Offset<fb::MsgMetadata> __metadata) {
+    fbb_.AddOffset(BroadcastStartUmrfGraph::VT___METADATA, __metadata);
+  }
+  void add_umrf_graph_name(::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name) {
+    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_UMRF_GRAPH_NAME, umrf_graph_name);
+  }
+  void add_name_match_required(bool name_match_required) {
+    fbb_.AddElement<uint8_t>(BroadcastStartUmrfGraph::VT_NAME_MATCH_REQUIRED, static_cast<uint8_t>(name_match_required), 0);
+  }
+  void add_targets(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> targets) {
+    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_TARGETS, targets);
+  }
+  void add_umrf_graph_json(::flatbuffers::Offset<::flatbuffers::String> umrf_graph_json) {
+    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_UMRF_GRAPH_JSON, umrf_graph_json);
+  }
+  void add_umrf_graph_diffs(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>>> umrf_graph_diffs) {
+    fbb_.AddOffset(BroadcastStartUmrfGraph::VT_UMRF_GRAPH_DIFFS, umrf_graph_diffs);
+  }
+  explicit BroadcastStartUmrfGraphBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BroadcastStartUmrfGraph> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BroadcastStartUmrfGraph>(end);
+    fbb_.Required(o, BroadcastStartUmrfGraph::VT_UMRF_GRAPH_NAME);
+    fbb_.Required(o, BroadcastStartUmrfGraph::VT_TARGETS);
+    fbb_.Required(o, BroadcastStartUmrfGraph::VT_UMRF_GRAPH_JSON);
+    fbb_.Required(o, BroadcastStartUmrfGraph::VT_UMRF_GRAPH_DIFFS);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraph(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> umrf_graph_name = 0,
+    bool name_match_required = false,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> targets = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> umrf_graph_json = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>>> umrf_graph_diffs = 0) {
+  BroadcastStartUmrfGraphBuilder builder_(_fbb);
+  builder_.add_umrf_graph_diffs(umrf_graph_diffs);
+  builder_.add_umrf_graph_json(umrf_graph_json);
+  builder_.add_targets(targets);
+  builder_.add_umrf_graph_name(umrf_graph_name);
+  builder_.add___metadata(__metadata);
+  builder_.add_name_match_required(name_match_required);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraphDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<fb::MsgMetadata> __metadata = 0,
+    const char *umrf_graph_name = nullptr,
+    bool name_match_required = false,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *targets = nullptr,
+    const char *umrf_graph_json = nullptr,
+    const std::vector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> *umrf_graph_diffs = nullptr) {
+  auto umrf_graph_name__ = umrf_graph_name ? _fbb.CreateString(umrf_graph_name) : 0;
+  auto targets__ = targets ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*targets) : 0;
+  auto umrf_graph_json__ = umrf_graph_json ? _fbb.CreateString(umrf_graph_json) : 0;
+  auto umrf_graph_diffs__ = umrf_graph_diffs ? _fbb.CreateVector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>>(*umrf_graph_diffs) : 0;
+  return fb::temoto_action_engine::CreateBroadcastStartUmrfGraph(
+      _fbb,
+      __metadata,
+      umrf_graph_name__,
+      name_match_required,
+      targets__,
+      umrf_graph_json__,
+      umrf_graph_diffs__);
+}
+
+::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraph(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
 struct BroadcastStopUmrfGraphT : public ::flatbuffers::NativeTable {
   typedef BroadcastStopUmrfGraph TableType;
   std::unique_ptr<fb::MsgMetadataT> __metadata{};
@@ -896,6 +916,61 @@ inline ::flatbuffers::Offset<BroadcastStopUmrfGraph> CreateBroadcastStopUmrfGrap
 
 ::flatbuffers::Offset<BroadcastStopUmrfGraph> CreateBroadcastStopUmrfGraph(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStopUmrfGraphT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
+inline UmrfGraphDiffT::UmrfGraphDiffT(const UmrfGraphDiffT &o)
+      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
+        add(o.add),
+        subtract(o.subtract),
+        operation(o.operation),
+        umrf_json(o.umrf_json) {
+}
+
+inline UmrfGraphDiffT &UmrfGraphDiffT::operator=(UmrfGraphDiffT o) FLATBUFFERS_NOEXCEPT {
+  std::swap(__metadata, o.__metadata);
+  std::swap(add, o.add);
+  std::swap(subtract, o.subtract);
+  std::swap(operation, o.operation);
+  std::swap(umrf_json, o.umrf_json);
+  return *this;
+}
+
+inline UmrfGraphDiffT *UmrfGraphDiff::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
+  auto _o = std::unique_ptr<UmrfGraphDiffT>(new UmrfGraphDiffT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void UmrfGraphDiff::UnPackTo(UmrfGraphDiffT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
+  { auto _e = add(); if (_e) _o->add = _e->str(); }
+  { auto _e = subtract(); if (_e) _o->subtract = _e->str(); }
+  { auto _e = operation(); if (_e) _o->operation = _e->str(); }
+  { auto _e = umrf_json(); if (_e) _o->umrf_json = _e->str(); }
+}
+
+inline ::flatbuffers::Offset<UmrfGraphDiff> UmrfGraphDiff::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateUmrfGraphDiff(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiff(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const UmrfGraphDiffT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  auto _add = _fbb.CreateString(_o->add);
+  auto _subtract = _fbb.CreateString(_o->subtract);
+  auto _operation = _fbb.CreateString(_o->operation);
+  auto _umrf_json = _fbb.CreateString(_o->umrf_json);
+  return fb::temoto_action_engine::CreateUmrfGraphDiff(
+      _fbb,
+      ___metadata,
+      _add,
+      _subtract,
+      _operation,
+      _umrf_json);
+}
+
 inline GetUmrfGraphsRequestT::GetUmrfGraphsRequestT(const GetUmrfGraphsRequestT &o)
       : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
         requested_graphs(o.requested_graphs) {
@@ -974,192 +1049,6 @@ inline ::flatbuffers::Offset<GetUmrfGraphsResponse> CreateGetUmrfGraphsResponse(
       _fbb,
       ___metadata,
       _umrf_graph_jsons);
-}
-
-inline BroadcastStartUmrfGraphT::BroadcastStartUmrfGraphT(const BroadcastStartUmrfGraphT &o)
-      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
-        umrf_graph_name(o.umrf_graph_name),
-        name_match_required(o.name_match_required),
-        targets(o.targets),
-        umrf_graph_json(o.umrf_graph_json) {
-  umrf_graph_diffs.reserve(o.umrf_graph_diffs.size());
-  for (const auto &umrf_graph_diffs_ : o.umrf_graph_diffs) { umrf_graph_diffs.emplace_back((umrf_graph_diffs_) ? new fb::temoto_action_engine::UmrfGraphDiffT(*umrf_graph_diffs_) : nullptr); }
-}
-
-inline BroadcastStartUmrfGraphT &BroadcastStartUmrfGraphT::operator=(BroadcastStartUmrfGraphT o) FLATBUFFERS_NOEXCEPT {
-  std::swap(__metadata, o.__metadata);
-  std::swap(umrf_graph_name, o.umrf_graph_name);
-  std::swap(name_match_required, o.name_match_required);
-  std::swap(targets, o.targets);
-  std::swap(umrf_graph_json, o.umrf_graph_json);
-  std::swap(umrf_graph_diffs, o.umrf_graph_diffs);
-  return *this;
-}
-
-inline BroadcastStartUmrfGraphT *BroadcastStartUmrfGraph::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
-  auto _o = std::unique_ptr<BroadcastStartUmrfGraphT>(new BroadcastStartUmrfGraphT());
-  UnPackTo(_o.get(), _resolver);
-  return _o.release();
-}
-
-inline void BroadcastStartUmrfGraph::UnPackTo(BroadcastStartUmrfGraphT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
-  (void)_o;
-  (void)_resolver;
-  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
-  { auto _e = umrf_graph_name(); if (_e) _o->umrf_graph_name = _e->str(); }
-  { auto _e = name_match_required(); _o->name_match_required = _e; }
-  { auto _e = targets(); if (_e) { _o->targets.resize(_e->size()); for (::flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->targets[_i] = _e->Get(_i)->str(); } } else { _o->targets.resize(0); } }
-  { auto _e = umrf_graph_json(); if (_e) _o->umrf_graph_json = _e->str(); }
-  { auto _e = umrf_graph_diffs(); if (_e) { _o->umrf_graph_diffs.resize(_e->size()); for (::flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { if(_o->umrf_graph_diffs[_i]) { _e->Get(_i)->UnPackTo(_o->umrf_graph_diffs[_i].get(), _resolver); } else { _o->umrf_graph_diffs[_i] = std::unique_ptr<fb::temoto_action_engine::UmrfGraphDiffT>(_e->Get(_i)->UnPack(_resolver)); }; } } else { _o->umrf_graph_diffs.resize(0); } }
-}
-
-inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> BroadcastStartUmrfGraph::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  return CreateBroadcastStartUmrfGraph(_fbb, _o, _rehasher);
-}
-
-inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraph(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  (void)_rehasher;
-  (void)_o;
-  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const BroadcastStartUmrfGraphT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
-  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _umrf_graph_name = _fbb.CreateString(_o->umrf_graph_name);
-  auto _name_match_required = _o->name_match_required;
-  auto _targets = _fbb.CreateVectorOfStrings(_o->targets);
-  auto _umrf_graph_json = _fbb.CreateString(_o->umrf_graph_json);
-  auto _umrf_graph_diffs = _fbb.CreateVector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> (_o->umrf_graph_diffs.size(), [](size_t i, _VectorArgs *__va) { return CreateUmrfGraphDiff(*__va->__fbb, __va->__o->umrf_graph_diffs[i].get(), __va->__rehasher); }, &_va );
-  return fb::temoto_action_engine::CreateBroadcastStartUmrfGraph(
-      _fbb,
-      ___metadata,
-      _umrf_graph_name,
-      _name_match_required,
-      _targets,
-      _umrf_graph_json,
-      _umrf_graph_diffs);
-}
-
-inline StopUmrfGraphRequestT::StopUmrfGraphRequestT(const StopUmrfGraphRequestT &o)
-      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
-        umrf_graph_name(o.umrf_graph_name) {
-}
-
-inline StopUmrfGraphRequestT &StopUmrfGraphRequestT::operator=(StopUmrfGraphRequestT o) FLATBUFFERS_NOEXCEPT {
-  std::swap(__metadata, o.__metadata);
-  std::swap(umrf_graph_name, o.umrf_graph_name);
-  return *this;
-}
-
-inline StopUmrfGraphRequestT *StopUmrfGraphRequest::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
-  auto _o = std::unique_ptr<StopUmrfGraphRequestT>(new StopUmrfGraphRequestT());
-  UnPackTo(_o.get(), _resolver);
-  return _o.release();
-}
-
-inline void StopUmrfGraphRequest::UnPackTo(StopUmrfGraphRequestT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
-  (void)_o;
-  (void)_resolver;
-  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
-  { auto _e = umrf_graph_name(); if (_e) _o->umrf_graph_name = _e->str(); }
-}
-
-inline ::flatbuffers::Offset<StopUmrfGraphRequest> StopUmrfGraphRequest::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  return CreateStopUmrfGraphRequest(_fbb, _o, _rehasher);
-}
-
-inline ::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequest(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  (void)_rehasher;
-  (void)_o;
-  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const StopUmrfGraphRequestT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
-  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _umrf_graph_name = _fbb.CreateString(_o->umrf_graph_name);
-  return fb::temoto_action_engine::CreateStopUmrfGraphRequest(
-      _fbb,
-      ___metadata,
-      _umrf_graph_name);
-}
-
-inline StopUmrfGraphResponseT::StopUmrfGraphResponseT(const StopUmrfGraphResponseT &o)
-      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
-        success(o.success) {
-}
-
-inline StopUmrfGraphResponseT &StopUmrfGraphResponseT::operator=(StopUmrfGraphResponseT o) FLATBUFFERS_NOEXCEPT {
-  std::swap(__metadata, o.__metadata);
-  std::swap(success, o.success);
-  return *this;
-}
-
-inline StopUmrfGraphResponseT *StopUmrfGraphResponse::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
-  auto _o = std::unique_ptr<StopUmrfGraphResponseT>(new StopUmrfGraphResponseT());
-  UnPackTo(_o.get(), _resolver);
-  return _o.release();
-}
-
-inline void StopUmrfGraphResponse::UnPackTo(StopUmrfGraphResponseT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
-  (void)_o;
-  (void)_resolver;
-  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
-  { auto _e = success(); _o->success = _e; }
-}
-
-inline ::flatbuffers::Offset<StopUmrfGraphResponse> StopUmrfGraphResponse::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  return CreateStopUmrfGraphResponse(_fbb, _o, _rehasher);
-}
-
-inline ::flatbuffers::Offset<StopUmrfGraphResponse> CreateStopUmrfGraphResponse(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  (void)_rehasher;
-  (void)_o;
-  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const StopUmrfGraphResponseT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
-  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _success = _o->success;
-  return fb::temoto_action_engine::CreateStopUmrfGraphResponse(
-      _fbb,
-      ___metadata,
-      _success);
-}
-
-inline UmrfGraphDiffT::UmrfGraphDiffT(const UmrfGraphDiffT &o)
-      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
-        operation(o.operation),
-        umrf_json(o.umrf_json) {
-}
-
-inline UmrfGraphDiffT &UmrfGraphDiffT::operator=(UmrfGraphDiffT o) FLATBUFFERS_NOEXCEPT {
-  std::swap(__metadata, o.__metadata);
-  std::swap(operation, o.operation);
-  std::swap(umrf_json, o.umrf_json);
-  return *this;
-}
-
-inline UmrfGraphDiffT *UmrfGraphDiff::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
-  auto _o = std::unique_ptr<UmrfGraphDiffT>(new UmrfGraphDiffT());
-  UnPackTo(_o.get(), _resolver);
-  return _o.release();
-}
-
-inline void UmrfGraphDiff::UnPackTo(UmrfGraphDiffT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
-  (void)_o;
-  (void)_resolver;
-  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
-  { auto _e = operation(); if (_e) _o->operation = _e->str(); }
-  { auto _e = umrf_json(); if (_e) _o->umrf_json = _e->str(); }
-}
-
-inline ::flatbuffers::Offset<UmrfGraphDiff> UmrfGraphDiff::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  return CreateUmrfGraphDiff(_fbb, _o, _rehasher);
-}
-
-inline ::flatbuffers::Offset<UmrfGraphDiff> CreateUmrfGraphDiff(::flatbuffers::FlatBufferBuilder &_fbb, const UmrfGraphDiffT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
-  (void)_rehasher;
-  (void)_o;
-  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const UmrfGraphDiffT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
-  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
-  auto _operation = _fbb.CreateString(_o->operation);
-  auto _umrf_json = _fbb.CreateString(_o->umrf_json);
-  return fb::temoto_action_engine::CreateUmrfGraphDiff(
-      _fbb,
-      ___metadata,
-      _operation,
-      _umrf_json);
 }
 
 inline StartUmrfGraphRequestT::StartUmrfGraphRequestT(const StartUmrfGraphRequestT &o)
@@ -1250,6 +1139,147 @@ inline ::flatbuffers::Offset<StartUmrfGraphResponse> CreateStartUmrfGraphRespons
       _fbb,
       ___metadata,
       _success);
+}
+
+inline StopUmrfGraphRequestT::StopUmrfGraphRequestT(const StopUmrfGraphRequestT &o)
+      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
+        umrf_graph_name(o.umrf_graph_name) {
+}
+
+inline StopUmrfGraphRequestT &StopUmrfGraphRequestT::operator=(StopUmrfGraphRequestT o) FLATBUFFERS_NOEXCEPT {
+  std::swap(__metadata, o.__metadata);
+  std::swap(umrf_graph_name, o.umrf_graph_name);
+  return *this;
+}
+
+inline StopUmrfGraphRequestT *StopUmrfGraphRequest::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
+  auto _o = std::unique_ptr<StopUmrfGraphRequestT>(new StopUmrfGraphRequestT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void StopUmrfGraphRequest::UnPackTo(StopUmrfGraphRequestT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
+  { auto _e = umrf_graph_name(); if (_e) _o->umrf_graph_name = _e->str(); }
+}
+
+inline ::flatbuffers::Offset<StopUmrfGraphRequest> StopUmrfGraphRequest::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateStopUmrfGraphRequest(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<StopUmrfGraphRequest> CreateStopUmrfGraphRequest(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphRequestT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const StopUmrfGraphRequestT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  auto _umrf_graph_name = _fbb.CreateString(_o->umrf_graph_name);
+  return fb::temoto_action_engine::CreateStopUmrfGraphRequest(
+      _fbb,
+      ___metadata,
+      _umrf_graph_name);
+}
+
+inline StopUmrfGraphResponseT::StopUmrfGraphResponseT(const StopUmrfGraphResponseT &o)
+      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
+        success(o.success) {
+}
+
+inline StopUmrfGraphResponseT &StopUmrfGraphResponseT::operator=(StopUmrfGraphResponseT o) FLATBUFFERS_NOEXCEPT {
+  std::swap(__metadata, o.__metadata);
+  std::swap(success, o.success);
+  return *this;
+}
+
+inline StopUmrfGraphResponseT *StopUmrfGraphResponse::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
+  auto _o = std::unique_ptr<StopUmrfGraphResponseT>(new StopUmrfGraphResponseT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void StopUmrfGraphResponse::UnPackTo(StopUmrfGraphResponseT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
+  { auto _e = success(); _o->success = _e; }
+}
+
+inline ::flatbuffers::Offset<StopUmrfGraphResponse> StopUmrfGraphResponse::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateStopUmrfGraphResponse(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<StopUmrfGraphResponse> CreateStopUmrfGraphResponse(::flatbuffers::FlatBufferBuilder &_fbb, const StopUmrfGraphResponseT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const StopUmrfGraphResponseT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  auto _success = _o->success;
+  return fb::temoto_action_engine::CreateStopUmrfGraphResponse(
+      _fbb,
+      ___metadata,
+      _success);
+}
+
+inline BroadcastStartUmrfGraphT::BroadcastStartUmrfGraphT(const BroadcastStartUmrfGraphT &o)
+      : __metadata((o.__metadata) ? new fb::MsgMetadataT(*o.__metadata) : nullptr),
+        umrf_graph_name(o.umrf_graph_name),
+        name_match_required(o.name_match_required),
+        targets(o.targets),
+        umrf_graph_json(o.umrf_graph_json) {
+  umrf_graph_diffs.reserve(o.umrf_graph_diffs.size());
+  for (const auto &umrf_graph_diffs_ : o.umrf_graph_diffs) { umrf_graph_diffs.emplace_back((umrf_graph_diffs_) ? new fb::temoto_action_engine::UmrfGraphDiffT(*umrf_graph_diffs_) : nullptr); }
+}
+
+inline BroadcastStartUmrfGraphT &BroadcastStartUmrfGraphT::operator=(BroadcastStartUmrfGraphT o) FLATBUFFERS_NOEXCEPT {
+  std::swap(__metadata, o.__metadata);
+  std::swap(umrf_graph_name, o.umrf_graph_name);
+  std::swap(name_match_required, o.name_match_required);
+  std::swap(targets, o.targets);
+  std::swap(umrf_graph_json, o.umrf_graph_json);
+  std::swap(umrf_graph_diffs, o.umrf_graph_diffs);
+  return *this;
+}
+
+inline BroadcastStartUmrfGraphT *BroadcastStartUmrfGraph::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
+  auto _o = std::unique_ptr<BroadcastStartUmrfGraphT>(new BroadcastStartUmrfGraphT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void BroadcastStartUmrfGraph::UnPackTo(BroadcastStartUmrfGraphT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = __metadata(); if (_e) { if(_o->__metadata) { _e->UnPackTo(_o->__metadata.get(), _resolver); } else { _o->__metadata = std::unique_ptr<fb::MsgMetadataT>(_e->UnPack(_resolver)); } } else if (_o->__metadata) { _o->__metadata.reset(); } }
+  { auto _e = umrf_graph_name(); if (_e) _o->umrf_graph_name = _e->str(); }
+  { auto _e = name_match_required(); _o->name_match_required = _e; }
+  { auto _e = targets(); if (_e) { _o->targets.resize(_e->size()); for (::flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->targets[_i] = _e->Get(_i)->str(); } } else { _o->targets.resize(0); } }
+  { auto _e = umrf_graph_json(); if (_e) _o->umrf_graph_json = _e->str(); }
+  { auto _e = umrf_graph_diffs(); if (_e) { _o->umrf_graph_diffs.resize(_e->size()); for (::flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { if(_o->umrf_graph_diffs[_i]) { _e->Get(_i)->UnPackTo(_o->umrf_graph_diffs[_i].get(), _resolver); } else { _o->umrf_graph_diffs[_i] = std::unique_ptr<fb::temoto_action_engine::UmrfGraphDiffT>(_e->Get(_i)->UnPack(_resolver)); }; } } else { _o->umrf_graph_diffs.resize(0); } }
+}
+
+inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> BroadcastStartUmrfGraph::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateBroadcastStartUmrfGraph(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<BroadcastStartUmrfGraph> CreateBroadcastStartUmrfGraph(::flatbuffers::FlatBufferBuilder &_fbb, const BroadcastStartUmrfGraphT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const BroadcastStartUmrfGraphT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto ___metadata = _o->__metadata ? CreateMsgMetadata(_fbb, _o->__metadata.get(), _rehasher) : 0;
+  auto _umrf_graph_name = _fbb.CreateString(_o->umrf_graph_name);
+  auto _name_match_required = _o->name_match_required;
+  auto _targets = _fbb.CreateVectorOfStrings(_o->targets);
+  auto _umrf_graph_json = _fbb.CreateString(_o->umrf_graph_json);
+  auto _umrf_graph_diffs = _fbb.CreateVector<::flatbuffers::Offset<fb::temoto_action_engine::UmrfGraphDiff>> (_o->umrf_graph_diffs.size(), [](size_t i, _VectorArgs *__va) { return CreateUmrfGraphDiff(*__va->__fbb, __va->__o->umrf_graph_diffs[i].get(), __va->__rehasher); }, &_va );
+  return fb::temoto_action_engine::CreateBroadcastStartUmrfGraph(
+      _fbb,
+      ___metadata,
+      _umrf_graph_name,
+      _name_match_required,
+      _targets,
+      _umrf_graph_json,
+      _umrf_graph_diffs);
 }
 
 inline BroadcastStopUmrfGraphT::BroadcastStopUmrfGraphT(const BroadcastStopUmrfGraphT &o)
