@@ -13,7 +13,7 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
               FLATBUFFERS_VERSION_REVISION == 21,
              "Non-compatible flatbuffers version included");
 
-#include "robofleet_client/base_schema_generated.h"
+#include "base_schema_generated.h"
 
 namespace fb {
 namespace temoto_action_engine {

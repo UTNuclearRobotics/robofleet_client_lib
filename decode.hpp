@@ -444,8 +444,8 @@ template <>
 UMRFgraphDiff decode(
     const fb::temoto_action_engine::UmrfGraphDiff* const src) {
     UMRFgraphDiff dst;
-    dst.ADD = src->ADD()->str();
-    dst.SUBTRACT = src->SUBTRACT()->str();
+    dst.ADD = src->add()->str();
+    dst.SUBTRACT = src->subtract()->str();
     dst.operation = src->operation()->str();
     dst.umrf_json = src->umrf_json()->str();
     return dst;
