@@ -360,6 +360,10 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+/*
+* ROS Navigation Messages
+*/
+
 // nav_msgs/Path
 template <>
 flatbuffers::uoffset_t encode(
@@ -373,6 +377,22 @@ flatbuffers::uoffset_t encode(
         poses)
         .o;
 }
+
+// TODO: nav_msgs/MapMetaData
+/*
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const MapMetaData& msg,
+    const MetadataOffset& metadata) {
+    return fb::nav_msgs::CreateMapMetaData(
+        fbb,
+        metadata,
+        .o;
+}
+*/
+
+
+// TODO: nav_msgs/OccupancyGrid
 
 /*
 * AugRE Specific Messages
