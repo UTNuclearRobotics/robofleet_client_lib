@@ -54,8 +54,8 @@ struct flatbuffers_type_for<Time> {
 template <>
 Time decode(const fb::RosTime* const src) {
     Time dst;
-    dst._sec = src->secs();
-    dst._nsec = src->nsecs();
+    dst._sec = src->sec();
+    dst._nsec = src->nsec();
     return dst;
 }
 
@@ -382,8 +382,8 @@ template <>
 DetectedItem decode(const fb::amrl_msgs::DetectedItem* const src) {
     DetectedItem dst;
     dst.name = src->name()->str();
-    dst.repID = src->repID()->str();
-    dst.anchorID = src->anchorID()->str();
+    dst.repID = src->repid()->str();
+    dst.anchorID = src->anchorid()->str();
     dst.x = src->x();
     dst.y = src->y();
     dst.z = src->z();
@@ -503,8 +503,8 @@ template <>
 UMRFgraphDiff decode(
     const fb::temoto_action_engine::UmrfGraphDiff* const src) {
     UMRFgraphDiff dst;
-    dst.ADD = src->ADD()->str();
-    dst.SUBTRACT = src->SUBTRACT()->str();
+    dst.ADD = src->add()->str();
+    dst.SUBTRACT = src->subtract()->str();
     dst.operation = src->operation()->str();
     dst.umrf_json = src->umrf_json()->str();
     return dst;
