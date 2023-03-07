@@ -228,7 +228,7 @@ struct MapMetaData {
 struct OccupancyGrid {
 	Header header;
 	MapMetaData info;
-	std::vector<uint8_t> data;
+	std::vector<int8_t> data;
 };
 
 // modified atak dectection_msgs 
