@@ -428,6 +428,43 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// sensor_msgs/CompressedImage
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const CompressedImage& msg,
+    const MetadataOffset& metadata) {
+    //auto data = encode_vector<fb::sensor_msgs::CompressedImage>(fbb, 0, msg.data);
+    return fb::sensor_msgs::CreateCompressedImageDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.format.c_str(),
+        &msg.data)
+        .o;
+}
+
+// augre_msgs/DetectedItem
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const DetectedItem_augre& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateDetectedItemDirect(
+        fbb,
+        metadata,
+        msg.uid.c_str(),
+        msg.callsign.c_str(),
+        msg.type.c_str(),
+        msg.type_label.c_str(),
+        msg.how.c_str(),
+        msg.how_label.c_str(),
+        encode(fbb, msg.pose, 0),
+        encode(fbb, msg.cmpr_image, 0),
+        msg.url.c_str())
+        .o;
+}
+
+
+
 /*
 * GTSAM Specific Messages
 */
