@@ -195,6 +195,16 @@ struct NavSatFix {
 	uint8 position_covariance_type;
 };
 
+struct Image {
+	Header header;
+	uint32 height;
+	uint32 width;
+	std::string encoding;
+	uint8 is_bigendian;
+	uint32 step;
+	std::vector<uint8_t> data;
+};
+
 struct CompressedImage {
 	Header header;
 	std::string format;

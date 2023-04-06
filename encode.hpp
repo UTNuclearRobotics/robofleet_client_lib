@@ -428,6 +428,24 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// sensor_msgs/Image
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Image& msg,
+    const MetadataOffset& metadata) {
+    return fb::sensor_msgs::CreateImageDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.height,
+        msg.width,
+        msg.encoding.c_str(),
+        msg.is_bigendian,
+        msg.step,
+        &msg.data)
+        .o;
+}
+
 // sensor_msgs/CompressedImage
 template <>
 flatbuffers::uoffset_t encode(
