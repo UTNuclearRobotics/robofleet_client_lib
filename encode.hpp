@@ -98,6 +98,15 @@ flatbuffers::uoffset_t encode(
     .o;
 }
 
+// uint8_t
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const uint8_t& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateUInt8(fbb, 0, msg)
+        .o;
+}
+
+
 //std_msgs/String
 template <>
 flatbuffers::uoffset_t encode(
@@ -391,6 +400,80 @@ flatbuffers::uoffset_t encode(
 }
 */
 
+/*
+* sensor_msgs
+*/
+
+// sensor_msgs/Image
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Image& msg,
+    const MetadataOffset& metadata) {
+    return fb::sensor_msgs::CreateImageDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.height,
+        msg.width,
+        msg.encoding.c_str(),
+        msg.is_bigendian,
+        msg.step,
+        &msg.data)
+        .o;
+}
+
+// sensor_msgs/CompressedImage
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const CompressedImage& msg,
+    const MetadataOffset& metadata) {
+    //auto data = encode_vector<fb::sensor_msgs::CompressedImage>(fbb, 0, msg.data);
+    return fb::sensor_msgs::CreateCompressedImageDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.format.c_str(),
+        &msg.data)
+        .o;
+}
+
+// sensor_msgs/PointField
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PointField& msg,
+    const MetadataOffset& metadata) {
+    return fb::sensor_msgs::CreatePointFieldDirect(
+        fbb,
+        metadata,
+        msg.name.c_str(),
+        msg.offset,
+        msg.datatype,
+        msg.count)
+        .o;
+}
+
+// sensor_msgs/PointCloud2
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PointCloud2& msg,
+    const MetadataOffset& metadata) {
+    auto fields = encode_vector<fb::sensor_msgs::PointField>(fbb, 0, msg.fields);
+    auto data = encode_vector<uint8_t>(fbb, 0, msg.data);
+    return fb::sensor_msgs::CreatePointCloud2(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.height,
+        msg.width,
+        fields,
+        msg.is_bigendian,
+        msg.point_step,
+        msg.row_step,
+        data,
+        msg.is_dense)
+        .o;
+}
+
 
 // TODO: nav_msgs/OccupancyGrid
 
@@ -425,39 +508,6 @@ flatbuffers::uoffset_t encode(
         metadata,
         encode(fbb, msg.transform, 0),
         &msg.covariance)
-        .o;
-}
-
-// sensor_msgs/Image
-template <>
-flatbuffers::uoffset_t encode(
-    FBB& fbb, const Image& msg,
-    const MetadataOffset& metadata) {
-    return fb::sensor_msgs::CreateImageDirect(
-        fbb,
-        metadata,
-        encode(fbb, msg.header, 0),
-        msg.height,
-        msg.width,
-        msg.encoding.c_str(),
-        msg.is_bigendian,
-        msg.step,
-        &msg.data)
-        .o;
-}
-
-// sensor_msgs/CompressedImage
-template <>
-flatbuffers::uoffset_t encode(
-    FBB& fbb, const CompressedImage& msg,
-    const MetadataOffset& metadata) {
-    //auto data = encode_vector<fb::sensor_msgs::CompressedImage>(fbb, 0, msg.data);
-    return fb::sensor_msgs::CreateCompressedImageDirect(
-        fbb,
-        metadata,
-        encode(fbb, msg.header, 0),
-        msg.format.c_str(),
-        &msg.data)
         .o;
 }
 
@@ -563,3 +613,23 @@ flatbuffers::uoffset_t encode(
         targets)
         .o;
 }
+
+/*
+* hri_msgs
+*/
+
+// hri_msgs/Gaze
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Gaze& msg,
+    const MetadataOffset& metadata) {
+    return fb::hri_msgs::CreateGazeDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.sender.c_str(),
+        msg.receiver.c_str())
+        .o;
+}
+
+

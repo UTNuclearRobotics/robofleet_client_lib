@@ -211,6 +211,25 @@ struct CompressedImage {
 	std::vector<uint8_t> data;
 };
 
+struct PointField {
+	std::string name;
+	uint32 offset;
+	uint8 datatype;
+	uint32 count;
+};
+
+struct PointCloud2 {
+	Header header;
+	uint32 height;
+	uint32 width;
+	std::vector<PointField> fields;
+	bool is_bigendian;
+	uint32 point_step;
+	uint32 row_step;
+	std::vector<uint8_t> data;
+	bool is_dense;
+};
+
 /*
 * nav_msgs
 */
@@ -364,4 +383,15 @@ struct Person {
 struct PersonArray {
 	Header header;
 	std::vector<Person> people;
+};
+
+/*
+* hri_msgs
+*/
+
+// hrs_msgs/Gaze
+struct Gaze {
+	Header header;
+	std::string sender;
+	std::string receiver;
 };

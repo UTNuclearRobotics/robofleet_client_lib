@@ -314,6 +314,54 @@ CompressedImage decode(
     return dst;
 }
 
+template <>
+struct flatbuffers_type_for<PointField> {
+    typedef fb::sensor_msgs::PointField type;
+};
+template <>
+PointField decode(
+    const fb::sensor_msgs::PointField* const src) {
+    PointField dst;
+    dst.name = src->name()->str();
+    dst.offset = src->offset();
+    dst.datatype = src->datatype();
+    dst.count = src->count();
+    return dst;
+}
+
+template <>
+struct flatbuffers_type_for<PointCloud2> {
+    typedef fb::sensor_msgs::PointCloud2 type;
+};
+template <>
+PointCloud2 decode(
+    const fb::sensor_msgs::PointCloud2* const src) {
+    PointCloud2 dst;
+
+    // fill struct
+    dst.header = decode<Header>(src->header());
+    dst.height = src->height();
+    dst.width = src->width();
+    dst.is_bigendian = src->is_bigendian();
+    dst.point_step = src->point_step();
+    dst.row_step = src->row_step();
+    dst.is_dense = src->is_dense();
+
+    // fill fields vector
+    dst.fields.resize(src->fields()->size());
+    auto src2 = src->fields()->begin();
+    auto dst2 = dst.fields.begin();
+    while (src2 != src->fields()->end()) {
+        *dst2 = decode<PointField>(*src2); 
+        ++src2; 
+        ++dst2;}
+
+    // fill data vector
+    dst.data.resize(src->data()->size());
+    std::copy(src->data()->begin(), src->data()->end(), dst.data.begin());
+    return dst;
+}
+
 
 /*
    ROS Navigation Messages
@@ -704,5 +752,25 @@ PersonArray decode(
     return dst;
 }
 
+
+
+/*
+ * hri_msgs
+ */
+
+// hri_msgs/Gaze
+template <>
+struct flatbuffers_type_for<Gaze> {
+    typedef fb::hri_msgs::Gaze type;
+};
+template <>
+Gaze decode(
+    const fb::hri_msgs::Gaze* const src) {
+    Gaze dst;
+    dst.header = decode<Header>(src->header());
+    dst.sender = src->sender()->str();
+    dst.receiver = src->receiver()->str();
+    return dst;
+}
 
 
