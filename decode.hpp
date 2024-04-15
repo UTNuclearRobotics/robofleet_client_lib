@@ -40,6 +40,17 @@ static void decode_string_vector(
     }
 }
 
+template <>
+struct flatbuffers_type_for<String> {
+    typedef fb::std_msgs::String type;
+};
+template <>
+String decode(const fb::std_msgs::String* const src) {
+    String dst;
+    dst.data = src->data()->str();
+    return dst;
+}
+
 // *** specializations below ***
 
 /*
