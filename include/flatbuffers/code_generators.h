@@ -75,10 +75,8 @@ class CodeWriter {
   void DecrementIdentLevel() {
     if (cur_ident_lvl_) cur_ident_lvl_--;
   }
-    
-  void SetPadding(const std::string &padding) {
-    pad_ = padding;
-  }
+
+  void SetPadding(const std::string &padding) { pad_ = padding; }
 
  private:
   std::map<std::string, std::string> value_map_;
@@ -96,7 +94,8 @@ class BaseGenerator {
   virtual bool generate() = 0;
 
   static std::string NamespaceDir(const Parser &parser, const std::string &path,
-                                  const Namespace &ns);
+                                  const Namespace &ns,
+                                  const bool dasherize = false);
 
   std::string GeneratedFileName(const std::string &path,
                                 const std::string &file_name,
@@ -118,7 +117,8 @@ class BaseGenerator {
   BaseGenerator &operator=(const BaseGenerator &);
   BaseGenerator(const BaseGenerator &);
 
-  std::string NamespaceDir(const Namespace &ns) const;
+  std::string NamespaceDir(const Namespace &ns,
+                           const bool dasherize = false) const;
 
   static const char *FlatBuffersGeneratedWarning();
 
@@ -138,7 +138,8 @@ class BaseGenerator {
   std::string WrapInNameSpace(const Namespace *ns,
                               const std::string &name) const;
 
-  std::string WrapInNameSpace(const Definition &def) const;
+  std::string WrapInNameSpace(const Definition &def,
+                              const std::string &suffix = "") const;
 
   std::string GetNameSpace(const Definition &def) const;
 

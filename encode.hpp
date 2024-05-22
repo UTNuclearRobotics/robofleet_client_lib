@@ -86,11 +86,11 @@ flatbuffers::uoffset_t encode(
     auto header_stamp = fb::RosTime(msg.stamp._sec, msg.stamp._nsec);
 
     return fb::std_msgs::CreateHeaderDirect(
-        fbb, 0, msg.seq, &header_stamp, msg.frame_id.c_str())
+        fbb, metadata, msg.seq, &header_stamp, msg.frame_id.c_str())
         .o;
 }
 
-// std_msgs/String
+// std::string
 template <>
 flatbuffers::uoffset_t encode(
     FBB& fbb, const std::string& msg, const MetadataOffset& metadata) {
@@ -98,11 +98,86 @@ flatbuffers::uoffset_t encode(
     .o;
 }
 
+// uint8_t
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const uint8_t& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateUInt8(fbb, 0, msg)
+        .o;
+}
+
+// UInt8
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const UInt8& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateUInt8(
+        fbb,
+        metadata, 
+        msg.data)
+        .o;
+}
+
+//std_msgs/String
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const String& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateStringDirect(
+        fbb, metadata, msg.data.c_str())
+        .o;
+}
+
 // std_msgs/Empty
 template <>
 flatbuffers::uoffset_t encode(
     FBB& fbb, const Empty& msg, const MetadataOffset& metadata) {
     return fb::std_msgs::CreateEmpty(fbb, metadata)
+        .o;
+}
+
+// std_msgs/MultiArrayDimension
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const MultiArrayDimension& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateMultiArrayDimensionDirect(
+        fbb,
+        metadata,
+        msg.label.c_str(),
+        msg.size,
+        msg.stride)
+        .o;
+}
+
+// std_msgs/MultiArrayLayout
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const MultiArrayLayout& msg, const MetadataOffset& metadata) {
+    auto dim = encode_vector<fb::std_msgs::MultiArrayDimension>(fbb, 0, msg.dim);
+    return fb::std_msgs::CreateMultiArrayLayout(
+        fbb,
+        metadata,
+        dim,
+        msg.data_offset)
+        .o;
+}
+
+// std_msgs/UInt8MultiArray
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const UInt8MultiArray& msg, const MetadataOffset& metadata) {
+    //auto data = encode_vector<fb::std_msgs::UInt8>(fbb, 0, msg.data);
+    return fb::std_msgs::CreateUInt8MultiArrayDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.layout, 0),
+        &msg.data)
+        .o;
+}
+
+// std_msgs/Bool
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Bool& msg, const MetadataOffset& metadata) {
+    return fb::std_msgs::CreateBool(fbb, metadata, msg.data)
         .o;
 }
 
@@ -115,21 +190,7 @@ flatbuffers::uoffset_t encode(
       .o;
 }
 
-// amrl_msgs/RobofleetStatus
-template <>
-flatbuffers::uoffset_t encode(
-    FBB& fbb, const RobotStatus& msg,
-    const MetadataOffset& metadata) {
-    return fb::amrl_msgs::CreateRobofleetStatusDirect(
-        fbb,
-        metadata,
-        msg.status.c_str(),
-        msg.is_ok,
-        msg.battery_level,
-        msg.location.c_str())
-        .o;
-}
-
+// TODO delete
 // amrl_msgs/Localization2DMsg
 template <>
 flatbuffers::uoffset_t encode(
@@ -157,6 +218,56 @@ flatbuffers::uoffset_t encode(
         msg.z)
         .o;
 }
+
+// geometry_msgs/Point32
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Point32& msg, const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreatePoint32(
+        fbb,
+        metadata,
+        msg.x,
+        msg.y,
+        msg.z)
+        .o;
+}
+
+// geometry_msgs/Vector3
+template<>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Vector3& msg, const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreateVector3(
+        fbb,
+        metadata,
+        msg.x,
+        msg.y,
+        msg.z)
+        .o;
+}
+
+//// geometry_msgs/Polygon
+//template <>
+//flatbuffers::uoffset_t encode(
+//    FBB& fbb, const Polygon& msg, const MetadataOffset& metadata) {
+//    auto points = encode_vector<fb::geometry_msgs::Point32>(fbb, 0, msg.points);
+//    return fb::geometry_msgs::CreatePolygon(
+//        fbb,
+//        metadata,
+//        points)
+//        .o;
+//}
+
+//// geometry_msgs/PolygonStamped
+//template <>
+//flatbuffers::uoffset_t encode(
+//    FBB& fbb, const PolygonStamped& msg, const MetadataOffset& metadata) {
+//    return fb::geometry_msgs::CreatePolygonStamped(
+//        fbb,
+//        metadata,
+//        encode(fbb, msg.header, 0),
+//        encode(fbb, msg.polygon, 0))
+//        .o;
+//}
 
 // geometry_msgs/Quaternion
 template <>
@@ -299,6 +410,19 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// geometry_msgs/TwistWithCovariance
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const TwistWithCovariance& msg,
+    const MetadataOffset& metadata) {
+    return fb::geometry_msgs::CreateTwistWithCovarianceDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.twist, 0),
+        &msg.covariance)
+        .o;
+}
+
 // geographic_msgs/GeoPoint
 template <>
 flatbuffers::uoffset_t encode(
@@ -351,6 +475,10 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+/*
+* ROS Navigation Messages
+*/
+
 // nav_msgs/Path
 template <>
 flatbuffers::uoffset_t encode(
@@ -365,9 +493,148 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// TODO: nav_msgs/MapMetaData
+/*
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const MapMetaData& msg,
+    const MetadataOffset& metadata) {
+    return fb::nav_msgs::CreateMapMetaData(
+        fbb,
+        metadata,
+        .o;
+}
+*/
+
+// nav_msgs / Odometry
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Odometry& msg,
+    const MetadataOffset& metadata) {
+    
+    return fb::nav_msgs::CreateOdometryDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.child_frame_id.c_str(),
+        encode(fbb, msg.pose, 0),
+        encode(fbb, msg.twist, 0))
+        .o;
+}
+
+/*
+* sensor_msgs
+*/
+
+// sensor_msgs/Image
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Image& msg,
+    const MetadataOffset& metadata) {
+    return fb::sensor_msgs::CreateImageDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.height,
+        msg.width,
+        msg.encoding.c_str(),
+        msg.is_bigendian,
+        msg.step,
+        &msg.data)
+        .o;
+}
+
+// sensor_msgs/CompressedImage
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const CompressedImage& msg,
+    const MetadataOffset& metadata) {
+    //auto data = encode_vector<fb::sensor_msgs::CompressedImage>(fbb, 0, msg.data);
+    return fb::sensor_msgs::CreateCompressedImageDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.format.c_str(),
+        &msg.data)
+        .o;
+}
+
+// sensor_msgs/PointField
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PointField& msg,
+    const MetadataOffset& metadata) {
+    return fb::sensor_msgs::CreatePointFieldDirect(
+        fbb,
+        metadata,
+        msg.name.c_str(),
+        msg.offset,
+        msg.datatype,
+        msg.count)
+        .o;
+}
+
+// sensor_msgs/PointCloud2
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const PointCloud2& msg,
+    const MetadataOffset& metadata) {
+    auto fields = encode_vector<fb::sensor_msgs::PointField>(fbb, 0, msg.fields);
+    auto data = encode_vector<uint8_t>(fbb, 0, msg.data);
+    return fb::sensor_msgs::CreatePointCloud2(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.height,
+        msg.width,
+        fields,
+        msg.is_bigendian,
+        msg.point_step,
+        msg.row_step,
+        data,
+        msg.is_dense)
+        .o;
+}
+
+// sensor_msgs/Imu
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Imu& msg,
+    const MetadataOffset& metadata) {
+    return fb::sensor_msgs::CreateImuDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.orientation, 0),
+        &msg.orientation_covariance,
+        encode(fbb, msg.angular_velocity,0),
+        &msg.angular_velocity_covariance,
+        encode(fbb, msg.linear_acceleration, 0),
+        &msg.linear_acceleration_covariance)
+        .o;
+}
+
+
+
+// TODO: nav_msgs/OccupancyGrid
+
 /*
 * AugRE Specific Messages
 */
+
+// augre_msgs/HeaderArrayStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const HeaderArrayStamped& msg,
+    const MetadataOffset& metadata) {
+    auto data = encode_vector<fb::augre_msgs::HeaderArrayStamped>(fbb, 0, msg.data);
+    return fb::augre_msgs::CreateHeaderArrayStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        data)
+        .o;
+}
 
 // augre_msgs/AgentStatus
 template <>
@@ -399,6 +666,58 @@ flatbuffers::uoffset_t encode(
         .o;
 }
 
+// augre_msgs/DetectedItem
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const DetectedItem_augre& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateDetectedItemDirect(
+        fbb,
+        metadata,
+        msg.uid.c_str(),
+        msg.callsign.c_str(),
+        msg.type.c_str(),
+        msg.type_label.c_str(),
+        msg.how.c_str(),
+        msg.how_label.c_str(),
+        encode(fbb, msg.pose, 0),
+        encode(fbb, msg.cmpr_image, 0),
+        msg.url.c_str())
+        .o;
+}
+
+// augre_msgs/BoundingObject
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const BoundingObject3D& msg,
+    const MetadataOffset& metadata) {
+    return fb::augre_msgs::CreateBoundingObject3DDirect(
+        fbb,
+        metadata,
+        msg.action,
+        msg.shape,
+        msg.uid.c_str(),
+        msg.size_x,
+        msg.size_y,
+        msg.size_z,
+        msg.radius,
+        encode(fbb, msg.centroid, 0))
+        .o;
+}
+
+// augre_msgs/BoundingObjects
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const BoundingObject3DArray& msg,
+    const MetadataOffset& metadata) {
+    auto objects = encode_vector<BoundingObject3D>(fbb, 0, msg.objects);
+    return fb::augre_msgs::CreateBoundingObject3DArray(
+        fbb,
+        metadata,
+        objects)
+        .o;
+}
+
 /*
 * GTSAM Specific Messages
 */
@@ -411,14 +730,16 @@ flatbuffers::uoffset_t encode(
     auto AsaId = fbb.CreateString(msg.asa_id);
     auto RepId = fbb.CreateString(msg.rep_id);
     auto NameSpace = fbb.CreateString(msg.ns);
-    auto time_stamp = fb::RosTime(msg.timestamp._nsec, msg.timestamp._sec);
+    auto anchor_type = fbb.CreateString(msg.anchor_type);
+    auto time_stamp = fb::RosTime(msg.timestamp._sec, msg.timestamp._nsec);
     auto neighbors = encode_vector<std::string>(fbb, 0, msg.neighbors);
     return fb::asa_db_portal::CreateAzureSpatialAnchor(
         fbb, 
         metadata, 
         AsaId, 
         RepId, 
-        NameSpace, 
+        NameSpace,
+        anchor_type,
         &time_stamp, 
         encode(fbb, msg.pose, 0), 
         encode(fbb, msg.geopose, 0), 
@@ -477,3 +798,67 @@ flatbuffers::uoffset_t encode(
         targets)
         .o;
 }
+
+/*
+* hri_msgs
+*/
+
+// hri_msgs/Gaze
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const Gaze& msg,
+    const MetadataOffset& metadata) {
+    return fb::hri_msgs::CreateGazeDirect(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        msg.sender.c_str(),
+        msg.receiver.c_str())
+        .o;
+}
+
+/*
+* audio_common_msgs
+*/
+
+// audio_common_msgs/AudioData
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AudioData& msg,
+    const MetadataOffset& metadata) {
+    return fb::audio_common_msgs::CreateAudioDataDirect(
+        fbb,
+        metadata,
+        &msg.data)
+        .o;
+}
+
+// audio_common_msgs/AudioDataStamped
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AudioDataStamped& msg,
+    const MetadataOffset& metadata) {
+    return fb::audio_common_msgs::CreateAudioDataStamped(
+        fbb,
+        metadata,
+        encode(fbb, msg.header, 0),
+        encode(fbb, msg.audio, 0))
+        .o;
+}
+
+// audio_common_msgs/AudioInfo
+template <>
+flatbuffers::uoffset_t encode(
+    FBB& fbb, const AudioInfo& msg,
+    const MetadataOffset& metadata) {
+    return fb::audio_common_msgs::CreateAudioInfoDirect(
+        fbb,
+        metadata,
+        msg.channels,
+        msg.sample_rate,
+        msg.sample_format.c_str(),
+        msg.bitrate,
+        msg.coding_format.c_str())
+        .o;
+}
+

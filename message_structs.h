@@ -19,6 +19,10 @@ struct Header {
 	std::string frame_id;
 };
 
+struct UInt8 {
+	uint8_t data;
+};
+
 struct String {
 	std::string data;
 };
@@ -27,11 +31,40 @@ struct Empty {
 
 };
 
+struct MultiArrayDimension {
+	std::string label;
+	uint32_t size;
+	uint32_t stride;
+};
+
+struct MultiArrayLayout {
+	std::vector<MultiArrayDimension> dim;
+	uint32_t data_offset;
+};
+
+struct UInt8MultiArray {
+	MultiArrayLayout layout;
+	std::vector<uint8_t> data;
+};
+
+struct Bool {
+	bool data;
+};
+
+struct ColorRGBA {
+	float r;
+	float g;
+	float b;
+	float a;
+};
+
 struct RobofleetSubscription {
 	std::string topic_regex;
 	uint8_t action;
 };
 
+
+// TODO: to delete - 
 struct RobotLocation {
 	std::string frame;
 	float x;
@@ -48,14 +81,6 @@ struct RobotLocationStamped {
 	float theta;
 };
 
-struct RobotStatus {
-	std::string status;
-	bool is_ok;
-	float battery_level;
-	std::string location;
-};
-
-
 /*
 * geometry_msgs
 */
@@ -65,6 +90,21 @@ struct Point {
 	float y;
 	float z;
 };
+
+struct Point32 {
+	float x;
+	float y;
+	float z;
+};
+
+struct Polygon {
+	std::vector<Point32> points;
+};
+
+//struct PolygonStamped {
+//	Header header;
+//	Polygon polygon;
+//};
 
 struct Quaternion {
 	float x;
@@ -117,7 +157,8 @@ struct TwistStamped {
 
 struct TwistWithCovariance {
 	Twist twist;
-	double covariance[36]; // TODO: Swap to a std::vector<float> covariance;
+	//double covariance[36]; // TODO: Swap to a std::vector<float> covariance;
+	std::vector<double> covariance;
 };
 
 struct TwistWithCovarianceStamped {
@@ -191,14 +232,53 @@ struct NavSatFix {
 	double longitude;
 	double altitude;
 	//std::vector<double> position_covariance;
-	std::array<double,9> position_covariance;
+	std::array<double, 9> position_covariance;
 	uint8 position_covariance_type;
+};
+
+struct Image {
+	Header header;
+	uint32 height;
+	uint32 width;
+	std::string encoding;
+	uint8 is_bigendian;
+	uint32 step;
+	std::vector<uint8_t> data;
 };
 
 struct CompressedImage {
 	Header header;
 	std::string format;
 	std::vector<uint8_t> data;
+};
+
+struct PointField {
+	std::string name;
+	uint32 offset;
+	uint8 datatype;
+	uint32 count;
+};
+
+struct PointCloud2 {
+	Header header;
+	uint32 height;
+	uint32 width;
+	std::vector<PointField> fields;
+	bool is_bigendian;
+	uint32 point_step;
+	uint32 row_step;
+	std::vector<uint8_t> data;
+	bool is_dense;
+};
+
+struct Imu {
+	Header header;
+	Quaternion orientation;
+	std::vector<double> orientation_covariance;
+	Vector3 angular_velocity;
+	std::vector<double> angular_velocity_covariance;
+	Vector3 linear_acceleration;
+	std::vector<double> linear_acceleration_covariance;
 };
 
 /*
@@ -217,23 +297,28 @@ struct Path {
 	std::vector<PoseStamped> poses;
 };
 
-// modified atak dectection_msgs 
-struct DetectedItem {
-	std::string name;
-	std::string repID;
-	std::string anchorID;
-	float x;
-	float y;
-	float z;
-	float lat;
-	float lon;
-	float elv;
-	CompressedImage cmpr_image;
+struct MapMetaData {
+	Time map_load_time;
+	float resolution;
+	uint32_t width;
+	uint32_t height;
+	Pose origin;
+};
+
+struct OccupancyGrid {
+	Header header;
+	MapMetaData info;
+	std::vector<int8_t> data;
 };
 
 /*
 // augre_msgs
 */
+struct HeaderArrayStamped {
+	Header header;
+	std::vector<Header> data;
+};
+
 struct AgentStatus {
 	std::string uid;
 	std::string callsign;
@@ -261,6 +346,21 @@ struct TransformWithCovarianceStamped {
 	std::vector<float> covariance;
 };
 
+struct BoundingObject3D {
+	uint8_t action;
+	uint8_t shape;
+	std::string uid;
+	float size_x;
+	float size_y;
+	float size_z;
+	float radius;
+	PoseStamped centroid;
+};
+
+struct BoundingObject3DArray {
+	std::vector<BoundingObject3D> objects;
+};
+
 /*
 * asa_db_portal msgs
 */
@@ -269,6 +369,7 @@ struct AzureSpatialAnchor {
 	std::string asa_id;
 	std::string rep_id;
 	std::string ns;
+	std::string anchor_type;
 	Time timestamp;
 	PoseWithCovarianceStamped pose;
 	GeoPoseWithCovarianceStamped geopose;
@@ -279,7 +380,7 @@ struct AzureSpatialAnchor {
  *  TeMoto_msgs
  */
 
-// UMRFgraphs
+ // UMRFgraphs
 struct UMRFgraphDiff {
 	std::string ADD;
 	std::string SUBTRACT = "subtract";
@@ -304,7 +405,7 @@ struct StopUMRF {
  *  leg_tracker
  */
 
-// Detection
+ // Detection
 struct Detection {
 	Point position;
 	float confidence;
@@ -339,4 +440,61 @@ struct Person {
 struct PersonArray {
 	Header header;
 	std::vector<Person> people;
+};
+
+/*
+* hri_msgs
+*/
+
+// hrs_msgs/Gaze
+struct Gaze {
+	Header header;
+	std::string sender;
+	std::string receiver;
+};
+
+/*
+* visualization_msgs
+*/
+
+struct Marker {
+	Header header;
+	std::string ns;
+	uint32_t id;
+	uint32_t type;
+	uint32_t action;
+	Pose pose;
+	Vector3 scale;
+	ColorRGBA color;
+	//duration lifetime;
+	bool frame_locked;
+	std::vector<Point> points;
+	std::vector<ColorRGBA> colors;
+	std::string text;
+	//std::string mesh_resource;
+	//bool mesh_use_embedded_materials;
+};
+
+struct MarkerArray {
+	std::vector<Marker> markers;
+};
+
+/*
+* audio_common_msgs
+*/
+struct AudioData {
+	std::vector<uint8_t> data;
+};
+
+struct AudioDataStamped {
+	Header header;
+	AudioData audio;
+};
+
+struct AudioInfo {
+	uint8_t channels;
+	uint32_t sample_rate;
+	std::string sample_format;
+	uint32_t bitrate;
+	std::string coding_format;
 };
